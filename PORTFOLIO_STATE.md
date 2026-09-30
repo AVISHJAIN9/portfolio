@@ -2,8 +2,8 @@
 
 ## 0. HEADER
 - **session_no**: 4
-- **last_run_timestamp**: 2026-09-30T18:04:54Z
-- **last_commit**: 965b690d28f6e58427a433bbc9aee0b1ad29cc31
+- **last_run_timestamp**: 2026-09-30T18:05:47Z
+- **last_commit**: 08a5ce1094c90bbf06237f4fc0dd0eba98f28825
 - **current_wave**: Wave 4 (Provenance & Verified P0 Slices)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_AND_RECONCILED
@@ -107,9 +107,9 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `965b690d28` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `08a5ce1094` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `965b690d28` | benchmark: 198.31 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `965b690d28` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `08a5ce1094` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `965b690d28` | benchmark: 115.37 µs |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `965b690d28` | benchmark: 75.416 ns |
 | `quic_benchmarks.json` | `05-mini-quic` | `cargo bench` | `2d35bd2f97` | collected |
