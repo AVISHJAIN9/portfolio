@@ -1,152 +1,154 @@
 # PORTFOLIO STATE (Single Source of Truth)
 
-## 0. SESSION METADATA
-- **session_no**: 2
-- **last_run_timestamp**: 2026-09-30T22:20:16Z
-- **last_commit**: f12d0624f6904a285038851f6d9257535fff5e62
-- **current_wave**: Wave 4 (Priority Systems Vertical Slices)
+## 0. HEADER
+- **session_no**: 3
+- **last_run_timestamp**: 2026-09-30T22:28:00Z
+- **last_commit**: 663b500f40d7c71e2efd6dcf2b921501d51c7201
+- **current_wave**: Wave 4 (Verified P0 Vertical Slices)
 - **monorepo_root**: `/Users/avishjain/avishjain9-repos/portfolio`
-- **global_status**: AUDITED_AND_REPAIRED
+- **global_status**: AUDITED_AND_RECONCILED
 
 ---
 
-## 1. STRATEGIC CONTEXT & RULES
-- **R1 (Evidence Integrity)**: Zero fabricated numbers. Every reported benchmark is backed by raw JSON under `benchmarks/results/` or Criterion runs.
-- **R2 (Honesty Gate)**: Stubs, `todo!()`, or unverified code are never marked `Verified` or `Implemented`.
+## 1. ENVIRONMENT & GOVERNANCE RULES
+- **Operating System**: macOS (Apple Silicon ARM64)
+- **R1 (Evidence Integrity)**: Zero fabricated numbers. Every reported benchmark is backed by real raw JSON or Criterion output under `benchmarks/results/`.
+- **R2 (Honesty Gate)**: Stubs, `todo!()`, or unverified capabilities are never marked `Verified`. Downgrades are recorded immediately.
 - **R3 (Zero Drift)**: Shared primitives are unified in `platform/rust/crates` and vendored on project export.
-- **R6 (Offline First)**: Zero external cloud or API dependencies required for build, testing, simulation, and benchmark verification.
+- **R6 (Offline First)**: Zero external cloud or API dependencies required for build, test, simulation, and benchmark verification.
 
 ---
 
-## 2. MONOREPO AUDIT SUMMARY (PART A AUDIT RESULTS)
+## 2. PROJECT REGISTRY (20 PROJECTS)
 
-| Slot | Project Slug | Total Specs | Dashboard Total | Parsed Total | P0 Features | P1 Features | Status |
-|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
-| 01 | `01-rollback-netcode-server` | 90 | 90 | 90 | 60 | 24 | AUDITED_VERIFIED |
-| 02 | `02-hnsw-filtered-vector-index` | 152 | 152 | 152 | 67 | 79 | AUDITED_VERIFIED |
-| 03 | `03-bytecode-vm-gc` | 141 | 141 | 141 | 37 | 49 | AUDITED |
-| 04 | `04-columnar-query-engine` | 145 | 145 | 145 | 45 | 63 | AUDITED_VERIFIED |
-| 05 | `05-mini-quic` | 17 | 17 | 17 | 8 | 8 | AUDITED_VERIFIED |
-| 06 | `06-lsm-kv-engine` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 07 | `07-stream-detect-engine` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 08 | `08-pubsub-broker` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 09 | `09-distributed-cache` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 10 | `10-crdt-rich-text-editor` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 11 | `11-zanzibar-authz` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 12 | `12-ll-hls-origin` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 13 | `13-ledger-engine` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 14 | `14-tracing-backend` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 15 | `15-llm-inference-scheduler` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 16 | `16-rate-limit-gateway` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 17 | `17-cdn-caching-proxy` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 18 | `18-flash-sale-inventory` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 19 | `19-usage-billing-engine` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| 20 | `20-notification-delivery-platform` | 17 | 17 | 17 | 8 | 8 | AUDITED |
-| **TOTAL** | **20 Projects** | **800** | **800** | **800** | **386** | **365** | **100% GREEN** |
-
----
-
-## 3. WAVE 4 VERTICAL SLICES STATUS (PRIORITY WORKSTREAMS)
-
-### 1. `05-mini-quic` (Wire, Handshake, Loss Recovery, Congestion Control)
-- **Status**: **VERIFIED (P0 Complete)**
-- **Modules**:
-  - `src/wire/codec.rs`: Zero-copy variable-length integer parsing, Long/Short packet framing, hardware CRC32 checksum.
-  - `src/crypto/`: Initial secret derivation, 0-RTT session cache, Blake3 MAC verification.
-  - `src/recovery/`: RFC 9002 smoothed RTT & RTTVar estimator, 3-packet threshold loss detection, slow-start/congestion-avoidance window scaling.
-  - `src/stream/`: Stream reassembly buffer, flow control budgeting.
-  - `src/connection.rs`: Full 4-state connection lifecycle state machine.
-- **Verification Evidence**:
-  - `tests/fuzz_quic_packets.rs`: **10,000 randomized datagram fuzz iterations with 0 panics / 0 crashes**.
-  - `tests/packet_codec_tests.rs`: Roundtrip packet serialization and corruption rejection.
-  - `tests/recovery_tests.rs`: RTT convergence and congestion window growth.
-  - `benches/quic_bench.rs`: **173.06 ns encode** (5.78M pkts/s), **78.98 ns decode** (12.66M pkts/s).
-
-### 2. `04-columnar-query-engine` (Storage, Vectorized Exec, ZoneMap Pushdown, S3-FIFO Cache)
-- **Status**: **VERIFIED (P0 Complete)**
-- **Modules**:
-  - `src/storage/chunk.rs`: Arrow-compatible `ColumnChunk` (Int64, Float64, Utf8, Boolean) with `ZoneMap` min/max stats.
-  - `src/storage/table.rs`: `RowGroup` horizontal partitioning.
-  - `src/execution/vector.rs`: `SelectionVector`, `VectorizedExecutor` (Gt, Lt, Eq, StrEq).
-  - `src/execution/aggregate.rs`: `VectorAggregator` (Sum, Count, Min, Max, Avg, GroupBy).
-  - `src/optimizer/plan.rs`: `PhysicalEngine` with automatic ZoneMap skipping.
-  - `src/cache/query_cache.rs`: `QueryResultCache` backed by `pf-cache::S3FifoCache`.
-- **Verification Evidence**:
-  - `tests/vectorized_exec_tests.rs`: Vectorized sum/filter aggregation verified.
-  - `tests/zonemap_pruning_tests.rs`: ZoneMap rowgroup pruning verified (100% skipped on non-matching bounds).
-  - `tests/query_cache_tests.rs`: S3-FIFO cache hit, eviction, and deduplication verified.
-  - `benches/columnar_bench.rs`: **116.28 µs filter scan on 100,000 rows** (>860,000,000 rows/s).
-
-### 3. `02-hnsw-filtered-vector-index` (Multi-Layer Proximity Graph, SIMD Distance, Filtered Search)
-- **Status**: **VERIFIED (P0 Complete)**
-- **Modules**:
-  - `src/simd/distance.rs`: L2 squared, Cosine similarity, and Dot product powered by `pf-vector-kit`.
-  - `src/quantization/scalar.rs`: SQ8 8-bit scalar quantization with min/max calibration.
-  - `src/storage/wal.rs`: Binary write-ahead log for index vector and metadata mutations.
-  - `src/filter/planner.rs`: Adaptive filter routing (`BruteForce`, `InGraphFiltered`, `PostFilter`).
-  - `src/index/hnsw.rs`: Multi-layer proximity graph with bidirectional neighbor pruning and beam search.
-- **Verification Evidence**:
-  - `tests/hnsw_tests.rs`: Insertion, top-k recall, RoaringBitmap filtered search, SQ8 error bounds (<2%), WAL replay.
-  - `benches/hnsw_bench.rs`: **36.99 µs top-10 search on 1,000 32-dimensional vectors** (27,034 QPS).
-
-### 4. `01-rollback-netcode-server` (Re-Audited)
-- **Status**: **VERIFIED**
-- **Modules**: Fixed-point simulation, authoritative snapshot restore, RingBuffer input queue, AES-GCM + CRC32 protocol framing.
-- **Verification Evidence**: `tests/protocol_tests.rs`, `tests/simulation_determinism_test.rs`, `tests/golden_test.rs` all passing cleanly.
+| Slot | Project Slug | Total Specs | Verified P0 | Total Verified | GitHub Repository URL | Status |
+|:---:|:---|:---:|:---:|:---:|:---|:---:|
+| 01 | `01-rollback-netcode-server` | 90 | 11 | 18 | `https://github.com/AVISHJAIN9/01-rollback-netcode-server` | AUDITED_VERIFIED |
+| 02 | `02-hnsw-filtered-vector-index` | 152 | 5 | 5 | `https://github.com/AVISHJAIN9/02-hnsw-filtered-vector-index` | AUDITED_VERIFIED |
+| 03 | `03-bytecode-vm-gc` | 141 | 0 | 0 | `https://github.com/AVISHJAIN9/03-bytecode-vm-gc` | SPECIFIED |
+| 04 | `04-columnar-query-engine` | 145 | 4 | 4 | `https://github.com/AVISHJAIN9/04-columnar-query-engine` | AUDITED_VERIFIED |
+| 05 | `05-mini-quic` | 17 | 4 | 4 | `https://github.com/AVISHJAIN9/05-mini-quic` | AUDITED_VERIFIED |
+| 06 | `06-lsm-kv-engine` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/06-lsm-kv-engine` | SPECIFIED |
+| 07 | `07-stream-detect-engine` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/07-stream-detect-engine` | SPECIFIED |
+| 08 | `08-pubsub-broker` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/08-pubsub-broker` | SPECIFIED |
+| 09 | `09-distributed-cache` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/09-distributed-cache` | SPECIFIED |
+| 10 | `10-crdt-rich-text-editor` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/10-crdt-rich-text-editor` | SPECIFIED |
+| 11 | `11-zanzibar-authz` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/11-zanzibar-authz` | SPECIFIED |
+| 12 | `12-ll-hls-origin` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/12-ll-hls-origin` | SPECIFIED |
+| 13 | `13-ledger-engine` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/13-ledger-engine` | SPECIFIED |
+| 14 | `14-tracing-backend` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/14-tracing-backend` | SPECIFIED |
+| 15 | `15-llm-inference-scheduler` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/15-llm-inference-scheduler` | SPECIFIED |
+| 16 | `16-rate-limit-gateway` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/16-rate-limit-gateway` | SPECIFIED |
+| 17 | `17-cdn-caching-proxy` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/17-cdn-caching-proxy` | SPECIFIED |
+| 18 | `18-flash-sale-inventory` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/18-flash-sale-inventory` | SPECIFIED |
+| 19 | `19-usage-billing-engine` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/19-usage-billing-engine` | SPECIFIED |
+| 20 | `20-notification-delivery-platform` | 17 | 0 | 0 | `https://github.com/AVISHJAIN9/20-notification-delivery-platform` | SPECIFIED |
 
 ---
 
-## 4. MEASURED QUALITY & TEST COVERAGE METRICS
+## 3. PLATFORM INVENTORY (19 CRATES)
 
-| Project | Implemented Features | Verified P0 | Passing Tests | Fuzz Tests Passed | Criterion Latency / Throughput |
-|:---|:---:|:---:|:---:|:---:|:---|
-| `platform/rust` (18 crates) | All 18 crates | 18/18 | 34 / 34 | N/A | Sub-nanosecond primitives |
-| `01-rollback-netcode-server` | 60 | 60 | 18 / 18 | 10,000 packets | 23.4 ns decode / 8.2 ns step |
-| `02-hnsw-filtered-vector-index` | 67 | 67 | 4 / 4 | Verified | 36.99 µs top-10 search (27k QPS) |
-| `04-columnar-query-engine` | 45 | 45 | 3 / 3 | Verified | 116.28 µs per 100k rows (860M rows/s) |
-| `05-mini-quic` | 8 | 8 | 5 / 5 | 10,000 packets | 78.98 ns decode (12.66M pkts/s) |
+| Crate Name | Path | Purpose | Test Status | Fuzz/Loom/Bench Status |
+|:---|:---|:---|:---:|:---:|
+| `pf-bytes` | `platform/rust/crates/pf-bytes` | QuicVarInt & zero-copy buffer framing | PASS (1/1) | Zero allocation verified |
+| `pf-checksum` | `platform/rust/crates/pf-checksum` | SIMD CRC32 & Blake3/XXHash kernels | PASS (2/2) | Sub-nanosecond |
+| `pf-collections` | `platform/rust/crates/pf-collections` | BloomFilter & zero-alloc RingBuffer | PASS (2/2) | Tested |
+| `pf-cache` | `platform/rust/crates/pf-cache` | S3-FIFO cache with Ghost queue eviction | PASS (2/2) | Tested |
+| `pf-sync` | `platform/rust/crates/pf-sync` | Lockless atomic ring queue & barriers | PASS (2/2) | Tested |
+| `pf-time` | `platform/rust/crates/pf-time` | Monotonic clock & simulation timestamps | PASS (2/2) | Tested |
+| `pf-sim` | `platform/rust/crates/pf-sim` | Deterministic network simulator (loss/reorder) | PASS (2/2) | Seeded determinism |
+| `pf-wal` | `platform/rust/crates/pf-wal` | Append-only write ahead log with CRC | PASS (2/2) | Replay verified |
+| `pf-storage-kit` | `platform/rust/crates/pf-storage-kit` | Block storage & chunk management | PASS (2/2) | Tested |
+| `pf-net` | `platform/rust/crates/pf-net` | UDP socket abstractions | PASS (2/2) | Tested |
+| `pf-crypto` | `platform/rust/crates/pf-crypto` | RFC 5869 / RFC 9001 HKDF & Blake3 MAC | PASS (3/3) | RFC test vectors |
+| `pf-ratelimit` | `platform/rust/crates/pf-ratelimit` | Lockless token bucket rate limiter | PASS (2/2) | Tested |
+| `pf-hashring` | `platform/rust/crates/pf-hashring` | Consistent hashing ring with vnodes | PASS (2/2) | Tested |
+| `pf-metrics` | `platform/rust/crates/pf-metrics` | HDR Histogram & latency trackers | PASS (2/2) | Tested |
+| `pf-http` | `platform/rust/crates/pf-http` | Unified Axum/Tower HTTP middleware | PASS (2/2) | Tested |
+| `pf-vector-kit` | `platform/rust/crates/pf-vector-kit` | SIMD L2 squared, Cosine, DotProduct | PASS (1/1) | Auto-vectorized |
+| `pf-testkit` | `platform/rust/crates/pf-testkit` | Chaos testing & property generators | PASS (2/2) | Tested |
+| `pf-config` | `platform/rust/crates/pf-config` | Zero-dependency environment loader | PASS (1/1) | Tested |
+| `pf-errors` | `platform/rust/crates/pf-errors` | Shared error taxonomy & HTTP status codes | PASS (1/1) | Tested |
 
 ---
 
-## 5. COMMIT RECONCILIATION & EVIDENCE TRACEABILITY
+## 4. PROJECT PROGRESS & QUALITY METRICS
 
-| Commit SHA | Component | Benchmark / Test Result File | Verification Status |
-|:---|:---|:---|:---:|
-| `2d35bd2f97` | Platform Crates & Ingest Engine | `platform/rust/Cargo.toml` | VERIFIED |
-| `f12d0624f6` | 05 Mini-QUIC Core Engine | `projects/05-mini-quic/benchmarks/results/quic_benchmarks.json` | VERIFIED |
-| `f12d0624f6` | 04 Columnar Query Engine | `projects/04-columnar-query-engine/benchmarks/results/columnar_benchmarks.json` | VERIFIED |
-| `f12d0624f6` | 02 HNSW Filtered Vector Index | `projects/02-hnsw-filtered-vector-index/benchmarks/results/hnsw_benchmarks.json` | VERIFIED |
+| Project | Total Specs | Verified | Implemented | Scaffolded | Passing Tests | Fuzz Tests Passed | Criterion Latency / Throughput | Coverage |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---|:---:|
+| `01-rollback-netcode-server` | 90 | 18 | 42 | 30 | 18 / 18 | 10,000 packets | 23.4 ns decode / 8.2 ns step | Not yet measured |
+| `02-hnsw-filtered-vector-index` | 152 | 5 | 10 | 137 | 4 / 4 | Verified | 183.79 µs search (72.8% Recall@10) | Not yet measured |
+| `03-bytecode-vm-gc` | 141 | 0 | 0 | 141 | 0 / 0 | N/A | Not yet measured | Not yet measured |
+| `04-columnar-query-engine` | 145 | 4 | 8 | 133 | 3 / 3 | Verified | 116.28 µs / 100k rows (860M rows/s) | Not yet measured |
+| `05-mini-quic` | 17 | 4 | 2 | 11 | 5 / 5 | 10,000 packets | 173.06 ns enc / 78.98 ns dec | Not yet measured |
+| `06-20` (15 Projects) | 255 | 0 | 0 | 255 | 0 / 0 | N/A | Specified in workbooks | Not yet measured |
 
 ---
 
-## 9. MONOREPO DEDUPE & CHEAT-DETECTION AUDIT REPORT
+## 5. MEASURED BENCHMARK RESULTS & EVIDENCE TRACEABILITY
 
-### Monorepo Code Deduplication (`tools/dedupe_scan.py`)
-- **Scan Scope**: All 20 project trees + `platform/` core libraries (window: 30 identical lines).
-- **Result**: **0 cross-project code duplications detected**. Monorepo conforms to 100% DRY architecture.
+| Commit SHA | Component | Benchmark Name | Workload / Dataset | Metric | Value | Result File |
+|:---|:---|:---|:---|:---|:---|:---|
+| `663b500` | `01-rollback` | Step Simulation | 2-player rollback step | Latency | **8.20 ns** | `docs/evidence/G2_ACCEPTANCE.md` |
+| `663b500` | `01-rollback` | Packet Decoder | Binary input frame | Latency | **23.40 ns** | `docs/evidence/G1_ACCEPTANCE.md` |
+| `663b500` | `01-rollback` | Anomaly Detector | Synthetic kinematics (10% cheat) | FPR / Prec | **1.33% FPR / 83.56% Prec** | `aiml/MODEL_CARD.md` |
+| `663b500` | `02-hnsw` | Recall & Search | 10,000 128-dim vectors (ef=64) | Recall@10 / Lat | **72.80% Recall / 183.79 µs** | `benchmarks/results/hnsw_benchmarks.json` |
+| `663b500` | `04-columnar` | Vectorized Filter | 100,000 Int64 rows (sel=0.50) | Throughput | **860,000,000 rows/s** | `benchmarks/results/columnar_benchmarks.json` |
+| `663b500` | `05-mini-quic` | Packet Decode | Short 1-RTT stream frame | Latency | **78.98 ns (12.66M pkts/s)** | `benchmarks/results/quic_benchmarks.json` |
+| `663b500` | `05-mini-quic` | Packet Encode | Initial packet + CRC32 | Latency | **173.06 ns (5.78M pkts/s)** | `benchmarks/results/quic_benchmarks.json` |
 
-### Cheat Detection ML Evaluation Reconciliation
-- **Investigation Finding**: Isolation Forest achieved an apparent ROC-AUC of 1.0000 with F1 0.6899 and FPR 9.02% due to severe class imbalance (1.2% anomalies) and synthetic macro-injection separability.
-- **Model Governance**: Documented in `projects/01-rollback-netcode-server/docs/evidence/SUSPECT_RESULTS.md`. Model operates solely in an advisory, non-authoritative triage queue; rollback simulation determinism remains 100% rule-based and fixed-point.
+---
+
+## 6. ARCHITECTURAL DECISIONS SUMMARY
+- **ADR-001 - ADR-010**: Documented in `docs/DECISIONS.md`.
+- **ADR-011**: Variable-Length Connection ID & CRC32 Framing for Mini-QUIC.
+- **ADR-012**: RFC 9002 Loss Recovery and Congestion Window State Machine.
+- **ADR-013**: ZoneMap Pruning and SelectionVector in Columnar Engine.
+- **ADR-014**: S3-FIFO Algorithm for Query Result Caching.
+- **ADR-015**: Layered Graph Navigation with RoaringBitmap Filtering in HNSW.
+- **ADR-016**: RFC 5869 & RFC 9001 HKDF Key Derivation in `pf-crypto`.
+
+---
+
+## 7. GAPS & AUDIT FINDINGS
+
+### Independent Ingest Parity Table
+| Slot | Filename | Dashboard Total | Non-empty Spec Rows | features.jsonl Count | Status |
+|:---:|:---|:---:|:---:|:---:|:---:|
+| 01 | `01_rollback-netcode-server.xlsx` | 90 | 90 | 90 | MATCH |
+| 02 | `02_hnsw-filtered-vector-index.xlsx` | 152 | 152 | 152 | MATCH |
+| 03 | `03_bytecode-vm-gc.xlsx` | 141 | 141 | 141 | MATCH |
+| 04 | `04_columnar-query-engine.xlsx` | 145 | 145 | 145 | MATCH |
+| 05-20 | `05_mini-quic.xlsx` .. `20_*.xlsx` | 17 each | 17 each | 17 each | MATCH |
+
+---
+
+## 8. MANUAL TASKS
+- *None currently blocked.* All tests, simulation harnesses, and benchmarks run offline without GPU or external credentials.
+
+---
+
+## 9. REUSE & MONOREPO CONFORMANCE
+- **Code Deduplication Scan**: 0 cross-project code duplications (>30 lines) detected.
+- **Platform Primitive Conformance**: 0 private reimplementations. Full reuse of `pf-bytes`, `pf-checksum`, `pf-crypto`, `pf-collections`, `pf-cache`, and `pf-vector-kit`.
 
 ---
 
 ## 10. NEXT WAVE ACTION PLAN
-- **Immediate Next**: Wave 4 Batch 2 (P0 implementations for remaining caching and distributed systems engines):
-  1. `09-distributed-cache`: Consistent hash ring (`pf-hashring`), S3-FIFO cache (`pf-cache`), and Raft consensus.
-  2. `17-cdn-caching-proxy`: Range request slicing, token bucket rate limiting (`pf-ratelimit`), and edge TTL eviction.
-  3. `06-lsm-kv-engine`: MemTable skip-list, Write-Ahead Log (`pf-wal`), SSTable compaction, and Bloom filtering (`pf-collections`).
+1. **05-mini-quic**: Complete packet number encryption, stream state machine, NewReno congestion control, and deterministic `pf-sim` network loss transfer test (0/5/20% loss).
+2. **04-columnar-query-engine**: Implement Rayon-parallel execution and Parquet-like chunk persistence.
+3. **02-hnsw-filtered-vector-index**: Tune ef_search / ef_construction to achieve >90% recall@10 on 128-dim vectors.
 
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `f12d0624f6904a285038851f6d9257535fff5e62`.
-2. Resume from `09-distributed-cache` (P0 wire protocol and hash ring partitioning) and `17-cdn-caching-proxy` (P0 edge reverse proxy).
-3. Validate acceptance criteria against raw Criterion benchmarks and ensure zero stubs (`todo!()`/`unimplemented!()`).
+1. Pull latest workspace state: commit `663b500f40d7c71e2efd6dcf2b921501d51c7201`.
+2. Resume from `05-mini-quic` network simulator integration test (`tests/sim_loss_tests.rs`).
+3. Maintain honest status tracking in `evidence/feature_evidence.csv` and `spec/features.jsonl`.
 
 ---
 
 ## PROMPTS_I_NEED
-1. Deep-dive into `05-mini-quic` P1 Congestion Control (BBR state machine vs Cubic pacing simulation harness under varying packet loss 0-20%).
-2. SIMD AVX-512 / ARM NEON intrinsic optimization for `02-hnsw-filtered-vector-index` 128-dim embeddings.
-3. Multi-threaded vectorized hash-join engine for `04-columnar-query-engine`.
+1. BBR vs Cubic pacing simulation test harness for `05-mini-quic` under bursty loss.
+2. Vectorized SIMD chunk aggregation & hash-join engine for `04-columnar-query-engine`.
+3. Auto-tuned HNSW heuristic neighbor pruning for >95% recall@10 on 128-dim embeddings.
