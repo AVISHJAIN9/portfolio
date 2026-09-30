@@ -1,25 +1,22 @@
 # Model Card: Rollback Anti-Cheat Anomaly Detector (Tier A)
 
+## Results Summary
+**Result: Isolation Forest matches baseline on precision at 1% FPR with lower recall under synthetic noise.**
+*Note: All training and evaluation data is synthetic (`generate_realistic_telemetry`, seed=42) and reflects the distribution assumptions of the generator.*
+
 ## Model Overview
-- **Architecture**: Unsupervised Multi-Tree Isolation Forest (`sklearn.ensemble.IsolationForest`)
-- **Version**: 1.2.0-reconciled
-- **Input Dimensions**: 5 physical features (mouse dx variance, dy variance, angular velocity deg/s, motion entropy, reaction time ms)
-- **Role**: Non-authoritative advisory triage queue for suspicious player sessions.
-- **Safety Policy**: Does NOT disconnect players or alter game state. Flags replay sessions for human referee inspection.
+- **Architecture**: Unsupervised Isolation Forest (`sklearn.ensemble.IsolationForest`, n_estimators=100)
+- **Role**: Non-authoritative advisory triage queue for suspected player sessions.
+- **Safety**: Purely diagnostic; does not disconnect clients or mutate authoritative state.
 
-## Performance & Baseline Comparison (Holdout Test Set N=2000, 10% Anomaly Rate)
+## Matched Operating Point Evaluation (Holdout Test Set N=2000, 10% Cheat Ratio)
 
-| Metric | Non-ML Z-Score Baseline | Isolation Forest (Tier A) | Delta / Assessment |
-|---|---|---|---|
-| **ROC-AUC** | 0.9526 | **0.9420** | Non-trivial separation (< 1.0) |
-| **PR-AUC** | 0.8182 | **0.7753** | Precision-Recall curve under class imbalance |
-| **Precision** | 0.7857 | **0.8356** | **+4.99% higher precision** (fewer false bans) |
-| **Recall** | 0.7150 | **0.6100** | High-confidence anomaly filtering |
-| **F1-Score** | 0.7487 | **0.7052** | Tuned for minimal false accusations |
-| **False Positive Rate (FPR)** | 2.17% | **1.33%** | **38.7% lower false positive rate** |
-| **Inference Latency** | 0.0005 ms/sample | **0.0038 ms/sample** | 260,000 samples/sec per CPU core |
-
-## Training & Validation Methodology
-- **Dataset Generation**: Synthetic mouse kinematics with realistic overlapping Gaussian noise across human and automated aimbot/triggerbot profiles (`seed=42`).
-- **Data Splitting**: Stratified 60% Train (N=6000), 20% Validation (N=2000), 20% Test (N=2000).
-- **Threshold Selection**: Anomaly score threshold chosen strictly on the validation set to optimize F1 while constraining FPR < 1.5%.
+| Metric | Non-ML Z-Score Baseline | Isolation Forest (Tier A) |
+|---|---|---|
+| **ROC-AUC** | 0.9526 | **0.9420** |
+| **PR-AUC** | 0.8182 | **0.7753** |
+| **Recall @ FPR = 1.0%** | 59.00% (FPR: 0.89%) | **50.00% (FPR: 0.61%)** |
+| **Precision @ FPR = 1.0%** | 88.06% | **90.09%** |
+| **Recall @ FPR = 2.0%** | 66.00% (FPR: 1.50%) | **61.00% (FPR: 1.72%)** |
+| **Precision @ FPR = 2.0%** | 83.02% | **79.74%** |
+| **F1-Score (FPR=2%)** | 0.7354 | **0.6912** |

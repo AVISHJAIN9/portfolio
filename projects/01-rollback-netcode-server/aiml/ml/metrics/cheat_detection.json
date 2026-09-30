@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-09-30T23:34:35Z",
+  "dataset": {
+    "type": "synthetic_overlapping_kinematics",
+    "samples": 10000,
+    "train": 6000,
+    "val": 2000,
+    "test": 2000,
+    "cheat_ratio": 0.1,
+    "seed": 42
+  },
+  "baseline_zscore": {
+    "roc_auc": 0.9526444444444444,
+    "pr_auc": 0.8181662625649491,
+    "operating_point_fpr_1pct": {
+      "precision": 0.8805970149253731,
+      "recall": 0.59,
+      "f1": 0.7065868263473054,
+      "fpr": 0.008888888888888889
+    },
+    "operating_point_fpr_2pct": {
+      "precision": 0.8301886792452831,
+      "recall": 0.66,
+      "f1": 0.7353760445682451,
+      "fpr": 0.015
+    }
+  },
+  "isolation_forest": {
+    "roc_auc": 0.9420472222222221,
+    "pr_auc": 0.7753271153234829,
+    "train_time_ms": 80.9030532836914,
+    "operating_point_fpr_1pct": {
+      "precision": 0.9009009009009009,
+      "recall": 0.5,
+      "f1": 0.6430868167202572,
+      "fpr": 0.006111111111111111
+    },
+    "operating_point_fpr_2pct": {
+      "precision": 0.7973856209150327,
+      "recall": 0.61,
+      "f1": 0.6912181303116147,
+      "fpr": 0.017222222222222222
+    }
+  }
+}

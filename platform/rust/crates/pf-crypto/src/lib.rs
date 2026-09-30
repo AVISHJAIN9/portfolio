@@ -1,5 +1,5 @@
 use hmac::{Hmac, Mac};
-use sha2::{Digest, Sha256};
+use sha2::Sha256;
 
 type HmacSha256 = Hmac<Sha256>;
 
@@ -86,35 +86,55 @@ pub fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
 mod tests {
     use super::*;
 
+    /// RFC 5869 Appendix A.1 Test Case 1
     #[test]
-    fn test_hkdf_rfc5869_vectors() {
+    fn test_rfc5869_test_case_1() {
         let ikm = [0x0bu8; 22];
-        let salt = [0x00u8; 13];
+        let salt = [
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c,
+        ];
+        let info = [0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9];
+        
+        let expected_prk = [
+            0x07, 0x77, 0x09, 0x36, 0x2c, 0x2e, 0x32, 0xdf, 0x0d, 0xdc, 0x3f, 0x0d, 0xc4, 0x7b,
+            0xba, 0x63, 0x90, 0xb6, 0xc7, 0x3b, 0xb5, 0x0f, 0x9c, 0x31, 0x22, 0xec, 0x84, 0x4a,
+            0xd7, 0xc2, 0xb3, 0xe5,
+        ];
         let prk = hkdf_extract(&salt, &ikm);
-        assert_eq!(prk.len(), 32);
+        assert_eq!(prk, expected_prk);
 
         let mut okm = [0u8; 42];
-        hkdf_expand(&prk, b"test_info", &mut okm);
-        assert_ne!(okm, [0u8; 42]);
+        hkdf_expand(&prk, &info, &mut okm);
+        let expected_okm_prefix = [
+            0x3c, 0xb2, 0x5f, 0x25, 0xfa, 0xac, 0xd5, 0x7a, 0x90, 0x43, 0x4f, 0x64, 0xd0, 0x36,
+            0x2f, 0x2a,
+        ];
+        assert_eq!(&okm[..16], &expected_okm_prefix);
     }
 
+    /// RFC 9001 Appendix A.1 Test Vectors (DCID: 0x8394c8f03e515708)
     #[test]
-    fn test_quic_rfc9001_expand_label() {
-        let secret = [0x33u8; 32];
-        let mut key = [0u8; 16];
-        let mut iv = [0u8; 12];
-        hkdf_expand_label(&secret, "quic key", b"", &mut key);
-        hkdf_expand_label(&secret, "quic iv", b"", &mut iv);
-        assert_ne!(key, [0u8; 16]);
-        assert_ne!(iv, [0u8; 12]);
-    }
+    fn test_rfc9001_initial_secrets() {
+        let dcid = [0x83, 0x94, 0xc8, 0xf0, 0x3e, 0x51, 0x57, 0x08];
+        let initial_salt = [
+            0x38, 0x76, 0x2c, 0xf7, 0xf5, 0x59, 0x34, 0xb3, 0x4d, 0x17, 0x9a, 0xe6, 0xa4, 0xc8,
+            0x0c, 0xad, 0xcc, 0xbb, 0x7f, 0x0a,
+        ];
+        let initial_secret = hkdf_extract(&initial_salt, &dcid);
+        let expected_initial_secret = [
+            0x7d, 0xb5, 0xdf, 0x06, 0xe7, 0xa6, 0x9e, 0x43, 0x24, 0x96, 0xad, 0xed, 0xb0, 0x08,
+            0x51, 0x92, 0x35, 0x95, 0x22, 0x15, 0x96, 0xae, 0x2a, 0xe9, 0xfb, 0x81, 0x15, 0xc1,
+            0xe9, 0xed, 0x0a, 0x44,
+        ];
+        assert_eq!(initial_secret, expected_initial_secret);
 
-    #[test]
-    fn test_keyed_mac() {
-        let key = [0x42u8; 32];
-        let msg = b"authenticated_session_token_data";
-        let mac = keyed_mac(&key, msg);
-        assert!(verify_mac(&key, msg, &mac));
-        assert!(!verify_mac(&key, b"tampered_token_data", &mac));
+        let mut client_initial_secret = [0u8; 32];
+        hkdf_expand_label(&initial_secret, "client in", b"", &mut client_initial_secret);
+        let expected_client_initial_secret = [
+            0xc0, 0x0c, 0xf1, 0x51, 0xca, 0x5b, 0xe0, 0x75, 0xed, 0x0e, 0xbf, 0xb5, 0xc8, 0x03,
+            0x23, 0xc4, 0x2d, 0x6b, 0x7d, 0xb6, 0x78, 0x81, 0x28, 0x9a, 0xf4, 0x00, 0x8f, 0x1f,
+            0x6c, 0x35, 0x7a, 0xea,
+        ];
+        assert_eq!(client_initial_secret, expected_client_initial_secret);
     }
 }

@@ -1,4 +1,5 @@
 //! Hierarchical Navigable Small World (HNSW) Proximity Graph
+//! Implements Malkov & Yashunin (2018) Algorithm 4 with Heuristic Neighbor Selection.
 
 use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::cmp::Ordering;
@@ -12,9 +13,9 @@ pub type LayerAdjacency = Vec<HashMap<u64, Vec<u64>>>;
 pub type VectorStore = HashMap<u64, Vec<f32>>;
 
 #[derive(Debug, Clone)]
-struct Candidate {
-    id: u64,
-    distance: f32,
+pub struct Candidate {
+    pub id: u64,
+    pub distance: f32,
 }
 
 impl PartialEq for Candidate {
@@ -101,6 +102,45 @@ impl HnswIndex {
         (-r.ln() * self.m_l).floor() as usize
     }
 
+    /// Algorithm 4: Heuristic Neighbor Selection for graph diversity
+    fn select_neighbors_heuristic(
+        candidates: &[Candidate],
+        max_neighbors: usize,
+        vectors: &HashMap<u64, Vec<f32>>,
+        metric: Metric,
+    ) -> Vec<u64> {
+        let mut selected = Vec::with_capacity(max_neighbors);
+        for cand in candidates {
+            if selected.len() >= max_neighbors {
+                break;
+            }
+            let cand_vec = &vectors[&cand.id];
+            let mut keep = true;
+            for &sel_id in &selected {
+                let sel_vec = &vectors[&sel_id];
+                let dist_to_selected = compute_distance(cand_vec, sel_vec, metric);
+                if dist_to_selected < cand.distance {
+                    keep = false;
+                    break;
+                }
+            }
+            if keep {
+                selected.push(cand.id);
+            }
+        }
+        if selected.len() < max_neighbors {
+            for cand in candidates {
+                if !selected.contains(&cand.id) {
+                    selected.push(cand.id);
+                    if selected.len() >= max_neighbors {
+                        break;
+                    }
+                }
+            }
+        }
+        selected
+    }
+
     pub fn insert(&self, id: u64, vector: &[f32]) -> Result<(), &'static str> {
         if vector.len() != self.dimension {
             return Err("Vector dimension mismatch");
@@ -150,14 +190,13 @@ impl HnswIndex {
         }
 
         // 2. Search layer and connect neighbors from min(curr_max_level, node_level) down to 0
-        let mut ep_candidates = vec![curr_ep];
         let top_connect = std::cmp::min(curr_max_level, node_level);
         for l in (0..=top_connect).rev() {
             let max_conn = if l == 0 { self.m0 } else { self.m };
-            let candidates = self.search_layer_internal(vector, &ep_candidates, self.ef_construction, l, &layers, &vectors);
+            let candidates = self.search_layer_internal(vector, &[curr_ep], self.ef_construction, l, &layers, &vectors);
             
-            // Select up to max_conn neighbors
-            let selected_neighbors: Vec<u64> = candidates.iter().take(max_conn).map(|c| c.id).collect();
+            // Heuristic selection
+            let selected_neighbors = Self::select_neighbors_heuristic(&candidates, max_conn, &vectors, self.metric);
             layers[l].insert(id, selected_neighbors.clone());
 
             // Connect neighbors bidirectionally
@@ -166,18 +205,19 @@ impl HnswIndex {
                 if !neighbors_entry.contains(&id) {
                     neighbors_entry.push(id);
                     if neighbors_entry.len() > max_conn {
-                        // Prune neighbor with worst distance
                         let n_vec = &vectors[&neighbor];
-                        let mut distances: Vec<(u64, f32)> = neighbors_entry.iter()
-                            .map(|&n_id| (n_id, compute_distance(n_vec, &vectors[&n_id], self.metric)))
+                        let mut neighbor_candidates: Vec<Candidate> = neighbors_entry.iter()
+                            .map(|&n_id| Candidate { id: n_id, distance: compute_distance(n_vec, &vectors[&n_id], self.metric) })
                             .collect();
-                        distances.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(Ordering::Equal));
-                        *neighbors_entry = distances.iter().take(max_conn).map(|d| d.0).collect();
+                        neighbor_candidates.sort_by(|a, b| a.distance.partial_cmp(&b.distance).unwrap_or(Ordering::Equal));
+                        *neighbors_entry = Self::select_neighbors_heuristic(&neighbor_candidates, max_conn, &vectors, self.metric);
                     }
                 }
             }
 
-            ep_candidates = candidates.iter().map(|c| c.id).collect();
+            if !candidates.is_empty() {
+                curr_ep = candidates[0].id;
+            }
         }
 
         if node_level > curr_max_level {

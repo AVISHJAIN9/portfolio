@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-09-30T18:03:10.399169+00:00",
+  "project": "04-columnar-query-engine",
+  "command": "cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new",
+  "commit": "965b690d28f6e58427a433bbc9aee0b1ad29cc31",
+  "hardware": "Darwin arm64 (arm)",
+  "measurements": {
+    "benchmark": {
+      "mean": 115.37,
+      "unit": "\u00b5s",
+      "min": 111.93,
+      "max": 121.2
+    }
+  },
+  "rows": 100000,
+  "column_types": [
+    "Int64"
+  ],
+  "selectivity": 0.5,
+  "threads": 1
+}
