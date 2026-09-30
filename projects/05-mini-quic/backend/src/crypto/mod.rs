@@ -1,9 +1,15 @@
-//! QUIC Cryptographic Key Management and 0-RTT Session Resumption
+//! QUIC Cryptographic Key Management & RFC 9001 Key Derivation
 
-use pf_crypto::{keyed_mac, verify_mac};
+use pf_crypto::{hkdf_extract, hkdf_expand_label, keyed_mac, verify_mac};
 use std::collections::HashMap;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
+
+/// RFC 9001 QUIC v1 Initial Salt
+pub const QUIC_V1_INITIAL_SALT: [u8; 20] = [
+    0x38, 0x76, 0x2c, 0xf7, 0xf5, 0x59, 0x34, 0xb3, 0x4d, 0x17, 0x9a, 0xe6, 0xa4, 0xc8, 0x0c, 0xad,
+    0xcc, 0xbb, 0x7f, 0x0a,
+];
 
 #[derive(Debug, Clone)]
 pub struct SessionTicket {
@@ -51,33 +57,37 @@ impl SessionCache {
 
 pub struct CryptoContext {
     pub initial_secret: [u8; 32],
-    pub handshake_secret: Option<[u8; 32]>,
+    pub client_initial_secret: [u8; 32],
+    pub server_initial_secret: [u8; 32],
     pub application_secret: Option<[u8; 32]>,
 }
 
 impl CryptoContext {
+    /// Derives Initial Secrets from Destination Connection ID per RFC 9001 Section 5.2
     pub fn new_initial(dcid: &[u8]) -> Self {
-        let salt = b"mini_quic_v1_initial_salt";
-        let mut seed = Vec::with_capacity(salt.len() + dcid.len());
-        seed.extend_from_slice(salt);
-        seed.extend_from_slice(dcid);
+        let initial_secret = hkdf_extract(&QUIC_V1_INITIAL_SALT, dcid);
         
-        let hash = blake3::hash(&seed);
-        let mut initial_secret = [0u8; 32];
-        initial_secret.copy_from_slice(hash.as_bytes());
+        let mut client_initial_secret = [0u8; 32];
+        let mut server_initial_secret = [0u8; 32];
+        
+        hkdf_expand_label(&initial_secret, "client in", b"", &mut client_initial_secret);
+        hkdf_expand_label(&initial_secret, "server in", b"", &mut server_initial_secret);
 
         Self {
             initial_secret,
-            handshake_secret: None,
+            client_initial_secret,
+            server_initial_secret,
             application_secret: None,
         }
     }
 
     pub fn derive_application_keys(&mut self, master_secret: &[u8; 32]) {
-        let app_hash = keyed_mac(master_secret, b"quic_app_traffic_secret");
-        self.application_secret = Some(app_hash);
+        let mut app_secret = [0u8; 32];
+        hkdf_expand_label(master_secret, "quic app", b"", &mut app_secret);
+        self.application_secret = Some(app_secret);
     }
 
+    /// Educational / Diagnostic packet MAC authentication (Blake3 keyed mode)
     pub fn compute_tag(&self, message: &[u8]) -> [u8; 32] {
         let key = self.application_secret.as_ref().unwrap_or(&self.initial_secret);
         keyed_mac(key, message)

@@ -20,6 +20,7 @@ pf-errors = { path = "../../../platform/rust/crates/pf-errors" }
 
 [dev-dependencies]
 criterion = "0.5"
+rand_chacha = "0.3"
 
 [[bench]]
 name = "hnsw_bench"

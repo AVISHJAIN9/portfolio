@@ -1,8 +1,11 @@
 {
-  "timestamp": "2026-09-30T22:16:25Z",
+  "timestamp": "2026-09-30T22:27:10Z",
   "project": "04-columnar-query-engine",
   "benchmark": "columnar_filter_scan_100k_rows",
   "rows": 100000,
+  "column_types": ["Int64"],
+  "selectivity": 0.50,
+  "threads": 1,
   "mean_time_us": 116.28,
   "min_time_us": 115.40,
   "max_time_us": 117.03,
