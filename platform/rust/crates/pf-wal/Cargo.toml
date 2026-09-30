@@ -1,0 +1,11 @@
+[package]
+name = "pf-wal"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+pf-checksum = { path = "../pf-checksum" }
+pf-bytes = { path = "../pf-bytes" }
+pf-errors = { path = "../pf-errors" }
+bytes = { workspace = true }

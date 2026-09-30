@@ -1,0 +1,18 @@
+[package]
+name = "pf-bytes"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+bytes = { workspace = true }
+byteorder = { workspace = true }
+pf-errors = { path = "../pf-errors" }
+
+[dev-dependencies]
+proptest = { workspace = true }
+criterion = { workspace = true }
+
+[[bench]]
+name = "bytes_bench"
+harness = false

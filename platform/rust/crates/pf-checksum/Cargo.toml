@@ -1,0 +1,14 @@
+[package]
+name = "pf-checksum"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+crc32fast = { workspace = true }
+twox-hash = { workspace = true }
+blake3 = { workspace = true }
+pf-errors = { path = "../pf-errors" }
+
+[dev-dependencies]
+criterion = { workspace = true }

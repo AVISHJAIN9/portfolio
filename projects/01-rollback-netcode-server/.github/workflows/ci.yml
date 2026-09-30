@@ -1,0 +1,97 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rust-quality-and-tests:
+    name: Rust Backend Quality, Determinism & Fuzzing
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgrespassword
+          POSTGRES_DB: rollback_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7.2-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Zero-Float Invariant Verification
+        run: |
+          echo "Verifying 0 float usage in math/ and simulation/..."
+          if grep -rnE "\b(f32|f64)\b" backend/src/math/ backend/src/simulation/; then
+            echo "ERROR: Floating point types (f32/f64) detected in pure simulation modules!"
+            exit 1
+          fi
+          echo "Zero-float invariant confirmed."
+
+      - name: Cargo Formatting Check
+        run: cd backend && cargo fmt --check
+
+      - name: Cargo Clippy (-D warnings)
+        run: cd backend && cargo clippy -- -D warnings
+
+      - name: Cargo Unit & 10k Fuzz Tests
+        run: cd backend && cargo test -- --nocapture
+        env:
+          PROPTEST_CASES: 10000
+
+      - name: Verify Database Migrations on Postgres
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          PGPASSWORD=postgrespassword psql -h localhost -U postgres -d rollback_db -f database/schema.sql
+          for migration in database/migrations/*.sql; do
+            echo "Applying $migration..."
+            PGPASSWORD=postgrespassword psql -h localhost -U postgres -d rollback_db -f "$migration"
+          done
+
+  python-ml-and-netcode-tests:
+    name: AIML Models & Verification Suites
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies & Audit
+        run: |
+          pip install -r aiml/requirements.txt
+          python -m py_compile tests/*.py aiml/**/*.py
+      - name: Run Netcode Verification Suites
+        run: |
+          python tests/test_determinism.py
+          python tests/test_golden_determinism.py
+          python tests/test_rollback.py
+          python tests/test_multiplayer_session.py
+          python tests/test_security_fuzzing.py
+          python tests/test_chaos_network.py
+          python aiml/eval/evaluate_all_models.py
+          python tests/test_e2e_flow.py
+          python tests/test_sdk_smoke.py

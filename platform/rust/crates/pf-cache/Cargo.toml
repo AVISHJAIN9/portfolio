@@ -1,0 +1,13 @@
+[package]
+name = "pf-cache"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+pf-checksum = { path = "../pf-checksum" }
+pf-errors = { path = "../pf-errors" }
+parking_lot = { workspace = true }
+
+[dev-dependencies]
+criterion = { workspace = true }

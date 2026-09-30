@@ -1,0 +1,16 @@
+github_user: "AVISHJAIN9"
+license: "Apache-2.0"
+brand: "PortfolioForge"
+visibility: "public"
+max_parallel_agents: 4
+hardware:
+  cpu: "Apple M2"
+  arch: "arm64"
+  ram_gb: 8
+  os: "Darwin 25.5.0 (macOS)"
+toolchains:
+  rust: "1.98.1"
+  cargo: "1.98.1"
+  python: "3.13.9"
+  node: "v22.23.2"
+  npm: "10.9.8"

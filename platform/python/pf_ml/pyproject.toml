@@ -1,0 +1,16 @@
+[project]
+name = "pf_ml"
+version = "0.1.0"
+description = "Shared AI/ML platform package for Portfolio Forge distributed systems"
+authors = [{ name = "Avish Jain", email = "avishjain@example.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

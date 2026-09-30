@@ -1,0 +1,14 @@
+# Architectural Decision Records (docs/DECISIONS.md)
+
+| ID | Decision | Reason | Date |
+|---|---|---|---|
+| **ADR-001** | **Shared-Core Monorepo Topology (`portfolio/`)** | Managing 20 standalone repositories concurrently causes severe code duplication in low-level primitives (varint, CRC32, ring buffers, caches). A shared-core monorepo enables single-source implementation in `platform/` with standalone per-project exports via `tools/export-project`. | 2026-09-30 |
+| **ADR-002** | **Rust for Core Performance Engines** | Rust provides zero-cost abstractions, deterministic memory management without GC pauses, native SIMD intrinsic support, and memory safety for low-level systems (Rollback, QUIC, HNSW, LSM, Cache). | 2026-09-30 |
+| **ADR-003** | **TypeScript / Next.js 14 for Frontend Consoles** | Provides static page pre-rendering, modern developer ergonomic toolchains, seamless integration with Canvas, WebGL (Three.js), and real-time WebSocket / SSE clients. | 2026-09-30 |
+| **ADR-004** | **Python for AI/ML Modeling & Training** | Scikit-Learn, NumPy, and lightweight ONNX pipelines allow rapid, CPU-trainable model development (<15 min) with clean offline verification. | 2026-09-30 |
+| **ADR-005** | **Offline-First & Deterministic Fallback Principle (Rule R6)** | Every engine, test suite, and demo must run without API keys, GPU hardware, or cloud connectivity. AI/ML layers must operate in `MODEL_MODE=heuristic` if trained weights or LLM keys are absent. | 2026-09-30 |
+| **ADR-006** | **Procedural 3D Frame Sequence Generator Fallback** | Where physical video assets (`.mp4`) are not provided, `tools/frames-gen` renders deterministic Three.js scenes into WebP frame sequences headlessly, ensuring complete visual fidelity without missing asset blockers. | 2026-09-30 |
+| **ADR-007** | **Zero-Float Invariant for Deterministic Simulation** | Simulation and state reconciliation paths in physics and netcode use Q16.16 fixed-point arithmetic (`FixedI32`) to eliminate cross-architecture IEEE 754 floating-point divergence. | 2026-09-30 |
+| **ADR-008** | **Strict Non-Authoritative ML Governance** | No AI/ML model operates on authoritative state mutation or packet routing paths. All adaptive outputs are clamped by deterministic guardrails $[min, max]$ with instant kill-switch fallbacks. | 2026-09-30 |
+| **ADR-009** | **Vendor-on-Export Strategy (Rule R3 / D7)** | Each project can be exported as an independent GitHub repository where only the specific `pf-*` platform crates consumed by that project are vendored with pinned versions and attribution. | 2026-09-30 |
+| **ADR-010** | **Dynamic Multi-Layout Workbook Normalization** | Workbooks across the 20 projects use different layout conventions (01-style Master Roadmap, 04-style Detailed Analysis, 05-style layered sheets). `tools/feature-ingest` dynamically detects column semantics and normalizes all 800 features into canonical JSONL files. | 2026-09-30 |

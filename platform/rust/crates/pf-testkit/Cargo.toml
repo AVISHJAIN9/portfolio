@@ -1,0 +1,10 @@
+[package]
+name = "pf-testkit"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+proptest = { workspace = true }
+blake3 = { workspace = true }
+pf-errors = { path = "../pf-errors" }

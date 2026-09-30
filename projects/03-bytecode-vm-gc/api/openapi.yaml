@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  title: Register-Based Bytecode VM & Generational GC API
+  version: 1.0.0
+  description: High-performance low-latency API for Register-Based Bytecode VM & Generational GC
+paths:
+  /api/v1/healthz:
+    get:
+      summary: Health check probe
+      responses:
+        '200':
+          description: Service healthy
+  /api/v1/readyz:
+    get:
+      summary: Readiness probe
+      responses:
+        '200':
+          description: Service ready

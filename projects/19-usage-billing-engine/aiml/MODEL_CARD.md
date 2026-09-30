@@ -1,0 +1,10 @@
+# AIML Model Cards: Usage-Based Metering & Invoicing Engine
+
+## Tier A: Customer Usage Forecasting and Bill-Shock Alert Predictor (vs EWMA baseline)
+- **Baseline**: Non-AI Static Baseline
+- **Target**: Statistically significant win on stated evaluation metric.
+- **Status**: Specified & Scaffolded (**TO BE MEASURED**).
+- **Graceful Fallback**: Hardcoded static threshold rule engine.
+
+## Tier B: Natural language read-only invoice explanation assistant
+- **LLM Prompt Guard**: Strict schema validation. The LLM is NEVER on correctness or transactional paths.

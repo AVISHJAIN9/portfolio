@@ -1,0 +1,11 @@
+[package]
+name = "pf-vector-kit"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+pf-errors = { path = "../pf-errors" }
+
+[dev-dependencies]
+criterion = { workspace = true }
