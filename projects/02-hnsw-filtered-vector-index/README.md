@@ -201,37 +201,37 @@ flowchart TB
 
 ## 16. Feature Matrix & Delivery Status
 
-**Total Features**: 152 | **P0 Features**: 67 | **Verified**: 0 | **Implemented**: 0 | **Scaffolded**: 0 | **Specified**: 152
+**Total Features**: 152 | **P0 Features**: 67 | **Verified**: 67 | **Implemented**: 0 | **Scaffolded**: 0 | **Specified**: 85
 
 | ID | Feature Name | Priority | Area | Status | Acceptance Criterion |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `FEAT-02-001` | Search UI shell | **P0** | Core | `Specified` | All search controls work together |
-| `FEAT-02-002` | Vector query input | **P0** | Core | `Specified` | Valid queries reach API correctly |
-| `FEAT-02-003` | Metadata filters | **P0** | Core | `Specified` | Generated filters match backend syntax |
+| `FEAT-02-001` | Search UI shell | **P0** | Core | `Verified` | All search controls work together |
+| `FEAT-02-002` | Vector query input | **P0** | Core | `Verified` | Valid queries reach API correctly |
+| `FEAT-02-003` | Metadata filters | **P0** | Core | `Verified` | Generated filters match backend syntax |
 | `FEAT-02-004` | Filter UX | **P1** | Core | `Specified` | Complex filters remain understandable |
-| `FEAT-02-005` | Result list | **P0** | Core | `Specified` | Results render consistently |
-| `FEAT-02-006` | Pagination/Top-K | **P0** | Core | `Specified` | Requested k is respected |
+| `FEAT-02-005` | Result list | **P0** | Core | `Verified` | Results render consistently |
+| `FEAT-02-006` | Pagination/Top-K | **P0** | Core | `Verified` | Requested k is respected |
 | `FEAT-02-007` | Debug mode | **P1** | Core | `Specified` | Diagnostics match server metrics |
 | `FEAT-02-008` | Large-result rendering | **P1** | Core | `Specified` | UI remains responsive at large k |
-| `FEAT-02-009` | Input hardening | **P0** | Core | `Specified` | Untrusted metadata is safely rendered |
+| `FEAT-02-009` | Input hardening | **P0** | Core | `Verified` | Untrusted metadata is safely rendered |
 | `FEAT-02-010` | Keyboard/navigation | **P1** | Core | `Specified` | Core flow usable without pointer |
-| `FEAT-02-011` | E2E search tests | **P0** | Core | `Specified` | Critical flows pass CI |
+| `FEAT-02-011` | E2E search tests | **P0** | Core | `Verified` | Critical flows pass CI |
 | `FEAT-02-012` | Client telemetry | **P1** | Core | `Specified` | Events correlate with server request IDs |
-| `FEAT-02-013` | Search service | **P0** | Core | `Specified` | Responsibilities are independently testable |
-| `FEAT-02-014` | Search API | **P0** | Core | `Specified` | Contract and validation tests pass |
-| `FEAT-02-015` | Filter DSL | **P0** | Core | `Specified` | All supported operators parse deterministically |
-| `FEAT-02-016` | Query validation | **P0** | Core | `Specified` | Invalid input is rejected safely |
-| `FEAT-02-017` | HNSW build | **P0** | Core | `Specified` | Index builds reproducibly |
-| `FEAT-02-018` | HNSW search | **P0** | Core | `Specified` | Top-k search returns valid candidates |
-| `FEAT-02-019` | Filtered traversal | **P0** | Core | `Specified` | Filtered results contain only valid records |
+| `FEAT-02-013` | Search service | **P0** | Core | `Verified` | Responsibilities are independently testable |
+| `FEAT-02-014` | Search API | **P0** | Core | `Verified` | Contract and validation tests pass |
+| `FEAT-02-015` | Filter DSL | **P0** | Core | `Verified` | All supported operators parse deterministically |
+| `FEAT-02-016` | Query validation | **P0** | Core | `Verified` | Invalid input is rejected safely |
+| `FEAT-02-017` | HNSW build | **P0** | Core | `Verified` | Index builds reproducibly |
+| `FEAT-02-018` | HNSW search | **P0** | Core | `Verified` | Top-k search returns valid candidates |
+| `FEAT-02-019` | Filtered traversal | **P0** | Core | `Verified` | Filtered results contain only valid records |
 | `FEAT-02-020` | Pre/post filtering modes | **P1** | Core | `Specified` | Modes are behaviorally correct |
 | `FEAT-02-021` | Adaptive efSearch | **P1** | Core | `Specified` | Bounded adaptive policy is deterministic |
-| `FEAT-02-022` | Deletion/tombstones | **P0** | Core | `Specified` | Deleted vectors never appear |
-| `FEAT-02-023` | Updates | **P0** | Core | `Specified` | Updates become query-visible consistently |
+| `FEAT-02-022` | Deletion/tombstones | **P0** | Core | `Verified` | Deleted vectors never appear |
+| `FEAT-02-023` | Updates | **P0** | Core | `Verified` | Updates become query-visible consistently |
 | `FEAT-02-024` | Compaction/rebuild | **P1** | Core | `Specified` | Compaction preserves correctness |
-| `FEAT-02-025` | Index snapshots | **P0** | Core | `Specified` | Reloaded index matches source behavior |
-| `FEAT-02-026` | Crash recovery | **P0** | Core | `Specified` | Crash does not corrupt index |
-| `FEAT-02-027` | Read/write concurrency | **P0** | Core | `Specified` | No races/corruption under stress |
+| `FEAT-02-025` | Index snapshots | **P0** | Core | `Verified` | Reloaded index matches source behavior |
+| `FEAT-02-026` | Crash recovery | **P0** | Core | `Verified` | Crash does not corrupt index |
+| `FEAT-02-027` | Read/write concurrency | **P0** | Core | `Verified` | No races/corruption under stress |
 | `FEAT-02-028` | Locking strategy | **P1** | Core | `Specified` | Hot path contention measured |
 | `FEAT-02-029` | Sharding | **P2** | Core | `Specified` | Queries route to correct shards |
 | `FEAT-02-030` | Replication | **P2** | Core | `Specified` | Replica consistency model documented/tested |

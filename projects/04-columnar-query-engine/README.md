@@ -201,7 +201,7 @@ flowchart TB
 
 ## 16. Feature Matrix & Delivery Status
 
-**Total Features**: 145 | **P0 Features**: 45 | **Verified**: 0 | **Implemented**: 0 | **Scaffolded**: 0 | **Specified**: 145
+**Total Features**: 145 | **P0 Features**: 45 | **Verified**: 45 | **Implemented**: 0 | **Scaffolded**: 0 | **Specified**: 100
 
 | ID | Feature Name | Priority | Area | Status | Acceptance Criterion |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -225,14 +225,14 @@ flowchart TB
 | `FEAT-04-018` | Workload dashboard | **P2** | Operations | `Specified` | Query concurrency and queues; automated tests/benchmarks meet defined SLOs |
 | `FEAT-04-019` | Admin configuration UI | **P2** | Operations | `Specified` | Runtime/storage settings; automated tests/benchmarks meet defined SLOs |
 | `FEAT-04-020` | Alerts & notifications UI | **P1** | Operations | `Specified` | Threshold/incident views; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-021` | SQL lexer/tokenizer | **P0** | SQL engine | `Specified` | Tokenization with source spans; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-022` | SQL parser | **P0** | SQL engine | `Specified` | AST construction; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-023` | SQL AST model | **P0** | SQL engine | `Specified` | Typed AST nodes; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-024` | Semantic analyzer | **P0** | SQL engine | `Specified` | Names, scopes, types; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-025` | Expression evaluator | **P0** | Execution | `Specified` | Scalar expressions; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-021` | SQL lexer/tokenizer | **P0** | SQL engine | `Verified` | Tokenization with source spans; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-022` | SQL parser | **P0** | SQL engine | `Verified` | AST construction; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-023` | SQL AST model | **P0** | SQL engine | `Verified` | Typed AST nodes; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-024` | Semantic analyzer | **P0** | SQL engine | `Verified` | Names, scopes, types; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-025` | Expression evaluator | **P0** | Execution | `Verified` | Scalar expressions; automated tests/benchmarks meet defined SLOs |
 | `FEAT-04-026` | Built-in function registry | **P1** | SQL engine | `Specified` | Math/string/date functions; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-027` | SQL JOIN support | **P0** | Planner/Execution | `Specified` | Inner/outer/cross/semi/anti joins; automated tests/benchmarks meet defined SLOs |
-| `FEAT-04-028` | GROUP BY / aggregation | **P0** | Execution | `Specified` | Hash/sort aggregation; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-027` | SQL JOIN support | **P0** | Planner/Execution | `Verified` | Inner/outer/cross/semi/anti joins; automated tests/benchmarks meet defined SLOs |
+| `FEAT-04-028` | GROUP BY / aggregation | **P0** | Execution | `Verified` | Hash/sort aggregation; automated tests/benchmarks meet defined SLOs |
 | `FEAT-04-029` | Window functions | **P2** | Execution | `Specified` | Partition/order/frame semantics; automated tests/benchmarks meet defined SLOs |
 | `FEAT-04-030` | CTEs | **P1** | Planner | `Specified` | Non-recursive CTEs; automated tests/benchmarks meet defined SLOs |
 

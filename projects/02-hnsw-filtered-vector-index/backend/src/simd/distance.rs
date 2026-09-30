@@ -1,14 +1,34 @@
-/// AVX2/NEON accelerated distance kernels. Complies with FR-002.
-pub fn euclidean_distance_squared(a: &[f32], b: &[f32]) -> f32 {
-    assert_eq!(a.len(), b.len());
-    // Auto-vectorized SIMD Euclidean distance
-    a.iter()
-        .zip(b.iter())
-        .map(|(&x, &y)| (x - y) * (x - y))
-        .sum()
+//! Distance metrics for high-dimensional vector search
+
+use pf_vector_kit::{l2_distance_squared as pf_l2, dot_product as pf_dot, cosine_similarity as pf_cosine};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Metric {
+    L2,
+    Cosine,
+    DotProduct,
 }
 
+#[inline]
+pub fn euclidean_distance_squared(a: &[f32], b: &[f32]) -> f32 {
+    pf_l2(a, b)
+}
+
+#[inline]
 pub fn dot_product(a: &[f32], b: &[f32]) -> f32 {
-    assert_eq!(a.len(), b.len());
-    a.iter().zip(b.iter()).map(|(&x, &y)| x * y).sum()
+    pf_dot(a, b)
+}
+
+#[inline]
+pub fn cosine_distance(a: &[f32], b: &[f32]) -> f32 {
+    1.0 - pf_cosine(a, b)
+}
+
+#[inline]
+pub fn compute_distance(a: &[f32], b: &[f32], metric: Metric) -> f32 {
+    match metric {
+        Metric::L2 => euclidean_distance_squared(a, b),
+        Metric::Cosine => cosine_distance(a, b),
+        Metric::DotProduct => -dot_product(a, b),
+    }
 }

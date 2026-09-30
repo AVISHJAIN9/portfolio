@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-09-30T22:19:20Z",
+  "project": "02-hnsw-filtered-vector-index",
+  "benchmark": "hnsw_search_top10_ef32",
+  "vectors": 1000,
+  "dimensions": 32,
+  "k": 10,
+  "ef_search": 32,
+  "mean_time_us": 36.99,
+  "min_time_us": 35.59,
+  "max_time_us": 39.81,
+  "throughput_qps": 27034.0,
+  "hardware": "Apple Silicon ARM64"
+}

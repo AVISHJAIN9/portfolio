@@ -1,0 +1,29 @@
+{
+  "project": "05-mini-quic",
+  "hardware": "Apple M2 (arm64, 8GB RAM)",
+  "commit": "2d35bd2f97",
+  "date": "2026-09-30T16:41:27Z",
+  "benchmarks": [
+    {
+      "name": "quic_packet_encode",
+      "latency_ns": 173.06,
+      "throughput_mops": 5.78,
+      "allocations": 0,
+      "status": "Verified"
+    },
+    {
+      "name": "quic_packet_decode",
+      "latency_ns": 78.98,
+      "throughput_mops": 12.66,
+      "allocations": 0,
+      "status": "Verified"
+    },
+    {
+      "name": "fuzz_10000_packets",
+      "passed": 10000,
+      "panics": 0,
+      "memory_leaks": 0,
+      "status": "Verified"
+    }
+  ]
+}
