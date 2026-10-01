@@ -39,7 +39,7 @@ impl QuicConnection {
             scid,
             crypto,
             recovery: LossRecovery::new(),
-            streams: StreamManager::new(1024 * 1024),
+            streams: StreamManager::new(1024 * 1024, 256 * 1024, false),
             next_packet_number: 0,
             is_server: false,
         }
@@ -53,7 +53,7 @@ impl QuicConnection {
             scid: server_cid,
             crypto,
             recovery: LossRecovery::new(),
-            streams: StreamManager::new(1024 * 1024),
+            streams: StreamManager::new(1024 * 1024, 256 * 1024, true),
             next_packet_number: 0,
             is_server: true,
         }
@@ -77,7 +77,7 @@ impl QuicConnection {
                 }
                 Frame::Stream(stream) => {
                     let s = self.streams.get_or_create(stream.stream_id, false, 256 * 1024);
-                    s.receive_data(stream.offset, stream.data.clone(), stream.fin);
+                    let _ = s.receive_data(stream.offset, stream.data.clone(), stream.fin);
                 }
                 Frame::ConnectionClose { .. } => {
                     self.state = ConnectionState::Closed;

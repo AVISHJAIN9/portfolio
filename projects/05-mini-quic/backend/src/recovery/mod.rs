@@ -225,4 +225,14 @@ impl LossRecovery {
 
         acked_packets
     }
+
+    pub fn pacing_interval(&self, packet_bytes: u64) -> Duration {
+        let rtt = self.rtt.smoothed_rtt;
+        let cwnd = self.cc.congestion_window;
+        if cwnd == 0 {
+            return Duration::ZERO;
+        }
+        Duration::from_secs_f64((packet_bytes as f64 * rtt.as_secs_f64()) / cwnd as f64)
+    }
 }
+

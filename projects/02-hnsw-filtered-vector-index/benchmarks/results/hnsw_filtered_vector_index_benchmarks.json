@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T18:03:10.399169+00:00",
+  "timestamp": "2026-10-01T11:15:38.204081+00:00",
   "project": "02-hnsw-filtered-vector-index",
   "command": "cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new",
-  "commit": "965b690d28f6e58427a433bbc9aee0b1ad29cc31",
+  "commit": "aa2b944d8891f70d70aa88d41832b6870dcbc123",
   "hardware": "Darwin arm64 (arm)",
   "measurements": {
     "benchmark": {
-      "mean": 198.31,
+      "mean": 340.55,
       "unit": "\u00b5s",
-      "min": 196.5,
-      "max": 200.5
+      "min": 338.28,
+      "max": 343.49
     }
   },
   "vectors": 10000,

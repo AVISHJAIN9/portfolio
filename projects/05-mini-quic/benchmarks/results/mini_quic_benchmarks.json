@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T18:03:10.399169+00:00",
+  "timestamp": "2026-10-01T11:15:38.204081+00:00",
   "project": "05-mini-quic",
   "command": "cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new",
-  "commit": "965b690d28f6e58427a433bbc9aee0b1ad29cc31",
+  "commit": "aa2b944d8891f70d70aa88d41832b6870dcbc123",
   "hardware": "Darwin arm64 (arm)",
   "measurements": {
     "benchmark": {
-      "mean": 75.416,
+      "mean": 121.74,
       "unit": "ns",
-      "min": 74.946,
-      "max": 76.029
+      "min": 121.27,
+      "max": 122.24
     }
   },
   "dataset_size": 10000,

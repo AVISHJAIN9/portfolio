@@ -1,4 +1,4 @@
-// FEAT: FEAT-01-014
+// FEAT: 01-014
 #[test]
 fn test_module_boundary_isolation() {
     // Verify that math and simulation can be compiled and used in complete isolation

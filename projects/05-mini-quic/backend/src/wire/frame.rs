@@ -146,9 +146,30 @@ impl Frame {
                 let _ = QuicVarInt::encode(stream.data.len() as u64, dst);
                 dst.extend_from_slice(&stream.data);
             }
+            Frame::ResetStream { stream_id, error_code, final_size } => {
+                let _ = QuicVarInt::encode(0x04, dst);
+                let _ = QuicVarInt::encode(*stream_id, dst);
+                let _ = QuicVarInt::encode(*error_code, dst);
+                let _ = QuicVarInt::encode(*final_size, dst);
+            }
+            Frame::StopSending { stream_id, error_code } => {
+                let _ = QuicVarInt::encode(0x05, dst);
+                let _ = QuicVarInt::encode(*stream_id, dst);
+                let _ = QuicVarInt::encode(*error_code, dst);
+            }
             Frame::MaxData { max_data } => {
                 let _ = QuicVarInt::encode(0x10, dst);
                 let _ = QuicVarInt::encode(*max_data, dst);
+            }
+            Frame::MaxStreamData { stream_id, max_stream_data } => {
+                let _ = QuicVarInt::encode(0x11, dst);
+                let _ = QuicVarInt::encode(*stream_id, dst);
+                let _ = QuicVarInt::encode(*max_stream_data, dst);
+            }
+            Frame::MaxStreams { is_bidi, max_streams } => {
+                let frame_type = if *is_bidi { 0x12 } else { 0x13 };
+                let _ = QuicVarInt::encode(frame_type, dst);
+                let _ = QuicVarInt::encode(*max_streams, dst);
             }
             Frame::ConnectionClose { error_code, frame_type, reason_phrase } => {
                 if let Some(ft) = frame_type {
@@ -192,9 +213,12 @@ impl Frame {
                 let largest_ack = QuicVarInt::decode(src).map_err(|_| "ack largest")?;
                 let ack_delay = QuicVarInt::decode(src).map_err(|_| "ack delay")?;
                 let range_count = QuicVarInt::decode(src).map_err(|_| "ack range count")?;
+                if range_count > 512 || src.remaining() < range_count as usize * 2 {
+                    return Err("invalid ack range count");
+                }
                 let first_range = QuicVarInt::decode(src).map_err(|_| "ack first range")?;
 
-                let mut ack_ranges = Vec::with_capacity(range_count as usize);
+                let mut ack_ranges = Vec::with_capacity(range_count.min(128) as usize);
                 for _ in 0..range_count {
                     let gap = QuicVarInt::decode(src).map_err(|_| "ack gap")?;
                     let len = QuicVarInt::decode(src).map_err(|_| "ack range len")?;
@@ -217,6 +241,17 @@ impl Frame {
                     ack_ranges,
                     ecn_counts,
                 })))
+            }
+            0x04 => {
+                let stream_id = QuicVarInt::decode(src).map_err(|_| "reset stream id")?;
+                let error_code = QuicVarInt::decode(src).map_err(|_| "reset err code")?;
+                let final_size = QuicVarInt::decode(src).map_err(|_| "reset final size")?;
+                Ok(Some(Frame::ResetStream { stream_id, error_code, final_size }))
+            }
+            0x05 => {
+                let stream_id = QuicVarInt::decode(src).map_err(|_| "stop sending stream id")?;
+                let error_code = QuicVarInt::decode(src).map_err(|_| "stop sending err code")?;
+                Ok(Some(Frame::StopSending { stream_id, error_code }))
             }
             0x06 => {
                 let offset = QuicVarInt::decode(src).map_err(|_| "crypto offset")?;
@@ -254,6 +289,18 @@ impl Frame {
             0x10 => {
                 let max_data = QuicVarInt::decode(src).map_err(|_| "max data")?;
                 Ok(Some(Frame::MaxData { max_data }))
+            }
+            0x11 => {
+                let stream_id = QuicVarInt::decode(src).map_err(|_| "max stream data id")?;
+                let max_stream_data = QuicVarInt::decode(src).map_err(|_| "max stream data")?;
+                Ok(Some(Frame::MaxStreamData { stream_id, max_stream_data }))
+            }
+            0x12 | 0x13 => {
+                let max_streams = QuicVarInt::decode(src).map_err(|_| "max streams")?;
+                Ok(Some(Frame::MaxStreams {
+                    is_bidi: frame_type == 0x12,
+                    max_streams,
+                }))
             }
             0x1c | 0x1d => {
                 let error_code = QuicVarInt::decode(src).map_err(|_| "close err code")?;

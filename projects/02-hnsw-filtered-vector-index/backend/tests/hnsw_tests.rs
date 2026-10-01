@@ -3,7 +3,7 @@ use hnsw_filtered_vector_index::quantization::scalar::ScalarQuantizer;
 use hnsw_filtered_vector_index::storage::wal::{VectorWal, WalRecord};
 use roaring::RoaringBitmap;
 
-// FEAT: FEAT-02-017
+// FEAT: 02-017
 #[test]
 fn test_hnsw_insertion_and_search() {
     let index = HnswIndex::new(4, 16, 64);
@@ -26,7 +26,7 @@ fn test_hnsw_insertion_and_search() {
     assert_eq!(results[1].0, 3);
 }
 
-// FEAT: FEAT-02-019
+// FEAT: 02-019
 #[test]
 fn test_hnsw_filtered_search() {
     let index = HnswIndex::new(4, 16, 64);
@@ -51,7 +51,7 @@ fn test_hnsw_filtered_search() {
     assert_eq!(results[0].0, 10);
 }
 
-// FEAT: FEAT-02-066
+// FEAT: 02-066
 #[test]
 fn test_scalar_quantization_roundtrip() {
     let quantizer = ScalarQuantizer::new(-1.0, 1.0);
@@ -64,7 +64,7 @@ fn test_scalar_quantization_roundtrip() {
     }
 }
 
-// FEAT: FEAT-02-017
+// FEAT: 02-017
 #[test]
 fn test_wal_persistence() {
     let path = "/tmp/test_vector_wal.log";
@@ -91,7 +91,7 @@ fn test_wal_persistence() {
     let _ = std::fs::remove_file(path);
 }
 
-// FEAT: FEAT-02-018
+// FEAT: 02-018
 #[test]
 fn test_hnsw_high_recall_acceptance() {
     use rand::{Rng, SeedableRng};

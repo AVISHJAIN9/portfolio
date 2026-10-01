@@ -1,7 +1,8 @@
 # Portfolio Forge Monorepo Root Makefile
 
 SHELL := /bin/bash
-PYTHON := python3
+PYTHON ?= $(shell if [ -f /Users/avishjain/venv/bin/python3 ]; then echo /Users/avishjain/venv/bin/python3; elif [ -f /Users/avishjain/venv/bin/python ]; then echo /Users/avishjain/venv/bin/python; else echo python3; fi)
+PYTEST ?= $(shell if [ -f /Users/avishjain/venv/bin/pytest ]; then echo /Users/avishjain/venv/bin/pytest; else echo pytest; fi)
 CARGO := cargo
 
 .PHONY: all help ci demo bench frames train export state dedupe clean
@@ -29,7 +30,16 @@ else
 	@if [ -d "platform/rust" ] && [ -f "platform/rust/Cargo.toml" ]; then \
 		cargo test --manifest-path platform/rust/Cargo.toml; \
 	fi
-	@$(PYTHON) tools/feature_ingest.py
+	@for p in projects/*; do \
+		if [ -d "$$p/backend" ] && [ -f "$$p/backend/Cargo.toml" ]; then \
+			echo "Running tests for $$p..."; \
+			cargo test --manifest-path "$$p/backend/Cargo.toml"; \
+		fi \
+	done
+	@$(PYTEST) -v tests/test_feature_ingest.py tests/test_workbook_status.py
+	@$(PYTHON) tools/evidence_gen.py
+	@$(PYTHON) tools/workbook_status.py
+	@$(PYTHON) tools/state_writer.py
 endif
 
 demo:

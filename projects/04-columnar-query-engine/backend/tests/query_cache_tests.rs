@@ -1,4 +1,3 @@
-// FEAT: FEAT-04-044
 use columnar_query_engine::cache::query_cache::QueryResultCache;
 
 #[test]

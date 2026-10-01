@@ -1,4 +1,4 @@
-// FEAT: FEAT-01-015
+// FEAT: 01-015
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
 use rollback_netcode_server::protocol::{GamePacket, MAX_PACKET_BYTES};

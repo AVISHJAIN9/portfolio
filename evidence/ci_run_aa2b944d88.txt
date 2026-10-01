@@ -1,0 +1,637 @@
+=== Running Workspace-Wide CI ===
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.53s
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_bytes-06cd7e0d50433964)
+
+running 3 tests
+test tests::test_bit_reader ... ok
+test tests::test_uleb128_roundtrip ... ok
+test tests::test_quic_varint_roundtrip ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_cache-62c60f91e550ca86)
+
+running 1 test
+test tests::test_s3_fifo_cache ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_checksum-39644597f548ec34)
+
+running 1 test
+test tests::test_checksums ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_collections-845e9199cf868687)
+
+running 2 tests
+test tests::test_ring_buffer ... ok
+test tests::test_bloom_filter ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_config-154fb56df48d5635)
+
+running 1 test
+test tests::test_config_helpers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_crypto-1560e3914e013cff)
+
+running 6 tests
+test tests::test_rfc5869_test_case_2 ... ok
+test tests::test_rfc9001_aead_and_hp_sample ... ok
+test tests::test_rfc5869_test_case_3 ... ok
+test tests::test_rfc5869_test_case_1 ... ok
+test tests::test_rfc9001_initial_secrets ... ok
+test tests::test_rfc7748_x25519_vectors ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_errors-f183e93c2c7d960e)
+
+running 1 test
+test tests::test_error_to_problem_details ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_hashring-b543e2846112277d)
+
+running 2 tests
+test tests::test_jump_hash ... ok
+test tests::test_hash_ring ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_http-3a8dd243f419aba6)
+
+running 1 test
+test tests::test_health_routes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_metrics-a9e7bcc45afec32a)
+
+running 1 test
+test tests::test_histogram_and_counter ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_net-9f57a629e21f3ac2)
+
+running 1 test
+test tests::test_udp_endpoint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_ratelimit-693a92312eaf6b47)
+
+running 2 tests
+test tests::test_token_bucket ... ok
+test tests::test_gcra_limiter ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_sim-2699258af8a67d8f)
+
+running 1 test
+test tests::test_discrete_event_sim ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_storage_kit-5c826af594e80fda)
+
+running 1 test
+test tests::test_buffer_pool ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_sync-e7ae6e47c15ff275)
+
+running 4 tests
+test tests::test_seqlock ... ok
+test tests::test_spsc_queue ... ok
+test tests::test_seqlock_concurrent ... ok
+test tests::test_spsc_queue_concurrent ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_testkit-6215e46f19e113fe)
+
+running 1 test
+test tests::test_golden_verification ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_time-5e60f864f2fff8cf)
+
+running 1 test
+test tests::test_hlc_monotonicity ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_vector_kit-0f6852254c00c924)
+
+running 1 test
+test tests::test_vector_kernels ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (platform/rust/target/debug/deps/pf_wal-db7211748ced7293)
+
+running 1 test
+test tests::test_wal_write_and_recover ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_bytes
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_cache
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_checksum
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_collections
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_config
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_crypto
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_errors
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_hashring
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_http
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_metrics
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_net
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_ratelimit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_sim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_storage_kit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_sync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_testkit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_time
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_vector_kit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_wal
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/01-rollback-netcode-server...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running unittests src/lib.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/rollback_netcode_server-fad6bdd23b606b92)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/rollback_netcode_server-7239e09b0a656574)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fuzz_decoder.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/fuzz_decoder-5241cdf95c842f7f)
+
+running 1 test
+test test_10000_packet_decoder_fuzz ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/golden_test.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/golden_test-eccf77083c4cd09f)
+
+running 1 test
+test test_golden_replay_milestones ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/module_isolation_test.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/module_isolation_test-d642dc653ba65001)
+
+running 1 test
+test test_module_boundary_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/protocol_tests.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/protocol_tests-208b0dea306ce3ab)
+
+running 9 tests
+test test_magic_and_header_validation ... ok
+test test_oversized_packet_rejection ... ok
+test test_error_and_kick_roundtrip ... ok
+test test_input_frame_roundtrip_with_redundancy ... ok
+test test_checksum_roundtrip ... ok
+test test_version_negotiation_matrix ... ok
+test test_handshake_roundtrip ... ok
+test proptest_input_frame_arbitrary ... ok
+test proptest_fuzz_random_bytes_no_panic ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.52s
+
+     Running tests/simulation_determinism_test.rs (projects/01-rollback-netcode-server/backend/target/debug/deps/simulation_determinism_test-bf89d13e74859ee8)
+
+running 6 tests
+test test_duplicate_input_deduplication ... ok
+test test_forced_desync_detection_and_authoritative_recovery ... ok
+test test_100_percent_snapshot_restore ... ok
+test test_two_peer_convergence_under_network_delay ... ok
+test proptest_simulation_invariants ... ok
+test test_1000_run_randomized_rollback_determinism ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.77s
+
+   Doc-tests rollback_netcode_server
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/02-hnsw-filtered-vector-index...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.19s
+     Running unittests src/lib.rs (projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_filtered_vector_index-4bb4cb932593406f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_filtered_vector_index-285de863ff8d383a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/hnsw_tests.rs (projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_tests-eec197402d347601)
+
+running 5 tests
+test test_scalar_quantization_roundtrip ... ok
+test test_hnsw_insertion_and_search ... ok
+test test_wal_persistence ... ok
+test test_hnsw_filtered_search ... ok
+test test_hnsw_high_recall_acceptance ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.45s
+
+   Doc-tests hnsw_filtered_vector_index
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/03-bytecode-vm-gc...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.08s
+     Running unittests src/main.rs (projects/03-bytecode-vm-gc/backend/target/debug/deps/bytecode_vm_gc-8dde21f11438b13f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/04-columnar-query-engine...
+warning: unused imports: `ColumnarTable` and `RowGroup`
+ --> tests/sql_tests.rs:5:45
+  |
+5 | use columnar_query_engine::storage::table::{ColumnarTable, RowGroup};
+  |                                             ^^^^^^^^^^^^^  ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `columnar-query-engine` (test "sql_tests") generated 1 warning (run `cargo fix --test "sql_tests" -p columnar-query-engine` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running unittests src/lib.rs (projects/04-columnar-query-engine/backend/target/debug/deps/columnar_query_engine-4781ec337d7aaa4e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (projects/04-columnar-query-engine/backend/target/debug/deps/columnar_query_engine-41afd1522d3e7d65)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/query_cache_tests.rs (projects/04-columnar-query-engine/backend/target/debug/deps/query_cache_tests-85ba8b5ed3223370)
+
+running 1 test
+test test_query_result_cache_hit_and_eviction ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sql_tests.rs (projects/04-columnar-query-engine/backend/target/debug/deps/sql_tests-fe5c04e83b7838a2)
+
+running 8 tests
+test test_expression_evaluator ... ok
+test test_sql_ast_representation ... ok
+test test_predicate_pushdown_optimization ... ok
+test test_projection_pruning_optimization ... ok
+test test_hash_join_execution ... ok
+test test_sql_lexer_tokenization ... ok
+test test_sql_parser_select_where_join ... ok
+test test_hash_aggregate_group_by ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vectorized_exec_tests.rs (projects/04-columnar-query-engine/backend/target/debug/deps/vectorized_exec_tests-1690fb06efd5a92b)
+
+running 1 test
+test test_vectorized_sum_filter_aggregation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/zonemap_pruning_tests.rs (projects/04-columnar-query-engine/backend/target/debug/deps/zonemap_pruning_tests-19f9555ffcf82356)
+
+running 1 test
+test test_zonemap_rowgroup_skipping ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests columnar_query_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/05-mini-quic...
+warning: unused import: `StreamType`
+ --> tests/stream_flow_control_tests.rs:2:61
+  |
+2 | use mini_quic::stream::{Stream, StreamManager, StreamState, StreamType};
+  |                                                             ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `x25519_public_key`
+ --> tests/crypto_tests.rs:4:45
+  |
+4 |     quic_chacha20_poly1305_encrypt, x25519, x25519_public_key,
+  |                                             ^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `bytes::Bytes`
+ --> tests/simulation_tests.rs:1:5
+  |
+1 | use bytes::Bytes;
+  |     ^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-quic` (test "stream_flow_control_tests") generated 1 warning (run `cargo fix --test "stream_flow_control_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (test "crypto_tests") generated 1 warning (run `cargo fix --test "crypto_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (test "simulation_tests") generated 1 warning (run `cargo fix --test "simulation_tests" -p mini-quic` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.29s
+     Running unittests src/lib.rs (projects/05-mini-quic/backend/target/debug/deps/mini_quic-8d52fec1f9c66518)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (projects/05-mini-quic/backend/target/debug/deps/mini_quic-8e6c3f9d3ddae5d0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/crypto_tests.rs (projects/05-mini-quic/backend/target/debug/deps/crypto_tests-a702a4229198ed94)
+
+running 3 tests
+test test_x25519_key_agreement_rfc7748 ... ok
+test test_rfc9001_initial_key_derivation ... ok
+test test_chacha20_poly1305_packet_protection ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/frame_tests.rs (projects/05-mini-quic/backend/target/debug/deps/frame_tests-3afc389fcbfc766a)
+
+running 7 tests
+test test_crypto_frame_handling ... ok
+test test_max_streams_frames ... ok
+test test_max_data_and_max_stream_data_frames ... ok
+test test_control_frames_codec ... ok
+test test_ack_frame_codec ... ok
+test test_frame_type_registry ... ok
+test test_stream_frame_codec ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fuzz_quic_packets.rs (projects/05-mini-quic/backend/target/debug/deps/fuzz_quic_packets-2cb335f5de072ebe)
+
+running 1 test
+test test_fuzz_10000_quic_packets_no_panic ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+
+     Running tests/packet_codec_tests.rs (projects/05-mini-quic/backend/target/debug/deps/packet_codec_tests-d53094ca55d5a1db)
+
+running 5 tests
+test test_long_header_packet_support ... ok
+test test_short_header_packet_support ... ok
+test test_packet_number_encoding_decoding ... ok
+test test_quic_packet_header_codec ... ok
+test test_connection_id_management ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recovery_tests.rs (projects/05-mini-quic/backend/target/debug/deps/recovery_tests-dc53f0f58aa03aa2)
+
+running 10 tests
+test test_ack_range_tracking ... ok
+test test_congestion_window_tracking ... ok
+test test_packet_threshold_loss_detection ... ok
+test test_packet_pacing_interval ... ok
+test test_rtt_variance_estimation ... ok
+test test_congestion_avoidance_linear_growth ... ok
+test test_newreno_congestion_control ... ok
+test test_pto_calculation ... ok
+test test_slow_start_growth ... ok
+test test_smoothed_rtt_estimation ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/simulation_tests.rs (projects/05-mini-quic/backend/target/debug/deps/simulation_tests-1b5e9db9b4684c8a)
+
+running 1 test
+test test_simulated_network_transfer_at_loss_rates ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/stream_flow_control_tests.rs (projects/05-mini-quic/backend/target/debug/deps/stream_flow_control_tests-1c8b8799624b8af3)
+
+running 11 tests
+test test_connection_level_flow_control ... ok
+test test_stream_level_flow_control ... ok
+test test_max_streams_enforcement ... ok
+test test_bidirectional_stream_management ... ok
+test test_stream_id_allocation ... ok
+test test_max_data_enforcement ... ok
+test test_max_stream_data_enforcement ... ok
+test test_stream_receive_reassembly ... ok
+test test_stream_reset_handling ... ok
+test test_stream_send_buffering ... ok
+test test_unidirectional_stream_management ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests mini_quic
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/06-lsm-kv-engine...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/main.rs (projects/06-lsm-kv-engine/backend/target/debug/deps/lsm_kv_engine-e3bd891d31ddc301)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/07-stream-detect-engine...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/main.rs (projects/07-stream-detect-engine/backend/target/debug/deps/stream_detect_engine-86c32ce8005679bd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/08-pubsub-broker...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/main.rs (projects/08-pubsub-broker/backend/target/debug/deps/pubsub_broker-62a9e7f3677e9f8f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/10-crdt-rich-text-editor...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/main.rs (projects/10-crdt-rich-text-editor/backend/target/debug/deps/crdt_rich_text_editor-5aec0d7018ce7e52)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/13-ledger-engine...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running unittests src/main.rs (projects/13-ledger-engine/backend/target/debug/deps/ledger_engine-ad00e7cec123a8f5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/15-llm-inference-scheduler...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/main.rs (projects/15-llm-inference-scheduler/backend/target/debug/deps/llm_inference_scheduler-be1831a21fbae144)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Running tests for projects/17-cdn-caching-proxy...
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.06s
+     Running unittests src/main.rs (projects/17-cdn-caching-proxy/backend/target/debug/deps/cdn_caching_proxy-0fa6c99a32f5c965)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.1.1, pluggy-1.6.0 -- /Users/avishjain/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/avishjain/avishjain9-repos/portfolio
+plugins: anyio-4.15.1
+collecting ... collected 2 items
+
+tests/test_feature_ingest.py::test_feature_ingest_integrity PASSED       [ 50%]
+tests/test_workbook_status.py::test_status_workbooks_integrity PASSED    [100%]
+
+============================== 2 passed in 0.63s ===============================
+=== Running Autonomous Evidence Generation Pipeline ===
+✓ Generated 71 verified evidence rows in /Users/avishjain/avishjain9-repos/portfolio/evidence/feature_evidence.csv
+=== Generating Excel Status Workbooks with Live Verification Ticks ===
+✓ Generated status workbook: /Users/avishjain/avishjain9-repos/portfolio/evidence/workbooks/01_rollback-netcode-server_STATUS.xlsx
+✓ Generated status workbook: /Users/avishjain/avishjain9-repos/portfolio/evidence/workbooks/02_hnsw-filtered-vector-index_STATUS.xlsx
+✓ Generated status workbook: /Users/avishjain/avishjain9-repos/portfolio/evidence/workbooks/03_bytecode-vm-gc_STATUS.xlsx
+✓ Generated status workbook: /Users/avishjain/avishjain9-repos/portfolio/evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx
+✓ Generated status workbook: /Users/avishjain/avishjain9-repos/portfolio/evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx
+=== Programmatically Regenerating PORTFOLIO_STATE.md ===
+✓ Generated /Users/avishjain/avishjain9-repos/portfolio/PORTFOLIO_STATE.md

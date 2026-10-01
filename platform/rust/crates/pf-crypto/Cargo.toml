@@ -9,3 +9,8 @@ blake3 = { workspace = true }
 sha2 = "0.10"
 hmac = "0.12"
 pf-errors = { path = "../pf-errors" }
+x25519-dalek = "3.0.0"
+aes-gcm = "0.11.1"
+aes = "0.9.3"
+chacha20poly1305 = "0.11.0"
+chacha20 = "0.10.2"

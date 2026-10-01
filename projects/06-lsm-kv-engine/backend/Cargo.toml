@@ -9,3 +9,25 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tracing = "0.1"
 tracing-subscriber = "0.3"
+bytes = "1.6"
+thiserror = "1.0"
+rand = "0.8"
+parking_lot = "0.12"
+crossbeam-skiplist = "0.1"
+tempfile = "3.10"
+
+# Monorepo Platform Crates
+pf-bytes = { path = "../../../platform/rust/crates/pf-bytes" }
+pf-checksum = { path = "../../../platform/rust/crates/pf-checksum" }
+pf-collections = { path = "../../../platform/rust/crates/pf-collections" }
+pf-cache = { path = "../../../platform/rust/crates/pf-cache" }
+pf-storage-kit = { path = "../../../platform/rust/crates/pf-storage-kit" }
+pf-wal = { path = "../../../platform/rust/crates/pf-wal" }
+pf-sync = { path = "../../../platform/rust/crates/pf-sync" }
+pf-time = { path = "../../../platform/rust/crates/pf-time" }
+pf-errors = { path = "../../../platform/rust/crates/pf-errors" }
+pf-testkit = { path = "../../../platform/rust/crates/pf-testkit" }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"

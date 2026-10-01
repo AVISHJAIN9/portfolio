@@ -97,6 +97,8 @@ impl<T, const N: usize> SpscQueue<T, N> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc;
+    use std::thread;
 
     #[test]
     fn test_seqlock() {
@@ -107,6 +109,28 @@ mod tests {
     }
 
     #[test]
+    fn test_seqlock_concurrent() {
+        let lock = Arc::new(SeqLock::new(0u64));
+        let l1 = Arc::clone(&lock);
+        let t1 = thread::spawn(move || {
+            for i in 1..=500 {
+                l1.write(i);
+            }
+        });
+        let l2 = Arc::clone(&lock);
+        let t2 = thread::spawn(move || {
+            let mut last = 0;
+            for _ in 0..500 {
+                let v = l2.read();
+                assert!(v >= last);
+                last = v;
+            }
+        });
+        t1.join().unwrap();
+        t2.join().unwrap();
+    }
+
+    #[test]
     fn test_spsc_queue() {
         let queue = SpscQueue::<i32, 4>::new();
         assert!(queue.push(1).is_ok());
@@ -114,5 +138,34 @@ mod tests {
         assert_eq!(queue.pop(), Some(1));
         assert_eq!(queue.pop(), Some(2));
         assert_eq!(queue.pop(), None);
+    }
+
+    #[test]
+    fn test_spsc_queue_concurrent() {
+        let queue = Arc::new(SpscQueue::<usize, 32>::new());
+        let q1 = Arc::clone(&queue);
+        let t1 = thread::spawn(move || {
+            for i in 0..1000 {
+                while q1.push(i).is_err() {
+                    std::hint::spin_loop();
+                }
+            }
+        });
+
+        let q2 = Arc::clone(&queue);
+        let t2 = thread::spawn(move || {
+            let mut received = 0;
+            while received < 1000 {
+                if let Some(v) = q2.pop() {
+                    assert_eq!(v, received);
+                    received += 1;
+                } else {
+                    std::hint::spin_loop();
+                }
+            }
+        });
+
+        t1.join().unwrap();
+        t2.join().unwrap();
     }
 }
