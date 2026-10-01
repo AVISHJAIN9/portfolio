@@ -2,7 +2,11 @@
 import openpyxl
 import os
 
-for slot, fname, total_p0 in [("04", "04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx", 45), ("05", "05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx", 79)]:
+for slot, fname, total_p0 in [
+    ("04", "04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx", 45),
+    ("05", "05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx", 79),
+    ("06", "06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx", 117)
+]:
     p = os.path.join("evidence/workbooks", fname)
     if not os.path.exists(p):
         print(f"Workbook missing: {p}")
