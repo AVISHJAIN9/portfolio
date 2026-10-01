@@ -1,6 +1,6 @@
 use lsm_kv_engine::memtable::{MemTable, ValueEntry};
 
-// FEAT: 06-027
+// FEAT: 06-027 "Skiplist memtable"
 // ACCEPT: Concurrent Skiplist MemTable supports non-blocking writes and ordered iterations
 #[test]
 fn test_memtable_insertion_and_ordering() {
@@ -16,7 +16,7 @@ fn test_memtable_insertion_and_ordering() {
     assert_eq!(entries[2].0, b"cherry");
 }
 
-// FEAT: 06-028
+// FEAT: 06-028 "Memtable lookup"
 // ACCEPT: Tombstone deletion markers override earlier keys in reads and iterators
 #[test]
 fn test_memtable_tombstone_deletion() {
@@ -28,7 +28,7 @@ fn test_memtable_tombstone_deletion() {
     assert_eq!(mem.get(b"key_1"), Some(ValueEntry::Tombstone));
 }
 
-// FEAT: 06-029
+// FEAT: 06-029 "Memtable ordered iterator"
 // ACCEPT: Fast point lookup retrieves newest value entry or tombstone from active memtable
 #[test]
 fn test_memtable_point_lookup() {
@@ -43,7 +43,7 @@ fn test_memtable_point_lookup() {
     }
 }
 
-// FEAT: 06-030
+// FEAT: 06-030 "Memtable size thresholds"
 // ACCEPT: MemTable tracks approximate byte size and signals flush when threshold exceeded
 #[test]
 fn test_memtable_size_tracking() {

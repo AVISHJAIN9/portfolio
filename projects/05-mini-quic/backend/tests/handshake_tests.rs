@@ -6,7 +6,7 @@ use mini_quic::wire::packet::{ConnectionId, Header, Packet, PacketType, QUIC_VER
 use pf_crypto::quic_aead_nonce;
 use zeroize::Zeroize;
 
-// FEAT: 05-013
+// FEAT: 05-013 "Connection state machine"
 // ACCEPT: Initial to Handshake to 1-RTT to Closed connection state transitions
 #[test]
 fn test_connection_state_machine_transitions() {
@@ -61,7 +61,7 @@ fn test_connection_state_machine_transitions() {
     assert_eq!(conn.state, ConnectionState::OneRtt);
 }
 
-// FEAT: 05-014
+// FEAT: 05-014 "Client/server handshake flow"
 // ACCEPT: Client-Server handshake exchange negotiating cryptographic context and CIDs
 #[test]
 fn test_client_server_handshake_flow() {
@@ -75,7 +75,7 @@ fn test_client_server_handshake_flow() {
     assert_eq!(server.dcid, client.scid);
 }
 
-// FEAT: 05-018
+// FEAT: 05-018 "Initial/Handshake/Application packet spaces"
 // ACCEPT: Initial, Handshake, and 1-RTT packet number spaces operate independently
 #[test]
 fn test_packet_number_spaces_isolation() {
@@ -89,7 +89,7 @@ fn test_packet_number_spaces_isolation() {
     assert_eq!(client.next_packet_number, 1);
 }
 
-// FEAT: 05-019
+// FEAT: 05-019 "Handshake timeout handling"
 // ACCEPT: Enforce handshake timeout when peer does not respond within deadline
 #[test]
 fn test_handshake_timeout_handling() {
@@ -101,7 +101,7 @@ fn test_handshake_timeout_handling() {
     assert!(start_time.elapsed() < timeout_duration);
 }
 
-// FEAT: 05-020
+// FEAT: 05-020 "Connection close/draining states"
 // ACCEPT: Transition to closed state and handle connection close draining
 #[test]
 fn test_connection_close_draining_states() {
@@ -129,7 +129,7 @@ fn test_connection_close_draining_states() {
     assert_eq!(conn.state, ConnectionState::Closed);
 }
 
-// FEAT: 05-021
+// FEAT: 05-021 "Transport parameter negotiation"
 // ACCEPT: Validate and negotiate QUIC transport parameters (max_data, stream limits, idle_timeout)
 #[test]
 fn test_transport_parameter_negotiation() {
@@ -143,7 +143,7 @@ fn test_transport_parameter_negotiation() {
     assert_eq!(conn.streams.max_streams_bidi, max_streams_bidi);
 }
 
-// FEAT: 05-022
+// FEAT: 05-022 "Version negotiation"
 // ACCEPT: Accept QUIC v1 (0x00000001) and reject unsupported protocol versions
 #[test]
 fn test_version_negotiation() {
@@ -154,7 +154,7 @@ fn test_version_negotiation() {
     assert_ne!(unsupported_version, QUIC_VERSION_1);
 }
 
-// FEAT: 05-024
+// FEAT: 05-024 "Handshake error taxonomy"
 // ACCEPT: Handshake error taxonomy covers crypto, parameter, and transport violations
 #[test]
 fn test_handshake_error_taxonomy() {
@@ -179,7 +179,7 @@ fn test_handshake_error_taxonomy() {
     assert_eq!(QuicTransportError::CryptoError as u64, 0x0100);
 }
 
-// FEAT: 05-081
+// FEAT: 05-081 "Malformed packet rejection"
 // ACCEPT: Malformed packets with invalid wire encoding are rejected safely without panic
 #[test]
 fn test_malformed_packet_rejection() {
@@ -189,7 +189,7 @@ fn test_malformed_packet_rejection() {
     assert!(res.is_err());
 }
 
-// FEAT: 05-082
+// FEAT: 05-082 "Anti-amplification controls"
 // ACCEPT: Server anti-amplification limits responses to 3x unvalidated client bytes
 #[test]
 fn test_anti_amplification_limit() {
@@ -202,7 +202,7 @@ fn test_anti_amplification_limit() {
     assert!(attempted_response_bytes > max_server_bytes_allowed);
 }
 
-// FEAT: 05-083
+// FEAT: 05-083 "Replay/duplicate protection"
 // ACCEPT: Reject duplicated and replayed packet numbers
 #[test]
 fn test_replay_duplicate_protection() {
@@ -213,7 +213,7 @@ fn test_replay_duplicate_protection() {
     assert!(!seen_packet_numbers.insert(pn)); // Duplicate detected and rejected
 }
 
-// FEAT: 05-084
+// FEAT: 05-084 "Crypto nonce correctness"
 // ACCEPT: Crypto AEAD nonce derivation computes exact bitwise XOR with packet number
 #[test]
 fn test_crypto_nonce_correctness() {
@@ -224,7 +224,7 @@ fn test_crypto_nonce_correctness() {
     assert_eq!(nonce, expected);
 }
 
-// FEAT: 05-086
+// FEAT: 05-086 "Secret zeroization strategy"
 // ACCEPT: Key material zeroization clears secret memory on drop
 #[test]
 fn test_secret_zeroization() {

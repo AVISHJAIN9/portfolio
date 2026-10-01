@@ -168,4 +168,31 @@ mod tests {
         t1.join().unwrap();
         t2.join().unwrap();
     }
+
+    #[test]
+    fn test_loom_seqlock_model() {
+        loom::model(|| {
+            let lock = loom::sync::Arc::new(SeqLock::new(10u32));
+            let l1 = lock.clone();
+            let th = loom::thread::spawn(move || {
+                l1.write(20);
+            });
+            let val = lock.read();
+            assert!(val == 10 || val == 20);
+            th.join().unwrap();
+        });
+    }
+
+    #[test]
+    fn test_loom_spsc_queue_model() {
+        loom::model(|| {
+            let queue = loom::sync::Arc::new(SpscQueue::<u32, 2>::new());
+            let q1 = queue.clone();
+            let th = loom::thread::spawn(move || {
+                let _ = q1.push(42);
+            });
+            let _ = queue.pop();
+            th.join().unwrap();
+        });
+    }
 }

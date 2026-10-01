@@ -1,0 +1,15 @@
+{
+  "benchmark": "TPC-H",
+  "scale_factor": 0.1,
+  "commit": "49adde6b5f31402af580e13e984e7366e1e6d358",
+  "queries": {
+    "Q1": {
+      "duckdb_time_ms": 29.209136962890625,
+      "rows": 4
+    },
+    "Q6": {
+      "duckdb_time_ms": 1.6438961029052734,
+      "revenue": 11803420.2534
+    }
+  }
+}

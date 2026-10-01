@@ -1,4 +1,4 @@
-// FEAT: 04-078
+// FEAT: 04-078 "Vectorized execution"
 // ACCEPT: Vectorized execution engine processes column vectors in batch slices with SIMD acceleration
 use columnar_query_engine::execution::aggregate::{AggOp, AggValue};
 use columnar_query_engine::execution::vector::Predicate;

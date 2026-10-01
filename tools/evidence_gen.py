@@ -15,12 +15,41 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
-def extract_feature_annotations_and_assertions(project_dir: Path):
+def load_master_workbook_names():
+    """Loads exact feature names from master workbooks' Detailed Analysis sheets."""
+    import openpyxl
+    mapping = {}
+    for p in sorted((ROOT_DIR / "inputs" / "specs").glob("*.xlsx")):
+        fname = p.name
+        slot = fname.split("_")[0]
+        try:
+            slot_int = int(slot)
+        except ValueError:
+            continue
+        wb = openpyxl.load_workbook(p, data_only=True)
+        ws = wb['Detailed Analysis'] if 'Detailed Analysis' in wb.sheetnames else wb.active
+        f_col = 1
+        for c in range(1, 15):
+            v = str(ws.cell(1, c).value or '').lower()
+            if 'feature' in v:
+                f_col = c
+                break
+        idx = 1
+        for r in range(2, ws.max_row + 1):
+            val = ws.cell(r, f_col).value
+            if val and str(val).strip():
+                fid = f"{slot_int:02d}-{idx:03d}"
+                mapping[fid] = str(val).strip()
+                idx += 1
+    return mapping
+
+def extract_feature_annotations_and_assertions(project_dir: Path, master_names: dict):
     """
     Scans all test files in project for:
-    // FEAT: <id>
+    // FEAT: <id> "<workbook_name>"
     // ACCEPT: <quote>
     fn <test_name>() { ... }
+    Fails if the quoted name does not match the master workbook's feature name.
     Counts assertion macros inside each test function body.
     """
     annotations = {}
@@ -28,12 +57,12 @@ def extract_feature_annotations_and_assertions(project_dir: Path):
     if not tests_dir.exists():
         return annotations
 
-    feat_pattern = re.compile(r'//\s*FEAT:\s*([A-Za-z0-9_\-]+)')
+    feat_pattern = re.compile(r'//\s*FEAT:\s*([0-9]{2}-[0-9]{3})(?:\s+\"([^\"]+)\")?')
     accept_pattern = re.compile(r'//\s*ACCEPT:\s*(.+)')
     fn_start_pattern = re.compile(r'fn\s+([a-zA-Z0-9_]+)\s*\(')
     assert_pattern = re.compile(r'\b(assert|assert_eq|assert_ne|assert_matches|prop_assert|prop_assert_eq)!')
 
-    for rs_file in tests_dir.glob("*.rs"):
+    for rs_file in sorted(tests_dir.glob("*.rs")):
         rel_path = str(rs_file.relative_to(ROOT_DIR))
         try:
             with open(rs_file, "r", encoding="utf-8") as f:
@@ -47,6 +76,19 @@ def extract_feature_annotations_and_assertions(project_dir: Path):
             feat_match = feat_pattern.search(line)
             if feat_match:
                 feat_id = feat_match.group(1).strip()
+                annotated_name = feat_match.group(2)
+                
+                # Verify against master workbook
+                if feat_id in master_names:
+                    expected_name = master_names[feat_id]
+                    if not annotated_name or annotated_name.strip().lower() != expected_name.strip().lower():
+                        raise ValueError(
+                            f"MECHANICAL GATE ERROR in {rel_path}: Line {i+1}\n"
+                            f"Feature {feat_id} annotated as: '{annotated_name}'\n"
+                            f"Master workbook requires: '{expected_name}'\n"
+                            f"Format must be: // FEAT: {feat_id} \"{expected_name}\""
+                        )
+
                 accept_quote = ""
                 # Look ahead for optional ACCEPT or fn
                 j = i + 1
@@ -120,9 +162,11 @@ def main():
     print("\n| Feature ID | Project | Test Function | Assertions | Acceptance Summary | Status |")
     print("|---|---|---|---|---|---|")
     
+    master_names = load_master_workbook_names()
+    
     for slug in projects:
         proj_dir = ROOT_DIR / "projects" / slug / "backend"
-        annotations = extract_feature_annotations_and_assertions(proj_dir)
+        annotations = extract_feature_annotations_and_assertions(proj_dir, master_names)
         passing = run_project_tests(slug)
         
         jsonl_path = ROOT_DIR / "projects" / slug / "spec" / "features.jsonl"

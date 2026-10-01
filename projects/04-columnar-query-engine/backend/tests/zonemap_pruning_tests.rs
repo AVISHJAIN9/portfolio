@@ -1,4 +1,4 @@
-// FEAT: 04-053
+// FEAT: 04-053 "Zone maps"
 // ACCEPT: Zone maps record per-chunk min/max boundaries and prune row groups before deserialization
 use columnar_query_engine::execution::aggregate::{AggOp, AggValue};
 use columnar_query_engine::execution::vector::Predicate;

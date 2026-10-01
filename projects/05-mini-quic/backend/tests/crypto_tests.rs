@@ -4,7 +4,7 @@ use pf_crypto::{
     quic_chacha20_poly1305_encrypt, quic_key_update, x25519, x25519_public_key,
 };
 
-// FEAT: 05-015
+// FEAT: 05-015 "X25519 key agreement"
 // ACCEPT: RFC 7748 X25519 Diffie-Hellman key agreement produces expected 32-byte shared secret
 #[test]
 fn test_x25519_key_agreement_rfc7748() {
@@ -25,7 +25,7 @@ fn test_x25519_key_agreement_rfc7748() {
     assert_eq!(shared_secret, expected);
 }
 
-// FEAT: 05-016
+// FEAT: 05-016 "ChaCha20-Poly1305 packet protection"
 // ACCEPT: ChaCha20-Poly1305 packet protection validated against RFC 9001 Appendix A.5 vectors
 #[test]
 fn test_chacha20_poly1305_packet_protection() {
@@ -69,7 +69,7 @@ fn test_chacha20_poly1305_packet_protection() {
     assert_eq!(decrypted, plaintext);
 }
 
-// FEAT: 05-017
+// FEAT: 05-017 "Key derivation and key phase"
 // ACCEPT: Initial secrets, keys, IV, HP derivation and RFC 9001 Section 6 key update phase transitions
 #[test]
 fn test_rfc9001_initial_key_derivation() {

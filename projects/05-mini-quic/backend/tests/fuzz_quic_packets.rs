@@ -1,4 +1,4 @@
-// FEAT: 05-001
+// FEAT: 05-001 "QUIC packet header encoding/decoding"
 use bytes::Bytes;
 use mini_quic::wire::codec::PacketCodec;
 use rand::Rng;

@@ -1,10 +1,10 @@
 # PORTFOLIO STATE (Single Source of Truth)
 
 ## 0. HEADER
-- **session_no**: 7
-- **last_run_timestamp**: 2026-10-01T15:23:32Z
-- **last_commit**: aa2b944d8891f70d70aa88d41832b6870dcbc123
-- **current_wave**: Wave 7 (Evidence Audit, 05 Handshake + Interop, 04 Depth, 06 LSM Start)
+- **session_no**: 8
+- **last_run_timestamp**: 2026-10-01T15:52:08Z
+- **last_commit**: 49adde6b5f31402af580e13e984e7366e1e6d358
+- **current_wave**: Wave 8 (Report Integrity, Mechanical Gate, Loom Permutation, Scale Differential, TPC-H SF1, and LSM Fsync Durability)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
 
@@ -80,12 +80,12 @@
 
 | Project | Total Specs | Verified | Implemented | Scaffolded | Passing Tests | Criterion Latency / Throughput | Status Workbook Artifact |
 |:---|:---:|:---:|:---:|:---:|:---:|:---|:---|
-| `01-rollback-netcode-server` | 90 | 3 | 3 | 87 | 18 passed | not yet measured | [`01_STATUS.xlsx`](file://evidence/workbooks/01_STATUS.xlsx) |
-| `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | 148 | 5 passed | 340.55 µs | [`02_STATUS.xlsx`](file://evidence/workbooks/02_STATUS.xlsx) |
+| `01-rollback-netcode-server` | 90 | 3 | 3 | 87 | not yet measured | not yet measured | [`01_STATUS.xlsx`](file://evidence/workbooks/01_STATUS.xlsx) |
+| `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | 148 | not yet measured | 378.02 µs | [`02_STATUS.xlsx`](file://evidence/workbooks/02_STATUS.xlsx) |
 | `03-bytecode-vm-gc` | 141 | 0 | 0 | 141 | not yet measured | not yet measured | [`03_STATUS.xlsx`](file://evidence/workbooks/03_STATUS.xlsx) |
-| `04-columnar-query-engine` | 145 | 20 | 20 | 125 | 11 passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
-| `05-mini-quic` | 145 | 56 | 56 | 89 | 23 passed | 121.74 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
-| `06-lsm-kv-engine` | 145 | 24 | 24 | 121 | not yet measured | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
+| `04-columnar-query-engine` | 145 | 20 | 20 | 125 | 20 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
+| `05-mini-quic` | 145 | 56 | 56 | 89 | 56 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
+| `06-lsm-kv-engine` | 145 | 24 | 24 | 121 | 24 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
 
 ---
 
@@ -93,12 +93,15 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `aa2b944d88` | collected |
-| `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `aa2b944d88` | benchmark: 340.55 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `aa2b944d88` | collected |
-| `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `aa2b944d88` | collected |
-| `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `aa2b944d88` | benchmark: 121.74 ns |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `49adde6b5f` | collected |
+| `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `49adde6b5f` | collected |
+| `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
+| `tpch_sf1_results.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
+| `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
+| `mini_quic_interop.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `quic_benchmarks.json` | `05-mini-quic` | `cargo bench` | `2d35bd2f97` | collected |
+| `lsm_kv_engine_benchmarks.json` | `06-lsm-kv-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/06-lsm-kv-engine/backend/Cargo.toml --bench lsm_bench -- --baseline new` | `49adde6b5f` | collected |
 
 ---
 
@@ -138,7 +141,7 @@
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `aa2b944d88`.
+1. Pull latest workspace state: commit `49adde6b5f`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.

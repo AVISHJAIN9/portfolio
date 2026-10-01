@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Write;
 use tempfile::tempdir;
 
-// FEAT: 06-014
+// FEAT: 06-014 "WAL record format"
 // ACCEPT: Structured binary WAL record encoding with sequence number, op type, and payload lengths
 #[test]
 fn test_wal_record_format_encoding() {
@@ -21,7 +21,7 @@ fn test_wal_record_format_encoding() {
     assert_eq!(seq, 1);
 }
 
-// FEAT: 06-015
+// FEAT: 06-015 "WAL append path"
 // ACCEPT: Append-only write operations write sequential entries to active log segment
 #[test]
 fn test_wal_append_sequential_records() {
@@ -44,7 +44,7 @@ fn test_wal_append_sequential_records() {
     assert_eq!(max_seq, 10);
 }
 
-// FEAT: 06-016
+// FEAT: 06-016 "WAL segment rotation"
 // ACCEPT: Per-record CRC32 checksum detection detects payload bitflips and corrupted logs
 #[test]
 fn test_wal_crc32_corruption_detection() {
@@ -70,7 +70,7 @@ fn test_wal_crc32_corruption_detection() {
     assert_eq!(records.len(), 0);
 }
 
-// FEAT: 06-017
+// FEAT: 06-017 "WAL checksums"
 // ACCEPT: Startup recovery reconstructs memtable state from valid WAL records
 #[test]
 fn test_wal_recovery_on_startup() {
@@ -98,7 +98,7 @@ fn test_wal_recovery_on_startup() {
     assert_eq!(records[1].op_type, WalOpType::Delete);
 }
 
-// FEAT: 06-018
+// FEAT: 06-018 "fsync policy modes"
 // ACCEPT: Incomplete tail writes truncated during power loss are safely discarded
 #[test]
 fn test_wal_tail_truncation_recovery() {
@@ -124,7 +124,7 @@ fn test_wal_tail_truncation_recovery() {
     assert_eq!(records[0].key, b"complete");
 }
 
-// FEAT: 06-019
+// FEAT: 06-019 "group commit"
 // ACCEPT: fsync durability modes guarantee acknowledged writes persist across crashes
 #[test]
 fn test_wal_fsync_durability_guarantee() {

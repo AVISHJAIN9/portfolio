@@ -10,3 +10,5 @@ pf-errors = { path = "../pf-errors" }
 
 [dev-dependencies]
 criterion = { workspace = true }
+loom = "0.7"
+

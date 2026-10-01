@@ -5,7 +5,12 @@ PYTHON ?= $(shell if [ -f /Users/avishjain/venv/bin/python3 ]; then echo /Users/
 PYTEST ?= $(shell if [ -f /Users/avishjain/venv/bin/pytest ]; then echo /Users/avishjain/venv/bin/pytest; else echo pytest; fi)
 CARGO := cargo
 
-.PHONY: all help ci demo bench frames train export state dedupe clean
+.PHONY: all help ci demo bench loom frames train export state dedupe clean
+
+loom:
+	@echo "=== Running Loom Permutation Concurrency Tests (LOOM_MAX_PREEMPTIONS=3) ==="
+	@LOOM_MAX_PREEMPTIONS=3 cargo test --manifest-path platform/rust/Cargo.toml --lib test_loom
+
 
 help:
 	@echo "Portfolio Forge: 20-Project Systems Engineering Monorepo"

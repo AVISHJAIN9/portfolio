@@ -1,0 +1,11 @@
+{
+  "benchmark": "QUIC Interop (aioquic)",
+  "aioquic_version": "1.3.0",
+  "commit": "49adde6b5f31402af580e13e984e7366e1e6d358",
+  "status": "GAP_RECORDED",
+  "details": {
+    "initial_header_parse": "PASSED",
+    "quic_v1_negotiation": "PASSED",
+    "gap_reason": "Live socket 1-RTT encrypted transfer with aioquic requires full Phase 2 TLS 1.3 certificate trust store integration; feature 05-139 remains honestly labeled as Implemented pending Phase 2 TLS engine."
+  }
+}

@@ -1,7 +1,7 @@
 use bytes::Bytes;
 use mini_quic::stream::{Stream, StreamManager, StreamState, StreamType};
 
-// FEAT: 05-047
+// FEAT: 05-047 "Bidirectional stream management"
 // ACCEPT: Manage bidirectional stream creation, read/write state transitions, and FIN handling
 #[test]
 fn test_bidirectional_stream_management() {
@@ -13,7 +13,7 @@ fn test_bidirectional_stream_management() {
     assert!(stream.stream_type.is_client_initiated());
 }
 
-// FEAT: 05-048
+// FEAT: 05-048 "Unidirectional stream management"
 // ACCEPT: Manage unidirectional stream creation and receive-only or send-only boundaries
 #[test]
 fn test_unidirectional_stream_management() {
@@ -25,7 +25,7 @@ fn test_unidirectional_stream_management() {
     assert!(stream.stream_type.is_client_initiated());
 }
 
-// FEAT: 05-049
+// FEAT: 05-049 "Stream ID allocation"
 // ACCEPT: Enforce RFC 9000 stream ID allocation bit encoding (Client=0, Server=1, Bidi=0, Uni=2)
 #[test]
 fn test_stream_id_allocation() {
@@ -43,7 +43,7 @@ fn test_stream_id_allocation() {
     assert_eq!(server_sm.allocate_stream_id(false).unwrap(), 7);
 }
 
-// FEAT: 05-050
+// FEAT: 05-050 "Stream receive reassembly"
 // ACCEPT: Reassemble contiguous stream data fragments arriving out-of-order
 #[test]
 fn test_stream_receive_reassembly() {
@@ -60,7 +60,7 @@ fn test_stream_receive_reassembly() {
     assert_eq!(stream.recv_offset, 10);
 }
 
-// FEAT: 05-051
+// FEAT: 05-051 "Stream send buffering"
 // ACCEPT: Buffer outgoing stream bytes and track monotonic stream offset progression
 #[test]
 fn test_stream_send_buffering() {
@@ -71,7 +71,7 @@ fn test_stream_send_buffering() {
     assert_eq!(&stream.send_buffer[..], b"HTTP/3 Request Headers");
 }
 
-// FEAT: 05-052
+// FEAT: 05-052 "Stream-level flow control"
 // ACCEPT: Block stream writes exceeding stream-level flow control credit limit
 #[test]
 fn test_stream_level_flow_control() {
@@ -80,7 +80,7 @@ fn test_stream_level_flow_control() {
     assert!(stream.write_data(b"extra", false).is_err());
 }
 
-// FEAT: 05-053
+// FEAT: 05-053 "Connection-level flow control"
 // ACCEPT: Track aggregate stream bytes and block writes exceeding connection-level MAX_DATA
 #[test]
 fn test_connection_level_flow_control() {
@@ -94,7 +94,7 @@ fn test_connection_level_flow_control() {
     assert!(sm.send_stream_data(s0, b"overflow", false).is_err());
 }
 
-// FEAT: 05-054
+// FEAT: 05-054 "MAX_DATA enforcement"
 // ACCEPT: Update connection flow control window upon receiving MAX_DATA frame credit
 #[test]
 fn test_max_data_enforcement() {
@@ -108,7 +108,7 @@ fn test_max_data_enforcement() {
     assert!(sm.send_stream_data(s0, b"123456", false).is_ok());
 }
 
-// FEAT: 05-055
+// FEAT: 05-055 "MAX_STREAM_DATA enforcement"
 // ACCEPT: Update individual stream flow control credit upon receiving MAX_STREAM_DATA
 #[test]
 fn test_max_stream_data_enforcement() {
@@ -122,7 +122,7 @@ fn test_max_stream_data_enforcement() {
     assert!(sm.send_stream_data(s0, b"more", false).is_ok());
 }
 
-// FEAT: 05-056
+// FEAT: 05-056 "MAX_STREAMS enforcement"
 // ACCEPT: Limit concurrent stream creation based on peer MAX_STREAMS credit
 #[test]
 fn test_max_streams_enforcement() {
@@ -138,7 +138,7 @@ fn test_max_streams_enforcement() {
     assert_eq!(sm.allocate_stream_id(true).unwrap(), 8);
 }
 
-// FEAT: 05-057
+// FEAT: 05-057 "Stream reset handling"
 // ACCEPT: Handle RESET_STREAM frame, clear send buffer, and enter ResetSent state
 #[test]
 fn test_stream_reset_handling() {

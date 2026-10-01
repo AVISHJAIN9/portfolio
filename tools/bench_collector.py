@@ -62,6 +62,7 @@ def main():
         ("05-mini-quic", "quic_bench", {"dataset_size": 10000, "iterations": 100000}),
         ("04-columnar-query-engine", "columnar_bench", {"rows": 100000, "column_types": ["Int64"], "selectivity": 0.50, "threads": 1}),
         ("02-hnsw-filtered-vector-index", "hnsw_bench", {"vectors": 10000, "dimensions": 128, "k": 10, "ef_search": 64, "empirical_recall_at_10": 1.0000}),
+        ("06-lsm-kv-engine", "lsm_bench", {"keys": 10000, "fsync_mode": "full", "threads": 1}),
     ]
     
     for slug, bench_name, extra_meta in benches_to_run:

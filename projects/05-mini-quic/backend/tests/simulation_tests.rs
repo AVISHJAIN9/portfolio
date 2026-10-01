@@ -7,7 +7,7 @@ use pf_sim::{DeterministicRng, DiscreteEventSimulator};
 use sha2::{Digest, Sha256};
 use std::collections::VecDeque;
 
-// FEAT: 05-138
+// FEAT: 05-138 "End-to-end simulated network tests"
 // ACCEPT: Simulated network transfer of 100 KB payload across 0/5/20% packet loss with retransmissions and SHA-256 match
 #[test]
 fn test_simulated_network_transfer_at_loss_rates() {

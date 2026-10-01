@@ -1,7 +1,7 @@
 use lsm_kv_engine::engine::LsmEngine;
 use tempfile::tempdir;
 
-// FEAT: 06-001
+// FEAT: 06-001 "KV Put API"
 // ACCEPT: Put key-value pair inserts entry into WAL and active memtable
 #[test]
 fn test_kv_put_api() {
@@ -12,7 +12,7 @@ fn test_kv_put_api() {
     assert_eq!(val, Some(b"Alice".to_vec()));
 }
 
-// FEAT: 06-002
+// FEAT: 06-002 "KV Get API"
 // ACCEPT: Get point lookup searches active memtable, immutable tables, and SSTables
 #[test]
 fn test_kv_get_api() {
@@ -23,7 +23,7 @@ fn test_kv_get_api() {
     assert_eq!(engine.get(b"non_existent").unwrap(), None);
 }
 
-// FEAT: 06-003
+// FEAT: 06-003 "KV Delete API"
 // ACCEPT: Delete writes tombstone marker to mask existing keys across all levels
 #[test]
 fn test_kv_delete_api() {
@@ -36,7 +36,7 @@ fn test_kv_delete_api() {
     assert_eq!(engine.get(b"del_target").unwrap(), None);
 }
 
-// FEAT: 06-004
+// FEAT: 06-004 "Batch write API"
 // ACCEPT: Atomic batch write applies sequence of puts and deletes
 #[test]
 fn test_batch_write_api() {
@@ -54,7 +54,7 @@ fn test_batch_write_api() {
     assert_eq!(engine.get(b"batch:2").unwrap(), Some(b"v2".to_vec()));
 }
 
-// FEAT: 06-005
+// FEAT: 06-005 "Batch read API"
 // ACCEPT: Batch read retrieves multiple keys concurrently
 #[test]
 fn test_batch_read_api() {
@@ -69,7 +69,7 @@ fn test_batch_read_api() {
     assert_eq!(v2, Some(b"v2".to_vec()));
 }
 
-// FEAT: 06-006
+// FEAT: 06-006 "Prefix scan API"
 // ACCEPT: Prefix scan returns all key-value entries matching common byte prefix
 #[test]
 fn test_prefix_scan_api() {
@@ -85,7 +85,7 @@ fn test_prefix_scan_api() {
     assert_eq!(users[1].0, b"user:002");
 }
 
-// FEAT: 06-007
+// FEAT: 06-007 "Range scan API"
 // ACCEPT: Range scan iterates over [start_key, end_key] bounds in lexicographical order
 #[test]
 fn test_range_scan_api() {
@@ -102,7 +102,7 @@ fn test_range_scan_api() {
     assert_eq!(range[1].0, b"c");
 }
 
-// FEAT: 06-008
+// FEAT: 06-008 "Iterator API"
 // ACCEPT: Forward iterator traverses entries across memtable and SSTable levels
 #[test]
 fn test_iterator_api() {
@@ -116,7 +116,7 @@ fn test_iterator_api() {
     assert_eq!(all.len(), 5);
 }
 
-// FEAT: 06-009
+// FEAT: 06-009 "Snapshot API"
 // ACCEPT: Consistent snapshot view isolates point-in-time reads against concurrent mutations
 #[test]
 fn test_snapshot_api() {

@@ -3,7 +3,7 @@ use columnar_query_engine::execution::vector::{Predicate, SelectionVector};
 use columnar_query_engine::optimizer::sql::{LogicalOptimizer, SqlLexer, SqlParser, Token};
 use columnar_query_engine::storage::chunk::ColumnChunk;
 
-// FEAT: 04-021
+// FEAT: 04-021 "SQL lexer/tokenizer"
 // ACCEPT: Lexical tokenizer converts SQL text stream into typed keyword, symbol, and literal tokens
 #[test]
 fn test_sql_lexer_tokenization() {
@@ -21,7 +21,7 @@ fn test_sql_lexer_tokenization() {
     assert_eq!(tokens[9], Token::Number(100));
 }
 
-// FEAT: 04-022
+// FEAT: 04-022 "SQL parser"
 // ACCEPT: Recursive descent parser transforms token sequences into structured SQL AST statements
 #[test]
 fn test_sql_parser_select_where_join() {
@@ -33,7 +33,7 @@ fn test_sql_parser_select_where_join() {
     assert_eq!(ast.where_clauses.len(), 1);
 }
 
-// FEAT: 04-023
+// FEAT: 04-023 "SQL AST model"
 // ACCEPT: Strongly-typed AST nodes model SELECT, FROM, WHERE, JOIN, and aggregation constructs
 #[test]
 fn test_sql_ast_representation() {
@@ -43,7 +43,7 @@ fn test_sql_ast_representation() {
     assert!(ast.join_table.is_some());
 }
 
-// FEAT: 04-024
+// FEAT: 04-024 "Semantic analyzer"
 // ACCEPT: Semantic analyzer validates table references, column existence, and type compatibility
 #[test]
 fn test_semantic_analyzer_validation() {
@@ -53,7 +53,7 @@ fn test_semantic_analyzer_validation() {
     assert!(!ast.select_items.is_empty());
 }
 
-// FEAT: 04-025
+// FEAT: 04-025 "Expression evaluator"
 // ACCEPT: Vectorized expression evaluator computes scalar operations and comparative predicates
 #[test]
 fn test_expression_evaluator() {
@@ -65,7 +65,7 @@ fn test_expression_evaluator() {
     assert!(!chunk.zone_map.can_prune_gt(50));
 }
 
-// FEAT: 04-027
+// FEAT: 04-027 "SQL JOIN support"
 // ACCEPT: Hash-join algorithm builds in-memory hash table on build relation and probes stream
 #[test]
 fn test_hash_join_execution() {
@@ -74,7 +74,7 @@ fn test_hash_join_execution() {
     assert_eq!(ast.join_table.unwrap().0, "customers");
 }
 
-// FEAT: 04-028
+// FEAT: 04-028 "GROUP BY / aggregation"
 // ACCEPT: Grouped hash aggregation computes SUM and COUNT aggregates across partition buckets
 #[test]
 fn test_hash_aggregate_group_by() {
@@ -85,7 +85,7 @@ fn test_hash_aggregate_group_by() {
     assert!(matches!(plan.aggregate, Some(AggOp::Sum(_))));
 }
 
-// FEAT: 04-032
+// FEAT: 04-032 "ORDER BY / LIMIT"
 // ACCEPT: ORDER BY and LIMIT clauses sort output vectors and truncate result row slices
 #[test]
 fn test_order_by_limit_clauses() {
@@ -96,7 +96,7 @@ fn test_order_by_limit_clauses() {
     assert_eq!(sliced, &[10, 20, 30]);
 }
 
-// FEAT: 04-033
+// FEAT: 04-033 "DISTINCT"
 // ACCEPT: DISTINCT clause deduplicates result tuple rows across selected projection columns
 #[test]
 fn test_distinct_deduplication() {
@@ -109,7 +109,7 @@ fn test_distinct_deduplication() {
     assert_eq!(distinct, vec!["A", "B", "C"]);
 }
 
-// FEAT: 04-034
+// FEAT: 04-034 "HAVING"
 // ACCEPT: HAVING clause filters aggregated group rows after GROUP BY evaluation
 #[test]
 fn test_having_filter_aggregation() {
@@ -120,7 +120,7 @@ fn test_having_filter_aggregation() {
     assert_eq!(filtered[1].0, "ASIA");
 }
 
-// FEAT: 04-035
+// FEAT: 04-035 "NULL semantics"
 // ACCEPT: Three-valued logic (NULL handling) correctly treats NULL comparisons and bitmap masks
 #[test]
 fn test_null_semantics_handling() {
@@ -131,7 +131,7 @@ fn test_null_semantics_handling() {
     assert_eq!(valid_sum, 90);
 }
 
-// FEAT: 04-040
+// FEAT: 04-040 "Predicate pushdown"
 // ACCEPT: Rule-based optimizer pushes filtering predicates down to scan operators before join
 #[test]
 fn test_predicate_pushdown_optimization() {
@@ -142,7 +142,7 @@ fn test_predicate_pushdown_optimization() {
     assert!(matches!(plan.predicates[1], Predicate::Gt(_, _)));
 }
 
-// FEAT: 04-041
+// FEAT: 04-041 "Projection pruning"
 // ACCEPT: Projection pruning removes unused columns from physical scan projection lists
 #[test]
 fn test_projection_pruning_optimization() {
@@ -152,7 +152,7 @@ fn test_projection_pruning_optimization() {
     assert_eq!(plan.projections, vec!["total_price"]);
 }
 
-// FEAT: 04-079
+// FEAT: 04-079 "Selection vectors"
 // ACCEPT: Selection vectors represent row index filters without copying intermediate columnar data
 #[test]
 fn test_selection_vector_filtering() {

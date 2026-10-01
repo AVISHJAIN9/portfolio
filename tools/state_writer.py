@@ -126,10 +126,10 @@ def main():
     state_content = f"""# PORTFOLIO STATE (Single Source of Truth)
 
 ## 0. HEADER
-- **session_no**: 7
+- **session_no**: 8
 - **last_run_timestamp**: {timestamp}
 - **last_commit**: {git_commit}
-- **current_wave**: Wave 7 (Evidence Audit, 05 Handshake + Interop, 04 Depth, 06 LSM Start)
+- **current_wave**: Wave 8 (Report Integrity, Mechanical Gate, Loom Permutation, Scale Differential, TPC-H SF1, and LSM Fsync Durability)
 - **monorepo_root**: {ROOT_DIR}
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
 
@@ -208,11 +208,10 @@ def main():
         if c["total"] == 0:
             continue
         slot = slug.split("-")[0]
-        tests_passed = "not yet measured"
-        if slug == "01-rollback-netcode-server": tests_passed = "18 passed"
-        elif slug == "02-hnsw-filtered-vector-index": tests_passed = "5 passed"
-        elif slug == "04-columnar-query-engine": tests_passed = "11 passed"
-        elif slug == "05-mini-quic": tests_passed = "23 passed"
+        # Calculate passing test counts from evidence
+        evidence_file = ROOT_DIR / "evidence" / "feature_evidence.csv"
+        matching_ev = [r for r in load_evidence() if len(r) > 1 and r[1] == slug]
+        tests_passed = f"{len(matching_ev)} verified tests passed" if matching_ev else "not yet measured"
 
         bench_str = "not yet measured"
         for fname, bdata in benchmarks:

@@ -1,7 +1,7 @@
 use bytes::{Bytes, BytesMut};
 use mini_quic::wire::frame::{AckFrame, AckRange, CryptoFrame, Frame, StreamFrame};
 
-// FEAT: 05-006
+// FEAT: 05-006 "Frame type registry"
 // ACCEPT: Registry and serialization for core QUIC frame types (PING, PADDING, ACK, RESET, STREAM)
 #[test]
 fn test_frame_type_registry() {
@@ -13,7 +13,7 @@ fn test_frame_type_registry() {
     assert_eq!(decoded, Frame::Ping);
 }
 
-// FEAT: 05-007
+// FEAT: 05-007 "STREAM frame encoding/decoding"
 // ACCEPT: Encode and decode STREAM frames with stream ID, offset, data payload and FIN flag
 #[test]
 fn test_stream_frame_codec() {
@@ -38,7 +38,7 @@ fn test_stream_frame_codec() {
     }
 }
 
-// FEAT: 05-008
+// FEAT: 05-008 "ACK frame encoding/decoding"
 // ACCEPT: Encode and decode ACK frames with largest acknowledged, ack delay, and ack ranges
 #[test]
 fn test_ack_frame_codec() {
@@ -64,7 +64,7 @@ fn test_ack_frame_codec() {
     }
 }
 
-// FEAT: 05-009
+// FEAT: 05-009 "CRYPTO frame handling"
 // ACCEPT: Handle CRYPTO frames containing TLS handshake tokens across packet number spaces
 #[test]
 fn test_crypto_frame_handling() {
@@ -85,7 +85,7 @@ fn test_crypto_frame_handling() {
     }
 }
 
-// FEAT: 05-010
+// FEAT: 05-010 "PING/PADDING/CONNECTION_CLOSE frames"
 // ACCEPT: Encode and decode PING, PADDING, and CONNECTION_CLOSE control frames
 #[test]
 fn test_control_frames_codec() {
@@ -111,7 +111,7 @@ fn test_control_frames_codec() {
     }
 }
 
-// FEAT: 05-011
+// FEAT: 05-011 "MAX_DATA/MAX_STREAM_DATA frames"
 // ACCEPT: Encode and decode MAX_DATA and MAX_STREAM_DATA connection flow control frames
 #[test]
 fn test_max_data_and_max_stream_data_frames() {
@@ -139,7 +139,7 @@ fn test_max_data_and_max_stream_data_frames() {
     );
 }
 
-// FEAT: 05-012
+// FEAT: 05-012 "MAX_STREAMS frames"
 // ACCEPT: Encode and decode MAX_STREAMS frames for bidirectional and unidirectional streams
 #[test]
 fn test_max_streams_frames() {

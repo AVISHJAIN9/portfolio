@@ -1,0 +1,2177 @@
+{
+  "04-001": {
+    "id": "04-001",
+    "name": "SQL editor & query workspace",
+    "priority": "P1"
+  },
+  "04-002": {
+    "id": "04-002",
+    "name": "SQL syntax highlighting",
+    "priority": "P1"
+  },
+  "04-003": {
+    "id": "04-003",
+    "name": "Autocomplete & schema hints",
+    "priority": "P1"
+  },
+  "04-004": {
+    "id": "04-004",
+    "name": "Query formatting",
+    "priority": "P2"
+  },
+  "04-005": {
+    "id": "04-005",
+    "name": "Query history",
+    "priority": "P1"
+  },
+  "04-006": {
+    "id": "04-006",
+    "name": "Saved queries",
+    "priority": "P1"
+  },
+  "04-007": {
+    "id": "04-007",
+    "name": "Query parameters UI",
+    "priority": "P1"
+  },
+  "04-008": {
+    "id": "04-008",
+    "name": "Result grid",
+    "priority": "P1"
+  },
+  "04-009": {
+    "id": "04-009",
+    "name": "Result export",
+    "priority": "P2"
+  },
+  "04-010": {
+    "id": "04-010",
+    "name": "Query plan visualizer",
+    "priority": "P1"
+  },
+  "04-011": {
+    "id": "04-011",
+    "name": "Operator metrics dashboard",
+    "priority": "P1"
+  },
+  "04-012": {
+    "id": "04-012",
+    "name": "Interactive benchmark dashboard",
+    "priority": "P1"
+  },
+  "04-013": {
+    "id": "04-013",
+    "name": "Access-control UI",
+    "priority": "P1"
+  },
+  "04-014": {
+    "id": "04-014",
+    "name": "Data source explorer",
+    "priority": "P1"
+  },
+  "04-015": {
+    "id": "04-015",
+    "name": "Schema explorer",
+    "priority": "P1"
+  },
+  "04-016": {
+    "id": "04-016",
+    "name": "Data quality dashboard",
+    "priority": "P2"
+  },
+  "04-017": {
+    "id": "04-017",
+    "name": "Ingestion job monitor",
+    "priority": "P1"
+  },
+  "04-018": {
+    "id": "04-018",
+    "name": "Workload dashboard",
+    "priority": "P2"
+  },
+  "04-019": {
+    "id": "04-019",
+    "name": "Admin configuration UI",
+    "priority": "P2"
+  },
+  "04-020": {
+    "id": "04-020",
+    "name": "Alerts & notifications UI",
+    "priority": "P1"
+  },
+  "04-021": {
+    "id": "04-021",
+    "name": "SQL lexer/tokenizer",
+    "priority": "P0"
+  },
+  "04-022": {
+    "id": "04-022",
+    "name": "SQL parser",
+    "priority": "P0"
+  },
+  "04-023": {
+    "id": "04-023",
+    "name": "SQL AST model",
+    "priority": "P0"
+  },
+  "04-024": {
+    "id": "04-024",
+    "name": "Semantic analyzer",
+    "priority": "P0"
+  },
+  "04-025": {
+    "id": "04-025",
+    "name": "Expression evaluator",
+    "priority": "P0"
+  },
+  "04-026": {
+    "id": "04-026",
+    "name": "Built-in function registry",
+    "priority": "P1"
+  },
+  "04-027": {
+    "id": "04-027",
+    "name": "SQL JOIN support",
+    "priority": "P0"
+  },
+  "04-028": {
+    "id": "04-028",
+    "name": "GROUP BY / aggregation",
+    "priority": "P0"
+  },
+  "04-029": {
+    "id": "04-029",
+    "name": "Window functions",
+    "priority": "P2"
+  },
+  "04-030": {
+    "id": "04-030",
+    "name": "CTEs",
+    "priority": "P1"
+  },
+  "04-031": {
+    "id": "04-031",
+    "name": "Subqueries",
+    "priority": "P1"
+  },
+  "04-032": {
+    "id": "04-032",
+    "name": "ORDER BY / LIMIT",
+    "priority": "P0"
+  },
+  "04-033": {
+    "id": "04-033",
+    "name": "DISTINCT",
+    "priority": "P0"
+  },
+  "04-034": {
+    "id": "04-034",
+    "name": "HAVING",
+    "priority": "P0"
+  },
+  "04-035": {
+    "id": "04-035",
+    "name": "NULL semantics",
+    "priority": "P0"
+  },
+  "04-036": {
+    "id": "04-036",
+    "name": "Prepared statements",
+    "priority": "P1"
+  },
+  "04-037": {
+    "id": "04-037",
+    "name": "Query cancellation",
+    "priority": "P0"
+  },
+  "04-038": {
+    "id": "04-038",
+    "name": "Transactions / isolation",
+    "priority": "P1"
+  },
+  "04-039": {
+    "id": "04-039",
+    "name": "Logical optimizer",
+    "priority": "P0"
+  },
+  "04-040": {
+    "id": "04-040",
+    "name": "Predicate pushdown",
+    "priority": "P0"
+  },
+  "04-041": {
+    "id": "04-041",
+    "name": "Projection pruning",
+    "priority": "P0"
+  },
+  "04-042": {
+    "id": "04-042",
+    "name": "Join reordering",
+    "priority": "P0"
+  },
+  "04-043": {
+    "id": "04-043",
+    "name": "Cost model",
+    "priority": "P0"
+  },
+  "04-044": {
+    "id": "04-044",
+    "name": "Plan cache",
+    "priority": "P1"
+  },
+  "04-045": {
+    "id": "04-045",
+    "name": "Adaptive re-optimization",
+    "priority": "P3"
+  },
+  "04-046": {
+    "id": "04-046",
+    "name": "Columnar table format",
+    "priority": "P0"
+  },
+  "04-047": {
+    "id": "04-047",
+    "name": "Row groups",
+    "priority": "P0"
+  },
+  "04-048": {
+    "id": "04-048",
+    "name": "Validity/null bitmap",
+    "priority": "P0"
+  },
+  "04-049": {
+    "id": "04-049",
+    "name": "Dictionary encoding",
+    "priority": "P0"
+  },
+  "04-050": {
+    "id": "04-050",
+    "name": "RLE encoding",
+    "priority": "P0"
+  },
+  "04-051": {
+    "id": "04-051",
+    "name": "Delta encoding",
+    "priority": "P1"
+  },
+  "04-052": {
+    "id": "04-052",
+    "name": "Bit packing",
+    "priority": "P1"
+  },
+  "04-053": {
+    "id": "04-053",
+    "name": "Zone maps",
+    "priority": "P0"
+  },
+  "04-054": {
+    "id": "04-054",
+    "name": "Bloom filters",
+    "priority": "P1"
+  },
+  "04-055": {
+    "id": "04-055",
+    "name": "File statistics",
+    "priority": "P0"
+  },
+  "04-056": {
+    "id": "04-056",
+    "name": "Parquet reader",
+    "priority": "P0"
+  },
+  "04-057": {
+    "id": "04-057",
+    "name": "Parquet writer",
+    "priority": "P1"
+  },
+  "04-058": {
+    "id": "04-058",
+    "name": "CSV reader",
+    "priority": "P1"
+  },
+  "04-059": {
+    "id": "04-059",
+    "name": "Arrow interoperability",
+    "priority": "P1"
+  },
+  "04-060": {
+    "id": "04-060",
+    "name": "Zero-copy buffers",
+    "priority": "P0"
+  },
+  "04-061": {
+    "id": "04-061",
+    "name": "Buffer manager",
+    "priority": "P0"
+  },
+  "04-062": {
+    "id": "04-062",
+    "name": "Memory pool",
+    "priority": "P0"
+  },
+  "04-063": {
+    "id": "04-063",
+    "name": "Spill-to-disk",
+    "priority": "P1"
+  },
+  "04-064": {
+    "id": "04-064",
+    "name": "External sorting",
+    "priority": "P1"
+  },
+  "04-065": {
+    "id": "04-065",
+    "name": "External hash aggregation",
+    "priority": "P1"
+  },
+  "04-066": {
+    "id": "04-066",
+    "name": "Partition pruning",
+    "priority": "P1"
+  },
+  "04-067": {
+    "id": "04-067",
+    "name": "File pruning",
+    "priority": "P0"
+  },
+  "04-068": {
+    "id": "04-068",
+    "name": "Compression codecs",
+    "priority": "P1"
+  },
+  "04-069": {
+    "id": "04-069",
+    "name": "Checksums/integrity",
+    "priority": "P1"
+  },
+  "04-070": {
+    "id": "04-070",
+    "name": "Atomic file commits",
+    "priority": "P1"
+  },
+  "04-071": {
+    "id": "04-071",
+    "name": "Manifest/catalog files",
+    "priority": "P1"
+  },
+  "04-072": {
+    "id": "04-072",
+    "name": "Compaction",
+    "priority": "P2"
+  },
+  "04-073": {
+    "id": "04-073",
+    "name": "Partitioning strategy",
+    "priority": "P2"
+  },
+  "04-074": {
+    "id": "04-074",
+    "name": "Tiered storage",
+    "priority": "P3"
+  },
+  "04-075": {
+    "id": "04-075",
+    "name": "Object-store connector",
+    "priority": "P2"
+  },
+  "04-076": {
+    "id": "04-076",
+    "name": "Local filesystem connector",
+    "priority": "P0"
+  },
+  "04-077": {
+    "id": "04-077",
+    "name": "Snapshot/restore",
+    "priority": "P1"
+  },
+  "04-078": {
+    "id": "04-078",
+    "name": "Vectorized execution",
+    "priority": "P0"
+  },
+  "04-079": {
+    "id": "04-079",
+    "name": "Selection vectors",
+    "priority": "P0"
+  },
+  "04-080": {
+    "id": "04-080",
+    "name": "Morsel-driven scheduling",
+    "priority": "P0"
+  },
+  "04-081": {
+    "id": "04-081",
+    "name": "Parallel scans",
+    "priority": "P0"
+  },
+  "04-082": {
+    "id": "04-082",
+    "name": "Parallel hash join",
+    "priority": "P0"
+  },
+  "04-083": {
+    "id": "04-083",
+    "name": "Parallel aggregation",
+    "priority": "P0"
+  },
+  "04-084": {
+    "id": "04-084",
+    "name": "Task scheduler",
+    "priority": "P0"
+  },
+  "04-085": {
+    "id": "04-085",
+    "name": "Thread pool",
+    "priority": "P0"
+  },
+  "04-086": {
+    "id": "04-086",
+    "name": "Work stealing",
+    "priority": "P1"
+  },
+  "04-087": {
+    "id": "04-087",
+    "name": "SIMD kernels",
+    "priority": "P2"
+  },
+  "04-088": {
+    "id": "04-088",
+    "name": "Expression fusion",
+    "priority": "P2"
+  },
+  "04-089": {
+    "id": "04-089",
+    "name": "Late materialization",
+    "priority": "P2"
+  },
+  "04-090": {
+    "id": "04-090",
+    "name": "Runtime filters",
+    "priority": "P1"
+  },
+  "04-091": {
+    "id": "04-091",
+    "name": "Dynamic partition pruning",
+    "priority": "P2"
+  },
+  "04-092": {
+    "id": "04-092",
+    "name": "Pipeline execution",
+    "priority": "P1"
+  },
+  "04-093": {
+    "id": "04-093",
+    "name": "Backpressure",
+    "priority": "P1"
+  },
+  "04-094": {
+    "id": "04-094",
+    "name": "Adaptive batch sizing",
+    "priority": "P2"
+  },
+  "04-095": {
+    "id": "04-095",
+    "name": "Operator fusion",
+    "priority": "P2"
+  },
+  "04-096": {
+    "id": "04-096",
+    "name": "JIT expression compilation",
+    "priority": "P3"
+  },
+  "04-097": {
+    "id": "04-097",
+    "name": "Query resource governor",
+    "priority": "P1"
+  },
+  "04-098": {
+    "id": "04-098",
+    "name": "Admission control",
+    "priority": "P1"
+  },
+  "04-099": {
+    "id": "04-099",
+    "name": "Fair scheduling",
+    "priority": "P1"
+  },
+  "04-100": {
+    "id": "04-100",
+    "name": "Timeouts",
+    "priority": "P0"
+  },
+  "04-101": {
+    "id": "04-101",
+    "name": "Retry policy",
+    "priority": "P1"
+  },
+  "04-102": {
+    "id": "04-102",
+    "name": "Idempotent execution",
+    "priority": "P1"
+  },
+  "04-103": {
+    "id": "04-103",
+    "name": "Deterministic execution mode",
+    "priority": "P2"
+  },
+  "04-104": {
+    "id": "04-104",
+    "name": "Metadata catalog",
+    "priority": "P0"
+  },
+  "04-105": {
+    "id": "04-105",
+    "name": "Statistics catalog",
+    "priority": "P0"
+  },
+  "04-106": {
+    "id": "04-106",
+    "name": "Query history store",
+    "priority": "P1"
+  },
+  "04-107": {
+    "id": "04-107",
+    "name": "Execution metrics store",
+    "priority": "P1"
+  },
+  "04-108": {
+    "id": "04-108",
+    "name": "Result cache metadata",
+    "priority": "P2"
+  },
+  "04-109": {
+    "id": "04-109",
+    "name": "Plan cache metadata",
+    "priority": "P1"
+  },
+  "04-110": {
+    "id": "04-110",
+    "name": "Job/workflow state",
+    "priority": "P1"
+  },
+  "04-111": {
+    "id": "04-111",
+    "name": "Audit log store",
+    "priority": "P1"
+  },
+  "04-112": {
+    "id": "04-112",
+    "name": "Configuration/version store",
+    "priority": "P1"
+  },
+  "04-113": {
+    "id": "04-113",
+    "name": "Experiment registry",
+    "priority": "P2"
+  },
+  "04-114": {
+    "id": "04-114",
+    "name": "Model registry",
+    "priority": "P2"
+  },
+  "04-115": {
+    "id": "04-115",
+    "name": "Feature store",
+    "priority": "P3"
+  },
+  "04-116": {
+    "id": "04-116",
+    "name": "Learned cardinality estimator",
+    "priority": "P2"
+  },
+  "04-117": {
+    "id": "04-117",
+    "name": "Workload classification",
+    "priority": "P2"
+  },
+  "04-118": {
+    "id": "04-118",
+    "name": "Query latency prediction",
+    "priority": "P2"
+  },
+  "04-119": {
+    "id": "04-119",
+    "name": "Memory usage prediction",
+    "priority": "P2"
+  },
+  "04-120": {
+    "id": "04-120",
+    "name": "Adaptive join selection",
+    "priority": "P3"
+  },
+  "04-121": {
+    "id": "04-121",
+    "name": "Adaptive compression selection",
+    "priority": "P3"
+  },
+  "04-122": {
+    "id": "04-122",
+    "name": "Anomaly detection",
+    "priority": "P1"
+  },
+  "04-123": {
+    "id": "04-123",
+    "name": "AI SQL assistant",
+    "priority": "P2"
+  },
+  "04-124": {
+    "id": "04-124",
+    "name": "AI diagnostics assistant",
+    "priority": "P2"
+  },
+  "04-125": {
+    "id": "04-125",
+    "name": "AI safety/validation gateway",
+    "priority": "P1"
+  },
+  "04-126": {
+    "id": "04-126",
+    "name": "Model fallback/kill switch",
+    "priority": "P1"
+  },
+  "04-127": {
+    "id": "04-127",
+    "name": "SQL injection defenses",
+    "priority": "P0"
+  },
+  "04-128": {
+    "id": "04-128",
+    "name": "Row/column access policies",
+    "priority": "P1"
+  },
+  "04-129": {
+    "id": "04-129",
+    "name": "Secrets/credential management",
+    "priority": "P1"
+  },
+  "04-130": {
+    "id": "04-130",
+    "name": "TLS/authentication",
+    "priority": "P1"
+  },
+  "04-131": {
+    "id": "04-131",
+    "name": "Multi-tenant isolation",
+    "priority": "P1"
+  },
+  "04-132": {
+    "id": "04-132",
+    "name": "Rate limiting",
+    "priority": "P1"
+  },
+  "04-133": {
+    "id": "04-133",
+    "name": "CI/CD pipeline",
+    "priority": "P0"
+  },
+  "04-134": {
+    "id": "04-134",
+    "name": "Benchmark harness",
+    "priority": "P0"
+  },
+  "04-135": {
+    "id": "04-135",
+    "name": "Fuzzing/property tests",
+    "priority": "P0"
+  },
+  "04-136": {
+    "id": "04-136",
+    "name": "Chaos/recovery testing",
+    "priority": "P2"
+  },
+  "04-137": {
+    "id": "04-137",
+    "name": "Observability/tracing",
+    "priority": "P1"
+  },
+  "04-138": {
+    "id": "04-138",
+    "name": "Cross-platform builds",
+    "priority": "P1"
+  },
+  "04-139": {
+    "id": "04-139",
+    "name": "Container/Kubernetes deployment",
+    "priority": "P2"
+  },
+  "04-140": {
+    "id": "04-140",
+    "name": "Autoscaling",
+    "priority": "P3"
+  },
+  "04-141": {
+    "id": "04-141",
+    "name": "Disaster recovery",
+    "priority": "P1"
+  },
+  "04-142": {
+    "id": "04-142",
+    "name": "Data lineage & governance",
+    "priority": "P2"
+  },
+  "04-143": {
+    "id": "04-143",
+    "name": "Data quality rules",
+    "priority": "P2"
+  },
+  "04-144": {
+    "id": "04-144",
+    "name": "Retention/lifecycle policies",
+    "priority": "P2"
+  },
+  "04-145": {
+    "id": "04-145",
+    "name": "Encryption at rest",
+    "priority": "P1"
+  },
+  "05-001": {
+    "id": "05-001",
+    "name": "QUIC packet header encoding/decoding",
+    "priority": "P0"
+  },
+  "05-002": {
+    "id": "05-002",
+    "name": "Long-header packet support",
+    "priority": "P0"
+  },
+  "05-003": {
+    "id": "05-003",
+    "name": "Short-header packet support",
+    "priority": "P0"
+  },
+  "05-004": {
+    "id": "05-004",
+    "name": "Connection ID management",
+    "priority": "P0"
+  },
+  "05-005": {
+    "id": "05-005",
+    "name": "Packet number encoding/decoding",
+    "priority": "P0"
+  },
+  "05-006": {
+    "id": "05-006",
+    "name": "Frame type registry",
+    "priority": "P0"
+  },
+  "05-007": {
+    "id": "05-007",
+    "name": "STREAM frame encoding/decoding",
+    "priority": "P0"
+  },
+  "05-008": {
+    "id": "05-008",
+    "name": "ACK frame encoding/decoding",
+    "priority": "P0"
+  },
+  "05-009": {
+    "id": "05-009",
+    "name": "CRYPTO frame handling",
+    "priority": "P0"
+  },
+  "05-010": {
+    "id": "05-010",
+    "name": "PING/PADDING/CONNECTION_CLOSE frames",
+    "priority": "P0"
+  },
+  "05-011": {
+    "id": "05-011",
+    "name": "MAX_DATA/MAX_STREAM_DATA frames",
+    "priority": "P0"
+  },
+  "05-012": {
+    "id": "05-012",
+    "name": "MAX_STREAMS frames",
+    "priority": "P0"
+  },
+  "05-013": {
+    "id": "05-013",
+    "name": "Connection state machine",
+    "priority": "P0"
+  },
+  "05-014": {
+    "id": "05-014",
+    "name": "Client/server handshake flow",
+    "priority": "P0"
+  },
+  "05-015": {
+    "id": "05-015",
+    "name": "X25519 key agreement",
+    "priority": "P0"
+  },
+  "05-016": {
+    "id": "05-016",
+    "name": "ChaCha20-Poly1305 packet protection",
+    "priority": "P0"
+  },
+  "05-017": {
+    "id": "05-017",
+    "name": "Key derivation and key phase",
+    "priority": "P0"
+  },
+  "05-018": {
+    "id": "05-018",
+    "name": "Initial/Handshake/Application packet spaces",
+    "priority": "P0"
+  },
+  "05-019": {
+    "id": "05-019",
+    "name": "Handshake timeout handling",
+    "priority": "P0"
+  },
+  "05-020": {
+    "id": "05-020",
+    "name": "Connection close/draining states",
+    "priority": "P0"
+  },
+  "05-021": {
+    "id": "05-021",
+    "name": "Transport parameter negotiation",
+    "priority": "P0"
+  },
+  "05-022": {
+    "id": "05-022",
+    "name": "Version negotiation",
+    "priority": "P0"
+  },
+  "05-023": {
+    "id": "05-023",
+    "name": "Connection establishment metrics",
+    "priority": "P0"
+  },
+  "05-024": {
+    "id": "05-024",
+    "name": "Handshake error taxonomy",
+    "priority": "P0"
+  },
+  "05-025": {
+    "id": "05-025",
+    "name": "ACK range tracking",
+    "priority": "P0"
+  },
+  "05-026": {
+    "id": "05-026",
+    "name": "Duplicate ACK handling",
+    "priority": "P0"
+  },
+  "05-027": {
+    "id": "05-027",
+    "name": "Packet loss detection",
+    "priority": "P0"
+  },
+  "05-028": {
+    "id": "05-028",
+    "name": "Packet-threshold loss detection",
+    "priority": "P0"
+  },
+  "05-029": {
+    "id": "05-029",
+    "name": "Time-threshold loss detection",
+    "priority": "P0"
+  },
+  "05-030": {
+    "id": "05-030",
+    "name": "Probe Timeout (PTO) calculation",
+    "priority": "P0"
+  },
+  "05-031": {
+    "id": "05-031",
+    "name": "PTO probe transmission",
+    "priority": "P0"
+  },
+  "05-032": {
+    "id": "05-032",
+    "name": "Retransmission bookkeeping",
+    "priority": "P0"
+  },
+  "05-033": {
+    "id": "05-033",
+    "name": "RTT sampling",
+    "priority": "P0"
+  },
+  "05-034": {
+    "id": "05-034",
+    "name": "Smoothed RTT estimation",
+    "priority": "P0"
+  },
+  "05-035": {
+    "id": "05-035",
+    "name": "RTT variance estimation",
+    "priority": "P0"
+  },
+  "05-036": {
+    "id": "05-036",
+    "name": "NewReno congestion control",
+    "priority": "P0"
+  },
+  "05-037": {
+    "id": "05-037",
+    "name": "CUBIC congestion control",
+    "priority": "P0"
+  },
+  "05-038": {
+    "id": "05-038",
+    "name": "Congestion window tracking",
+    "priority": "P0"
+  },
+  "05-039": {
+    "id": "05-039",
+    "name": "Slow start",
+    "priority": "P0"
+  },
+  "05-040": {
+    "id": "05-040",
+    "name": "Congestion avoidance",
+    "priority": "P0"
+  },
+  "05-041": {
+    "id": "05-041",
+    "name": "Fast recovery",
+    "priority": "P0"
+  },
+  "05-042": {
+    "id": "05-042",
+    "name": "ECN-ready congestion signals",
+    "priority": "P0"
+  },
+  "05-043": {
+    "id": "05-043",
+    "name": "Packet pacing",
+    "priority": "P0"
+  },
+  "05-044": {
+    "id": "05-044",
+    "name": "Pacing timer scheduling",
+    "priority": "P0"
+  },
+  "05-045": {
+    "id": "05-045",
+    "name": "Bandwidth-delay product estimation",
+    "priority": "P0"
+  },
+  "05-046": {
+    "id": "05-046",
+    "name": "Congestion controller interface",
+    "priority": "P0"
+  },
+  "05-047": {
+    "id": "05-047",
+    "name": "Bidirectional stream management",
+    "priority": "P0"
+  },
+  "05-048": {
+    "id": "05-048",
+    "name": "Unidirectional stream management",
+    "priority": "P0"
+  },
+  "05-049": {
+    "id": "05-049",
+    "name": "Stream ID allocation",
+    "priority": "P0"
+  },
+  "05-050": {
+    "id": "05-050",
+    "name": "Stream receive reassembly",
+    "priority": "P0"
+  },
+  "05-051": {
+    "id": "05-051",
+    "name": "Stream send buffering",
+    "priority": "P0"
+  },
+  "05-052": {
+    "id": "05-052",
+    "name": "Stream-level flow control",
+    "priority": "P0"
+  },
+  "05-053": {
+    "id": "05-053",
+    "name": "Connection-level flow control",
+    "priority": "P0"
+  },
+  "05-054": {
+    "id": "05-054",
+    "name": "MAX_DATA enforcement",
+    "priority": "P0"
+  },
+  "05-055": {
+    "id": "05-055",
+    "name": "MAX_STREAM_DATA enforcement",
+    "priority": "P0"
+  },
+  "05-056": {
+    "id": "05-056",
+    "name": "MAX_STREAMS enforcement",
+    "priority": "P0"
+  },
+  "05-057": {
+    "id": "05-057",
+    "name": "Stream reset handling",
+    "priority": "P0"
+  },
+  "05-058": {
+    "id": "05-058",
+    "name": "Path state management",
+    "priority": "P1"
+  },
+  "05-059": {
+    "id": "05-059",
+    "name": "Path validation",
+    "priority": "P1"
+  },
+  "05-060": {
+    "id": "05-060",
+    "name": "Migration trigger logic",
+    "priority": "P1"
+  },
+  "05-061": {
+    "id": "05-061",
+    "name": "Active path selection",
+    "priority": "P1"
+  },
+  "05-062": {
+    "id": "05-062",
+    "name": "Path failure detection",
+    "priority": "P1"
+  },
+  "05-063": {
+    "id": "05-063",
+    "name": "NAT rebinding support",
+    "priority": "P1"
+  },
+  "05-064": {
+    "id": "05-064",
+    "name": "Deterministic network simulator",
+    "priority": "P1"
+  },
+  "05-065": {
+    "id": "05-065",
+    "name": "Configurable latency injection",
+    "priority": "P1"
+  },
+  "05-066": {
+    "id": "05-066",
+    "name": "Packet loss injection",
+    "priority": "P1"
+  },
+  "05-067": {
+    "id": "05-067",
+    "name": "Packet duplication injection",
+    "priority": "P1"
+  },
+  "05-068": {
+    "id": "05-068",
+    "name": "Packet reordering injection",
+    "priority": "P1"
+  },
+  "05-069": {
+    "id": "05-069",
+    "name": "Tokio UDP socket runtime",
+    "priority": "P1"
+  },
+  "05-070": {
+    "id": "05-070",
+    "name": "Zero-copy receive path",
+    "priority": "P1"
+  },
+  "05-071": {
+    "id": "05-071",
+    "name": "Buffer pooling",
+    "priority": "P1"
+  },
+  "05-072": {
+    "id": "05-072",
+    "name": "Packet parsing allocation budget",
+    "priority": "P1"
+  },
+  "05-073": {
+    "id": "05-073",
+    "name": "Lock/contention profiling",
+    "priority": "P1"
+  },
+  "05-074": {
+    "id": "05-074",
+    "name": "Async task lifecycle",
+    "priority": "P1"
+  },
+  "05-075": {
+    "id": "05-075",
+    "name": "Timer-wheel or timer optimization",
+    "priority": "P1"
+  },
+  "05-076": {
+    "id": "05-076",
+    "name": "Backpressure management",
+    "priority": "P1"
+  },
+  "05-077": {
+    "id": "05-077",
+    "name": "CPU/memory telemetry",
+    "priority": "P1"
+  },
+  "05-078": {
+    "id": "05-078",
+    "name": "High-throughput benchmark harness",
+    "priority": "P1"
+  },
+  "05-079": {
+    "id": "05-079",
+    "name": "p50/p95/p99 latency measurement",
+    "priority": "P1"
+  },
+  "05-080": {
+    "id": "05-080",
+    "name": "Input validation and bounds checks",
+    "priority": "P0"
+  },
+  "05-081": {
+    "id": "05-081",
+    "name": "Malformed packet rejection",
+    "priority": "P0"
+  },
+  "05-082": {
+    "id": "05-082",
+    "name": "Anti-amplification controls",
+    "priority": "P0"
+  },
+  "05-083": {
+    "id": "05-083",
+    "name": "Replay/duplicate protection",
+    "priority": "P0"
+  },
+  "05-084": {
+    "id": "05-084",
+    "name": "Crypto nonce correctness",
+    "priority": "P0"
+  },
+  "05-085": {
+    "id": "05-085",
+    "name": "Key material lifecycle",
+    "priority": "P0"
+  },
+  "05-086": {
+    "id": "05-086",
+    "name": "Secret zeroization strategy",
+    "priority": "P0"
+  },
+  "05-087": {
+    "id": "05-087",
+    "name": "Resource exhaustion defenses",
+    "priority": "P0"
+  },
+  "05-088": {
+    "id": "05-088",
+    "name": "Connection/stream quotas",
+    "priority": "P0"
+  },
+  "05-089": {
+    "id": "05-089",
+    "name": "Timeout abuse defenses",
+    "priority": "P0"
+  },
+  "05-090": {
+    "id": "05-090",
+    "name": "Error containment",
+    "priority": "P0"
+  },
+  "05-091": {
+    "id": "05-091",
+    "name": "PostgreSQL connection/configuration",
+    "priority": "P1"
+  },
+  "05-092": {
+    "id": "05-092",
+    "name": "Connection/session metadata schema",
+    "priority": "P1"
+  },
+  "05-093": {
+    "id": "05-093",
+    "name": "WAL/event logging",
+    "priority": "P1"
+  },
+  "05-094": {
+    "id": "05-094",
+    "name": "Partitioned telemetry tables",
+    "priority": "P1"
+  },
+  "05-095": {
+    "id": "05-095",
+    "name": "Redis caching/state layer",
+    "priority": "P1"
+  },
+  "05-096": {
+    "id": "05-096",
+    "name": "Idempotent telemetry writes",
+    "priority": "P1"
+  },
+  "05-097": {
+    "id": "05-097",
+    "name": "Schema migration/versioning",
+    "priority": "P1"
+  },
+  "05-098": {
+    "id": "05-098",
+    "name": "Retention policies",
+    "priority": "P1"
+  },
+  "05-099": {
+    "id": "05-099",
+    "name": "Telemetry aggregation jobs",
+    "priority": "P1"
+  },
+  "05-100": {
+    "id": "05-100",
+    "name": "Queryable connection history",
+    "priority": "P1"
+  },
+  "05-101": {
+    "id": "05-101",
+    "name": "Packet/loss event storage",
+    "priority": "P1"
+  },
+  "05-102": {
+    "id": "05-102",
+    "name": "Next.js application shell",
+    "priority": "P1"
+  },
+  "05-103": {
+    "id": "05-103",
+    "name": "TypeScript typed API client",
+    "priority": "P1"
+  },
+  "05-104": {
+    "id": "05-104",
+    "name": "OAuth authentication flow",
+    "priority": "P1"
+  },
+  "05-105": {
+    "id": "05-105",
+    "name": "Dashboard navigation",
+    "priority": "P1"
+  },
+  "05-106": {
+    "id": "05-106",
+    "name": "Connection/session dashboard",
+    "priority": "P1"
+  },
+  "05-107": {
+    "id": "05-107",
+    "name": "Live transport metrics cards",
+    "priority": "P1"
+  },
+  "05-108": {
+    "id": "05-108",
+    "name": "RTT/loss/congestion charts",
+    "priority": "P1"
+  },
+  "05-109": {
+    "id": "05-109",
+    "name": "Packet timeline viewer",
+    "priority": "P1"
+  },
+  "05-110": {
+    "id": "05-110",
+    "name": "QLOG-style packet trace visualization",
+    "priority": "P1"
+  },
+  "05-111": {
+    "id": "05-111",
+    "name": "3D network visualization with Three.js",
+    "priority": "P1"
+  },
+  "05-112": {
+    "id": "05-112",
+    "name": "GSAP/ScrollTrigger interactions",
+    "priority": "P1"
+  },
+  "05-113": {
+    "id": "05-113",
+    "name": "RL congestion-control environment",
+    "priority": "P2"
+  },
+  "05-114": {
+    "id": "05-114",
+    "name": "RL training pipeline",
+    "priority": "P2"
+  },
+  "05-115": {
+    "id": "05-115",
+    "name": "NewReno baseline evaluation",
+    "priority": "P2"
+  },
+  "05-116": {
+    "id": "05-116",
+    "name": "CUBIC baseline evaluation",
+    "priority": "P2"
+  },
+  "05-117": {
+    "id": "05-117",
+    "name": "Reward-function design",
+    "priority": "P2"
+  },
+  "05-118": {
+    "id": "05-118",
+    "name": "Simulation dataset generation",
+    "priority": "P2"
+  },
+  "05-119": {
+    "id": "05-119",
+    "name": "Feature engineering from transport telemetry",
+    "priority": "P2"
+  },
+  "05-120": {
+    "id": "05-120",
+    "name": "Policy evaluation harness",
+    "priority": "P2"
+  },
+  "05-121": {
+    "id": "05-121",
+    "name": "Offline policy validation",
+    "priority": "P2"
+  },
+  "05-122": {
+    "id": "05-122",
+    "name": "Safe policy deployment gate",
+    "priority": "P2"
+  },
+  "05-123": {
+    "id": "05-123",
+    "name": "Anomaly detection model",
+    "priority": "P2"
+  },
+  "05-124": {
+    "id": "05-124",
+    "name": "QLOG trace summarizer",
+    "priority": "P2"
+  },
+  "05-125": {
+    "id": "05-125",
+    "name": "Natural-language packet-loss explainer",
+    "priority": "P2"
+  },
+  "05-126": {
+    "id": "05-126",
+    "name": "Schema-constrained LLM diagnostics",
+    "priority": "P2"
+  },
+  "05-127": {
+    "id": "05-127",
+    "name": "Retrieval over protocol documentation",
+    "priority": "P2"
+  },
+  "05-128": {
+    "id": "05-128",
+    "name": "Experiment-result explanation",
+    "priority": "P2"
+  },
+  "05-129": {
+    "id": "05-129",
+    "name": "Benchmark anomaly explanation",
+    "priority": "P2"
+  },
+  "05-130": {
+    "id": "05-130",
+    "name": "Root-cause hypothesis generation",
+    "priority": "P2"
+  },
+  "05-131": {
+    "id": "05-131",
+    "name": "AI-assisted troubleshooting workflow",
+    "priority": "P2"
+  },
+  "05-132": {
+    "id": "05-132",
+    "name": "Confidence scoring",
+    "priority": "P2"
+  },
+  "05-133": {
+    "id": "05-133",
+    "name": "Hallucination/grounding checks",
+    "priority": "P2"
+  },
+  "05-134": {
+    "id": "05-134",
+    "name": "Prompt/version registry",
+    "priority": "P2"
+  },
+  "05-135": {
+    "id": "05-135",
+    "name": "Unit tests for packet/frame codecs",
+    "priority": "P0"
+  },
+  "05-136": {
+    "id": "05-136",
+    "name": "Property-based protocol tests",
+    "priority": "P0"
+  },
+  "05-137": {
+    "id": "05-137",
+    "name": "Integration client/server tests",
+    "priority": "P0"
+  },
+  "05-138": {
+    "id": "05-138",
+    "name": "End-to-end simulated network tests",
+    "priority": "P0"
+  },
+  "05-139": {
+    "id": "05-139",
+    "name": "Interoperability test corpus",
+    "priority": "P0"
+  },
+  "05-140": {
+    "id": "05-140",
+    "name": "Deterministic replay tests",
+    "priority": "P0"
+  },
+  "05-141": {
+    "id": "05-141",
+    "name": "Fuzz corpus minimization",
+    "priority": "P0"
+  },
+  "05-142": {
+    "id": "05-142",
+    "name": "Benchmark CI jobs",
+    "priority": "P0"
+  },
+  "05-143": {
+    "id": "05-143",
+    "name": "Rust formatting/linting gates",
+    "priority": "P0"
+  },
+  "05-144": {
+    "id": "05-144",
+    "name": "Dependency/security scanning",
+    "priority": "P0"
+  },
+  "05-145": {
+    "id": "05-145",
+    "name": "Reproducible builds",
+    "priority": "P0"
+  },
+  "06-001": {
+    "id": "06-001",
+    "name": "KV Put API",
+    "priority": "P0"
+  },
+  "06-002": {
+    "id": "06-002",
+    "name": "KV Get API",
+    "priority": "P0"
+  },
+  "06-003": {
+    "id": "06-003",
+    "name": "KV Delete API",
+    "priority": "P0"
+  },
+  "06-004": {
+    "id": "06-004",
+    "name": "Batch write API",
+    "priority": "P0"
+  },
+  "06-005": {
+    "id": "06-005",
+    "name": "Batch read API",
+    "priority": "P0"
+  },
+  "06-006": {
+    "id": "06-006",
+    "name": "Prefix scan API",
+    "priority": "P0"
+  },
+  "06-007": {
+    "id": "06-007",
+    "name": "Range scan API",
+    "priority": "P0"
+  },
+  "06-008": {
+    "id": "06-008",
+    "name": "Iterator API",
+    "priority": "P0"
+  },
+  "06-009": {
+    "id": "06-009",
+    "name": "Snapshot API",
+    "priority": "P0"
+  },
+  "06-010": {
+    "id": "06-010",
+    "name": "Transaction API",
+    "priority": "P0"
+  },
+  "06-011": {
+    "id": "06-011",
+    "name": "TTL/expiration API",
+    "priority": "P0"
+  },
+  "06-012": {
+    "id": "06-012",
+    "name": "Admin/health API",
+    "priority": "P0"
+  },
+  "06-013": {
+    "id": "06-013",
+    "name": "Client metrics API",
+    "priority": "P0"
+  },
+  "06-014": {
+    "id": "06-014",
+    "name": "WAL record format",
+    "priority": "P0"
+  },
+  "06-015": {
+    "id": "06-015",
+    "name": "WAL append path",
+    "priority": "P0"
+  },
+  "06-016": {
+    "id": "06-016",
+    "name": "WAL segment rotation",
+    "priority": "P0"
+  },
+  "06-017": {
+    "id": "06-017",
+    "name": "WAL checksums",
+    "priority": "P0"
+  },
+  "06-018": {
+    "id": "06-018",
+    "name": "fsync policy modes",
+    "priority": "P0"
+  },
+  "06-019": {
+    "id": "06-019",
+    "name": "group commit",
+    "priority": "P0"
+  },
+  "06-020": {
+    "id": "06-020",
+    "name": "WAL recovery/replay",
+    "priority": "P0"
+  },
+  "06-021": {
+    "id": "06-021",
+    "name": "WAL corruption detection",
+    "priority": "P0"
+  },
+  "06-022": {
+    "id": "06-022",
+    "name": "WAL truncation policy",
+    "priority": "P0"
+  },
+  "06-023": {
+    "id": "06-023",
+    "name": "WAL archival",
+    "priority": "P0"
+  },
+  "06-024": {
+    "id": "06-024",
+    "name": "WAL encryption option",
+    "priority": "P0"
+  },
+  "06-025": {
+    "id": "06-025",
+    "name": "WAL metrics",
+    "priority": "P0"
+  },
+  "06-026": {
+    "id": "06-026",
+    "name": "Durability fault-injection tests",
+    "priority": "P0"
+  },
+  "06-027": {
+    "id": "06-027",
+    "name": "Skiplist memtable",
+    "priority": "P0"
+  },
+  "06-028": {
+    "id": "06-028",
+    "name": "Memtable lookup",
+    "priority": "P0"
+  },
+  "06-029": {
+    "id": "06-029",
+    "name": "Memtable ordered iterator",
+    "priority": "P0"
+  },
+  "06-030": {
+    "id": "06-030",
+    "name": "Memtable size thresholds",
+    "priority": "P0"
+  },
+  "06-031": {
+    "id": "06-031",
+    "name": "Immutable memtable transition",
+    "priority": "P0"
+  },
+  "06-032": {
+    "id": "06-032",
+    "name": "Memtable flush scheduling",
+    "priority": "P0"
+  },
+  "06-033": {
+    "id": "06-033",
+    "name": "Concurrent writers",
+    "priority": "P0"
+  },
+  "06-034": {
+    "id": "06-034",
+    "name": "Write batching",
+    "priority": "P0"
+  },
+  "06-035": {
+    "id": "06-035",
+    "name": "Write backpressure",
+    "priority": "P0"
+  },
+  "06-036": {
+    "id": "06-036",
+    "name": "Write buffer memory accounting",
+    "priority": "P0"
+  },
+  "06-037": {
+    "id": "06-037",
+    "name": "Memtable recovery",
+    "priority": "P0"
+  },
+  "06-038": {
+    "id": "06-038",
+    "name": "Alternative memtable abstraction",
+    "priority": "P0"
+  },
+  "06-039": {
+    "id": "06-039",
+    "name": "Write-path benchmarks",
+    "priority": "P0"
+  },
+  "06-040": {
+    "id": "06-040",
+    "name": "SSTable file format",
+    "priority": "P0"
+  },
+  "06-041": {
+    "id": "06-041",
+    "name": "Data block encoding",
+    "priority": "P0"
+  },
+  "06-042": {
+    "id": "06-042",
+    "name": "Block checksums",
+    "priority": "P0"
+  },
+  "06-043": {
+    "id": "06-043",
+    "name": "Sparse index",
+    "priority": "P0"
+  },
+  "06-044": {
+    "id": "06-044",
+    "name": "Bloom filter",
+    "priority": "P0"
+  },
+  "06-045": {
+    "id": "06-045",
+    "name": "Prefix compression",
+    "priority": "P0"
+  },
+  "06-046": {
+    "id": "06-046",
+    "name": "Block trailer format",
+    "priority": "P0"
+  },
+  "06-047": {
+    "id": "06-047",
+    "name": "File metadata",
+    "priority": "P0"
+  },
+  "06-048": {
+    "id": "06-048",
+    "name": "SSTable versioning",
+    "priority": "P0"
+  },
+  "06-049": {
+    "id": "06-049",
+    "name": "SSTable validation",
+    "priority": "P0"
+  },
+  "06-050": {
+    "id": "06-050",
+    "name": "SSTable reader",
+    "priority": "P0"
+  },
+  "06-051": {
+    "id": "06-051",
+    "name": "SSTable writer",
+    "priority": "P0"
+  },
+  "06-052": {
+    "id": "06-052",
+    "name": "SSTable corruption tests",
+    "priority": "P0"
+  },
+  "06-053": {
+    "id": "06-053",
+    "name": "Leveled compaction",
+    "priority": "P0"
+  },
+  "06-054": {
+    "id": "06-054",
+    "name": "Size-tiered compaction",
+    "priority": "P0"
+  },
+  "06-055": {
+    "id": "06-055",
+    "name": "Compaction picker",
+    "priority": "P0"
+  },
+  "06-056": {
+    "id": "06-056",
+    "name": "Compaction scheduling",
+    "priority": "P0"
+  },
+  "06-057": {
+    "id": "06-057",
+    "name": "Compaction concurrency",
+    "priority": "P0"
+  },
+  "06-058": {
+    "id": "06-058",
+    "name": "Compaction input selection",
+    "priority": "P0"
+  },
+  "06-059": {
+    "id": "06-059",
+    "name": "Compaction output generation",
+    "priority": "P0"
+  },
+  "06-060": {
+    "id": "06-060",
+    "name": "Write amplification accounting",
+    "priority": "P0"
+  },
+  "06-061": {
+    "id": "06-061",
+    "name": "Read amplification accounting",
+    "priority": "P0"
+  },
+  "06-062": {
+    "id": "06-062",
+    "name": "Compaction debt tracking",
+    "priority": "P0"
+  },
+  "06-063": {
+    "id": "06-063",
+    "name": "Compaction throttling",
+    "priority": "P0"
+  },
+  "06-064": {
+    "id": "06-064",
+    "name": "Compaction cancellation/recovery",
+    "priority": "P0"
+  },
+  "06-065": {
+    "id": "06-065",
+    "name": "Compaction benchmark suite",
+    "priority": "P0"
+  },
+  "06-066": {
+    "id": "06-066",
+    "name": "Point lookup path",
+    "priority": "P0"
+  },
+  "06-067": {
+    "id": "06-067",
+    "name": "Multi-level read path",
+    "priority": "P0"
+  },
+  "06-068": {
+    "id": "06-068",
+    "name": "Bloom filter short-circuit",
+    "priority": "P0"
+  },
+  "06-069": {
+    "id": "06-069",
+    "name": "Index-assisted lookup",
+    "priority": "P0"
+  },
+  "06-070": {
+    "id": "06-070",
+    "name": "Block cache lookup",
+    "priority": "P0"
+  },
+  "06-071": {
+    "id": "06-071",
+    "name": "Iterator merge",
+    "priority": "P0"
+  },
+  "06-072": {
+    "id": "06-072",
+    "name": "Forward iterator",
+    "priority": "P0"
+  },
+  "06-073": {
+    "id": "06-073",
+    "name": "Reverse iterator",
+    "priority": "P0"
+  },
+  "06-074": {
+    "id": "06-074",
+    "name": "Prefix iterator",
+    "priority": "P0"
+  },
+  "06-075": {
+    "id": "06-075",
+    "name": "Range iterator",
+    "priority": "P0"
+  },
+  "06-076": {
+    "id": "06-076",
+    "name": "Read batching",
+    "priority": "P0"
+  },
+  "06-077": {
+    "id": "06-077",
+    "name": "Read amplification telemetry",
+    "priority": "P0"
+  },
+  "06-078": {
+    "id": "06-078",
+    "name": "Read-path profiling",
+    "priority": "P0"
+  },
+  "06-079": {
+    "id": "06-079",
+    "name": "Sequence number allocation",
+    "priority": "P0"
+  },
+  "06-080": {
+    "id": "06-080",
+    "name": "Versioned records",
+    "priority": "P0"
+  },
+  "06-081": {
+    "id": "06-081",
+    "name": "Snapshot creation",
+    "priority": "P0"
+  },
+  "06-082": {
+    "id": "06-082",
+    "name": "Snapshot visibility",
+    "priority": "P0"
+  },
+  "06-083": {
+    "id": "06-083",
+    "name": "Snapshot expiration",
+    "priority": "P0"
+  },
+  "06-084": {
+    "id": "06-084",
+    "name": "MVCC read resolution",
+    "priority": "P0"
+  },
+  "06-085": {
+    "id": "06-085",
+    "name": "Tombstone semantics",
+    "priority": "P0"
+  },
+  "06-086": {
+    "id": "06-086",
+    "name": "Delete markers",
+    "priority": "P0"
+  },
+  "06-087": {
+    "id": "06-087",
+    "name": "Atomic batch semantics",
+    "priority": "P0"
+  },
+  "06-088": {
+    "id": "06-088",
+    "name": "Optimistic transaction API",
+    "priority": "P0"
+  },
+  "06-089": {
+    "id": "06-089",
+    "name": "Conflict detection",
+    "priority": "P0"
+  },
+  "06-090": {
+    "id": "06-090",
+    "name": "Transaction recovery",
+    "priority": "P0"
+  },
+  "06-091": {
+    "id": "06-091",
+    "name": "MVCC correctness tests",
+    "priority": "P0"
+  },
+  "06-092": {
+    "id": "06-092",
+    "name": "Block cache",
+    "priority": "P1"
+  },
+  "06-093": {
+    "id": "06-093",
+    "name": "Cache admission policy",
+    "priority": "P1"
+  },
+  "06-094": {
+    "id": "06-094",
+    "name": "Cache eviction policy",
+    "priority": "P1"
+  },
+  "06-095": {
+    "id": "06-095",
+    "name": "Cache hit/miss metrics",
+    "priority": "P1"
+  },
+  "06-096": {
+    "id": "06-096",
+    "name": "Cache memory limits",
+    "priority": "P1"
+  },
+  "06-097": {
+    "id": "06-097",
+    "name": "Arena allocation",
+    "priority": "P1"
+  },
+  "06-098": {
+    "id": "06-098",
+    "name": "Memory accounting",
+    "priority": "P1"
+  },
+  "06-099": {
+    "id": "06-099",
+    "name": "Out-of-memory handling",
+    "priority": "P1"
+  },
+  "06-100": {
+    "id": "06-100",
+    "name": "File descriptor limits",
+    "priority": "P1"
+  },
+  "06-101": {
+    "id": "06-101",
+    "name": "Open-file cache",
+    "priority": "P1"
+  },
+  "06-102": {
+    "id": "06-102",
+    "name": "Read-ahead policy",
+    "priority": "P1"
+  },
+  "06-103": {
+    "id": "06-103",
+    "name": "Resource quotas",
+    "priority": "P1"
+  },
+  "06-104": {
+    "id": "06-104",
+    "name": "Memory pressure telemetry",
+    "priority": "P1"
+  },
+  "06-105": {
+    "id": "06-105",
+    "name": "Manifest format",
+    "priority": "P0"
+  },
+  "06-106": {
+    "id": "06-106",
+    "name": "Version edit records",
+    "priority": "P0"
+  },
+  "06-107": {
+    "id": "06-107",
+    "name": "Current manifest pointer",
+    "priority": "P0"
+  },
+  "06-108": {
+    "id": "06-108",
+    "name": "Atomic metadata updates",
+    "priority": "P0"
+  },
+  "06-109": {
+    "id": "06-109",
+    "name": "Startup recovery",
+    "priority": "P0"
+  },
+  "06-110": {
+    "id": "06-110",
+    "name": "SSTable inventory",
+    "priority": "P0"
+  },
+  "06-111": {
+    "id": "06-111",
+    "name": "Orphan file detection",
+    "priority": "P0"
+  },
+  "06-112": {
+    "id": "06-112",
+    "name": "Manifest corruption handling",
+    "priority": "P0"
+  },
+  "06-113": {
+    "id": "06-113",
+    "name": "Metadata checksums",
+    "priority": "P0"
+  },
+  "06-114": {
+    "id": "06-114",
+    "name": "Version retention",
+    "priority": "P0"
+  },
+  "06-115": {
+    "id": "06-115",
+    "name": "Crash-safe install",
+    "priority": "P0"
+  },
+  "06-116": {
+    "id": "06-116",
+    "name": "Recovery diagnostics",
+    "priority": "P0"
+  },
+  "06-117": {
+    "id": "06-117",
+    "name": "Recovery benchmark suite",
+    "priority": "P0"
+  },
+  "06-118": {
+    "id": "06-118",
+    "name": "Input validation",
+    "priority": "P0"
+  },
+  "06-119": {
+    "id": "06-119",
+    "name": "Key/value size limits",
+    "priority": "P0"
+  },
+  "06-120": {
+    "id": "06-120",
+    "name": "Malformed file rejection",
+    "priority": "P0"
+  },
+  "06-121": {
+    "id": "06-121",
+    "name": "Checksum verification",
+    "priority": "P0"
+  },
+  "06-122": {
+    "id": "06-122",
+    "name": "Crash consistency tests",
+    "priority": "P0"
+  },
+  "06-123": {
+    "id": "06-123",
+    "name": "Power-loss simulation",
+    "priority": "P0"
+  },
+  "06-124": {
+    "id": "06-124",
+    "name": "Fault injection",
+    "priority": "P0"
+  },
+  "06-125": {
+    "id": "06-125",
+    "name": "Fuzz testing",
+    "priority": "P0"
+  },
+  "06-126": {
+    "id": "06-126",
+    "name": "Secrets/config handling",
+    "priority": "P0"
+  },
+  "06-127": {
+    "id": "06-127",
+    "name": "At-rest encryption option",
+    "priority": "P0"
+  },
+  "06-128": {
+    "id": "06-128",
+    "name": "Access-control hooks",
+    "priority": "P0"
+  },
+  "06-129": {
+    "id": "06-129",
+    "name": "Audit logging",
+    "priority": "P0"
+  },
+  "06-130": {
+    "id": "06-130",
+    "name": "Security regression suite",
+    "priority": "P0"
+  },
+  "06-131": {
+    "id": "06-131",
+    "name": "PostgreSQL telemetry schema",
+    "priority": "P1"
+  },
+  "06-132": {
+    "id": "06-132",
+    "name": "Redis state/cache integration",
+    "priority": "P1"
+  },
+  "06-133": {
+    "id": "06-133",
+    "name": "Operation metrics",
+    "priority": "P1"
+  },
+  "06-134": {
+    "id": "06-134",
+    "name": "WAL metrics storage",
+    "priority": "P1"
+  },
+  "06-135": {
+    "id": "06-135",
+    "name": "SSTable metrics storage",
+    "priority": "P1"
+  },
+  "06-136": {
+    "id": "06-136",
+    "name": "Compaction metrics storage",
+    "priority": "P1"
+  },
+  "06-137": {
+    "id": "06-137",
+    "name": "Latency histograms",
+    "priority": "P1"
+  },
+  "06-138": {
+    "id": "06-138",
+    "name": "p50/p95/p99 dashboards",
+    "priority": "P1"
+  },
+  "06-139": {
+    "id": "06-139",
+    "name": "Write amplification dashboard",
+    "priority": "P1"
+  },
+  "06-140": {
+    "id": "06-140",
+    "name": "Read amplification dashboard",
+    "priority": "P1"
+  },
+  "06-141": {
+    "id": "06-141",
+    "name": "Health/status endpoint",
+    "priority": "P1"
+  },
+  "06-142": {
+    "id": "06-142",
+    "name": "Retention and aggregation jobs",
+    "priority": "P1"
+  },
+  "06-143": {
+    "id": "06-143",
+    "name": "Exportable benchmark results",
+    "priority": "P1"
+  },
+  "06-144": {
+    "id": "06-144",
+    "name": "Next.js application shell",
+    "priority": "P1"
+  },
+  "06-145": {
+    "id": "06-145",
+    "name": "OAuth authentication",
+    "priority": "P1"
+  }
+}

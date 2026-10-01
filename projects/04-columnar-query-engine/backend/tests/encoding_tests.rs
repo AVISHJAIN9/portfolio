@@ -1,6 +1,6 @@
 use columnar_query_engine::storage::encoding::{DictionaryEncodedColumn, NullBitmap, RleEncodedColumn, RowGroup};
 
-// FEAT: 04-046
+// FEAT: 04-046 "Columnar table format"
 // ACCEPT: Columnar table format with vertical column partition arrays and row groups
 #[test]
 fn test_columnar_table_format() {
@@ -10,7 +10,7 @@ fn test_columnar_table_format() {
     assert_eq!(rg.int_columns.get("id").unwrap().len(), 100);
 }
 
-// FEAT: 04-047
+// FEAT: 04-047 "Row groups"
 // ACCEPT: Row group partitioning allows independent horizontal chunk loading and scan
 #[test]
 fn test_row_group_partitioning() {
@@ -19,7 +19,7 @@ fn test_row_group_partitioning() {
     assert_eq!(rg1.row_count + rg2.row_count, 100);
 }
 
-// FEAT: 04-048
+// FEAT: 04-048 "Validity/null bitmap"
 // ACCEPT: Validity null bitmask compactly tracks null slots with bitwise indexing
 #[test]
 fn test_validity_null_bitmap() {
@@ -38,7 +38,7 @@ fn test_validity_null_bitmap() {
     assert_eq!(bitmap.null_count, 3);
 }
 
-// FEAT: 04-049
+// FEAT: 04-049 "Dictionary encoding"
 // ACCEPT: Dictionary encoding maps low-cardinality string columns to integer code offsets
 #[test]
 fn test_dictionary_encoding_roundtrip() {
@@ -60,7 +60,7 @@ fn test_dictionary_encoding_roundtrip() {
     assert_eq!(decoded, raw);
 }
 
-// FEAT: 04-050
+// FEAT: 04-050 "RLE encoding"
 // ACCEPT: Run-length encoding compresses repeated sequential integers into (value, length) tuples
 #[test]
 fn test_rle_encoding_roundtrip() {
@@ -73,7 +73,7 @@ fn test_rle_encoding_roundtrip() {
     assert_eq!(decoded, raw);
 }
 
-// FEAT: 04-055
+// FEAT: 04-055 "File statistics"
 // ACCEPT: File statistics catalog tracks min/max boundaries and null counts per column chunk
 #[test]
 fn test_file_statistics() {

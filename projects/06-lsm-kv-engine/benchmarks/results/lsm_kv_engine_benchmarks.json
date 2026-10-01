@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-10-01T15:49:07.948547+00:00",
+  "project": "06-lsm-kv-engine",
+  "command": "cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/06-lsm-kv-engine/backend/Cargo.toml --bench lsm_bench -- --baseline new",
+  "commit": "49adde6b5f31402af580e13e984e7366e1e6d358",
+  "hardware": "Darwin arm64 (arm)",
+  "measurements": {},
+  "keys": 10000,
+  "fsync_mode": "full",
+  "threads": 1
+}

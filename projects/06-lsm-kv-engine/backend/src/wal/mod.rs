@@ -67,7 +67,17 @@ impl WalWriter {
 
         self.file.write_all(&frame)?;
         if sync {
-            self.file.sync_data()?;
+            #[cfg(target_os = "macos")]
+            {
+                use std::os::unix::io::AsRawFd;
+                unsafe {
+                    libc::fcntl(self.file.as_raw_fd(), libc::F_FULLFSYNC);
+                }
+            }
+            #[cfg(not(target_os = "macos"))]
+            {
+                self.file.sync_data()?;
+            }
         }
 
         Ok(self.current_seq_no)

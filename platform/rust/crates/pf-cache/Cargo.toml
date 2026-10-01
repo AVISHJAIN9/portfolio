@@ -11,3 +11,5 @@ parking_lot = { workspace = true }
 
 [dev-dependencies]
 criterion = { workspace = true }
+loom = "0.7"
+

@@ -15,6 +15,7 @@ rand = "0.8"
 parking_lot = "0.12"
 crossbeam-skiplist = "0.1"
 tempfile = "3.10"
+libc = "0.2"
 
 # Monorepo Platform Crates
 pf-bytes = { path = "../../../platform/rust/crates/pf-bytes" }
@@ -31,3 +32,8 @@ pf-testkit = { path = "../../../platform/rust/crates/pf-testkit" }
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
 proptest = "1.4"
+
+[[bench]]
+name = "lsm_bench"
+harness = false
+

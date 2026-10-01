@@ -1,7 +1,7 @@
 use lsm_kv_engine::sstable::{SsTableBuilder, SsTableReader};
 use tempfile::tempdir;
 
-// FEAT: 06-040
+// FEAT: 06-040 "SSTable file format"
 // ACCEPT: SSTable serializes sorted key-value blocks with CRC32 block checksums
 #[test]
 fn test_sstable_serialization_and_checksums() {
@@ -16,7 +16,7 @@ fn test_sstable_serialization_and_checksums() {
     assert_eq!(reader.index.len(), 1);
 }
 
-// FEAT: 06-041
+// FEAT: 06-041 "Data block encoding"
 // ACCEPT: Block index records first/last keys and byte offsets for binary search lookup
 #[test]
 fn test_sstable_block_index_boundaries() {
@@ -33,7 +33,7 @@ fn test_sstable_block_index_boundaries() {
     assert_eq!(entry.last_key, b"omega");
 }
 
-// FEAT: 06-042
+// FEAT: 06-042 "Block checksums"
 // ACCEPT: Embedded Bloom filter skips SSTable disk reads for non-existent keys
 #[test]
 fn test_sstable_bloom_filter_rejection() {
@@ -49,7 +49,7 @@ fn test_sstable_bloom_filter_rejection() {
     assert!(!reader.bloom.contains(b"non_existent_key_999"));
 }
 
-// FEAT: 06-043
+// FEAT: 06-043 "Sparse index"
 // ACCEPT: Point read locates key in SSTable data block and verifies CRC checksum
 #[test]
 fn test_sstable_point_reads() {
@@ -64,7 +64,7 @@ fn test_sstable_point_reads() {
     assert_eq!(res, Some(Some(b"found_value".to_vec())));
 }
 
-// FEAT: 06-044
+// FEAT: 06-044 "Bloom filter"
 // ACCEPT: Full scan iterates through all sorted key-value pairs across data blocks
 #[test]
 fn test_sstable_full_range_scan() {

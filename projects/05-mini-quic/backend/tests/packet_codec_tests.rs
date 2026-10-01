@@ -3,7 +3,7 @@ use mini_quic::wire::codec::PacketCodec;
 use mini_quic::wire::frame::{CryptoFrame, Frame, StreamFrame};
 use mini_quic::wire::packet::{ConnectionId, Header, Packet, PacketType, QUIC_VERSION_1};
 
-// FEAT: 05-001
+// FEAT: 05-001 "QUIC packet header encoding/decoding"
 // ACCEPT: Encode and decode QUIC packet headers according to RFC 9000 wire format
 #[test]
 fn test_quic_packet_header_codec() {
@@ -41,7 +41,7 @@ fn test_quic_packet_header_codec() {
     assert_eq!(decoded.frames.len(), 2);
 }
 
-// FEAT: 05-002
+// FEAT: 05-002 "Long-header packet support"
 // ACCEPT: Long-header packet support for Initial, Handshake, 0-RTT, and Retry packets
 #[test]
 fn test_long_header_packet_support() {
@@ -70,7 +70,7 @@ fn test_long_header_packet_support() {
     assert_eq!(decoded.header.dcid(), &dcid);
 }
 
-// FEAT: 05-003
+// FEAT: 05-003 "Short-header packet support"
 // ACCEPT: Short-header 1-RTT packet support with spin bit and key phase bit
 #[test]
 fn test_short_header_packet_support() {
@@ -105,7 +105,7 @@ fn test_short_header_packet_support() {
     assert_eq!(decoded.header.dcid(), &dcid);
 }
 
-// FEAT: 05-004
+// FEAT: 05-004 "Connection ID management"
 // ACCEPT: Connection ID generation, routing, and zero-length to 20-byte CID support
 #[test]
 fn test_connection_id_management() {
@@ -116,7 +116,7 @@ fn test_connection_id_management() {
     assert_ne!(cid1, cid2);
 }
 
-// FEAT: 05-005
+// FEAT: 05-005 "Packet number encoding/decoding"
 // ACCEPT: Encode and decode truncated 1, 2, and 4-byte packet numbers per RFC 9000
 #[test]
 fn test_packet_number_encoding_decoding() {

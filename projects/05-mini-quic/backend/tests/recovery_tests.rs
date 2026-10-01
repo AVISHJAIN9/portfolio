@@ -1,7 +1,7 @@
 use mini_quic::recovery::{CongestionState, LossRecovery, RttEstimator};
 use std::time::{Duration, Instant};
 
-// FEAT: 05-025
+// FEAT: 05-025 "ACK range tracking"
 // ACCEPT: Track contiguous and non-contiguous ACK ranges in received packets
 #[test]
 fn test_ack_range_tracking() {
@@ -15,7 +15,7 @@ fn test_ack_range_tracking() {
     assert_eq!(recovery.largest_acked, 3);
 }
 
-// FEAT: 05-026
+// FEAT: 05-026 "Duplicate ACK handling"
 // ACCEPT: Ignore redundant or duplicate ACKs without erroneously updating RTT
 #[test]
 fn test_duplicate_ack_handling() {
@@ -30,7 +30,7 @@ fn test_duplicate_ack_handling() {
     assert_eq!(recovery.rtt.smoothed_rtt, srtt_before);
 }
 
-// FEAT: 05-027
+// FEAT: 05-027 "Packet loss detection"
 // ACCEPT: Detect unacknowledged in-flight packets and mark them as lost
 #[test]
 fn test_packet_loss_detection() {
@@ -47,7 +47,7 @@ fn test_packet_loss_detection() {
     assert!(recovery.sent_packets.get(&0).is_none());
 }
 
-// FEAT: 05-028
+// FEAT: 05-028 "Packet-threshold loss detection"
 // ACCEPT: Packet threshold loss detection declares packet lost if 3 higher packets acked
 #[test]
 fn test_packet_threshold_loss_detection() {
@@ -59,7 +59,7 @@ fn test_packet_threshold_loss_detection() {
     assert_eq!(recovery.cc.state, CongestionState::Recovery);
 }
 
-// FEAT: 05-029
+// FEAT: 05-029 "Time-threshold loss detection"
 // ACCEPT: Time-threshold loss detection declares packet lost after 9/8 * max(srtt, latest_rtt)
 #[test]
 fn test_time_threshold_loss_detection() {
@@ -69,7 +69,7 @@ fn test_time_threshold_loss_detection() {
     assert!(time_threshold > Duration::ZERO);
 }
 
-// FEAT: 05-030
+// FEAT: 05-030 "Probe Timeout (PTO) calculation"
 // ACCEPT: Calculate Probe Timeout (PTO) duration using smoothed RTT and 4 * RTTVAR
 #[test]
 fn test_pto_calculation() {
@@ -80,7 +80,7 @@ fn test_pto_calculation() {
     assert!(pto >= Duration::from_millis(50));
 }
 
-// FEAT: 05-031
+// FEAT: 05-031 "PTO probe transmission"
 // ACCEPT: Transmit PTO probe packet to elicit peer ACK when timer fires
 #[test]
 fn test_pto_probe_transmission() {
@@ -93,7 +93,7 @@ fn test_pto_probe_transmission() {
     assert_eq!(recovery.sent_packets.len(), 2);
 }
 
-// FEAT: 05-032
+// FEAT: 05-032 "Retransmission bookkeeping"
 // ACCEPT: Retransmission bookkeeping marks lost frames for re-emission
 #[test]
 fn test_retransmission_bookkeeping() {
@@ -109,7 +109,7 @@ fn test_retransmission_bookkeeping() {
     assert_eq!(recovery.cc.bytes_in_flight, 0);
 }
 
-// FEAT: 05-033
+// FEAT: 05-033 "RTT sampling"
 // ACCEPT: Sample round trip time from packet transmission to reception of matching ACK
 #[test]
 fn test_rtt_sampling() {
@@ -121,7 +121,7 @@ fn test_rtt_sampling() {
     assert_eq!(rtt.min_rtt, Duration::from_millis(35));
 }
 
-// FEAT: 05-034
+// FEAT: 05-034 "Smoothed RTT estimation"
 // ACCEPT: Calculate exponentially weighted smoothed RTT (SRTT = 7/8 * SRTT + 1/8 * sample)
 #[test]
 fn test_smoothed_rtt_estimation() {
@@ -133,7 +133,7 @@ fn test_smoothed_rtt_estimation() {
     assert!(rtt.smoothed_rtt > Duration::from_millis(40) && rtt.smoothed_rtt < Duration::from_millis(80));
 }
 
-// FEAT: 05-035
+// FEAT: 05-035 "RTT variance estimation"
 // ACCEPT: Calculate RTT variance estimation (RTTVAR = 3/4 * RTTVAR + 1/4 * |SRTT - sample|)
 #[test]
 fn test_rtt_variance_estimation() {
@@ -143,7 +143,7 @@ fn test_rtt_variance_estimation() {
     assert!(rtt.rttvar > Duration::ZERO);
 }
 
-// FEAT: 05-036
+// FEAT: 05-036 "NewReno congestion control"
 // ACCEPT: NewReno congestion control throttles window on loss and recovers additively
 #[test]
 fn test_newreno_congestion_control() {
@@ -154,7 +154,7 @@ fn test_newreno_congestion_control() {
     assert!(recovery.cc.congestion_window > 12000);
 }
 
-// FEAT: 05-038
+// FEAT: 05-038 "Congestion window tracking"
 // ACCEPT: Track bytes in flight and compare against congestion window boundary
 #[test]
 fn test_congestion_window_tracking() {
@@ -167,7 +167,7 @@ fn test_congestion_window_tracking() {
     assert!(recovery.cc.congestion_window > initial_cwnd);
 }
 
-// FEAT: 05-039
+// FEAT: 05-039 "Slow start"
 // ACCEPT: Slow start doubles congestion window per RTT until ssthresh
 #[test]
 fn test_slow_start_growth() {
@@ -178,7 +178,7 @@ fn test_slow_start_growth() {
     assert_eq!(recovery.cc.congestion_window, initial_cwnd + 1200);
 }
 
-// FEAT: 05-040
+// FEAT: 05-040 "Congestion avoidance"
 // ACCEPT: Congestion avoidance linearly increments window by 1 MSS per RTT
 #[test]
 fn test_congestion_avoidance_linear_growth() {
@@ -190,7 +190,7 @@ fn test_congestion_avoidance_linear_growth() {
     assert!(recovery.cc.congestion_window >= initial_cwnd);
 }
 
-// FEAT: 05-043
+// FEAT: 05-043 "Packet pacing"
 // ACCEPT: Packet pacing schedules transmission intervals to avoid burst packet drops
 #[test]
 fn test_packet_pacing_interval() {
