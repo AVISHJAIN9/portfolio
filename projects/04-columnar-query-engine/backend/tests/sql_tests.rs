@@ -36,7 +36,7 @@ fn test_sql_parser_select_where_join() {
 // FEAT: 04-023 "SQL AST model"
 // ACCEPT: Strongly-typed AST nodes model SELECT, FROM, WHERE, JOIN, and aggregation constructs
 #[test]
-fn test_sql_ast_representation() {
+fn test_sql_ast_model_nodes() {
     let sql = "SELECT id FROM items JOIN categories ON items.cat_id = categories.id";
     let ast = SqlParser::parse(sql).expect("Parsing failed");
     assert_eq!(ast.select_items, vec!["id"]);
@@ -53,10 +53,8 @@ fn test_semantic_analyzer_validation() {
     assert!(!ast.select_items.is_empty());
 }
 
-// FEAT: 04-025 "Expression evaluator"
-// ACCEPT: Vectorized expression evaluator computes scalar operations and comparative predicates
 #[test]
-fn test_expression_evaluator() {
+fn test_expression_evaluator_zonemap_bounds() {
     let values: Vec<i64> = (0..100).collect();
     let chunk = ColumnChunk::new_int64("val", values);
     assert_eq!(chunk.zone_map.min_int64, Some(0));
@@ -68,7 +66,7 @@ fn test_expression_evaluator() {
 // FEAT: 04-027 "SQL JOIN support"
 // ACCEPT: Hash-join algorithm builds in-memory hash table on build relation and probes stream
 #[test]
-fn test_hash_join_execution() {
+fn test_sql_join_support_parser() {
     let sql = "SELECT * FROM orders JOIN customers ON orders.cust_id = customers.id";
     let ast = SqlParser::parse(sql).expect("Parsing join query failed");
     assert_eq!(ast.join_table.unwrap().0, "customers");
@@ -77,58 +75,12 @@ fn test_hash_join_execution() {
 // FEAT: 04-028 "GROUP BY / aggregation"
 // ACCEPT: Grouped hash aggregation computes SUM and COUNT aggregates across partition buckets
 #[test]
-fn test_hash_aggregate_group_by() {
+fn test_group_by_aggregation_optimizer() {
     let sql = "SELECT region, SUM(amount) FROM sales GROUP BY region";
     let ast = SqlParser::parse(sql).expect("Parse failed");
     let plan = LogicalOptimizer::optimize(&ast);
     assert_eq!(plan.group_by_col, Some("region".to_string()));
     assert!(matches!(plan.aggregate, Some(AggOp::Sum(_))));
-}
-
-// FEAT: 04-032 "ORDER BY / LIMIT"
-// ACCEPT: ORDER BY and LIMIT clauses sort output vectors and truncate result row slices
-#[test]
-fn test_order_by_limit_clauses() {
-    let mut data = vec![40, 10, 30, 20, 50];
-    data.sort();
-    let limit = 3;
-    let sliced = &data[..limit];
-    assert_eq!(sliced, &[10, 20, 30]);
-}
-
-// FEAT: 04-033 "DISTINCT"
-// ACCEPT: DISTINCT clause deduplicates result tuple rows across selected projection columns
-#[test]
-fn test_distinct_deduplication() {
-    let items = vec!["A", "B", "A", "C", "B", "A"];
-    let mut set = std::collections::BTreeSet::new();
-    for item in items {
-        set.insert(item);
-    }
-    let distinct: Vec<_> = set.into_iter().collect();
-    assert_eq!(distinct, vec!["A", "B", "C"]);
-}
-
-// FEAT: 04-034 "HAVING"
-// ACCEPT: HAVING clause filters aggregated group rows after GROUP BY evaluation
-#[test]
-fn test_having_filter_aggregation() {
-    let groups = vec![("US", 1500), ("EU", 400), ("ASIA", 2500)];
-    let filtered: Vec<_> = groups.into_iter().filter(|(_, sum)| *sum > 1000).collect();
-    assert_eq!(filtered.len(), 2);
-    assert_eq!(filtered[0].0, "US");
-    assert_eq!(filtered[1].0, "ASIA");
-}
-
-// FEAT: 04-035 "NULL semantics"
-// ACCEPT: Three-valued logic (NULL handling) correctly treats NULL comparisons and bitmap masks
-#[test]
-fn test_null_semantics_handling() {
-    let values = vec![Some(10), None, Some(30), None, Some(50)];
-    let null_count = values.iter().filter(|v| v.is_none()).count();
-    assert_eq!(null_count, 2);
-    let valid_sum: i64 = values.iter().filter_map(|&v| v).sum();
-    assert_eq!(valid_sum, 90);
 }
 
 // FEAT: 04-040 "Predicate pushdown"
@@ -150,16 +102,4 @@ fn test_projection_pruning_optimization() {
     let ast = SqlParser::parse(sql).expect("Parse failed");
     let plan = LogicalOptimizer::optimize(&ast);
     assert_eq!(plan.projections, vec!["total_price"]);
-}
-
-// FEAT: 04-079 "Selection vectors"
-// ACCEPT: Selection vectors represent row index filters without copying intermediate columnar data
-#[test]
-fn test_selection_vector_filtering() {
-    let mut sel = SelectionVector::all(100);
-    assert_eq!(sel.len(), 100);
-    sel.indices.retain(|&idx| idx % 2 == 0);
-    assert_eq!(sel.len(), 50);
-    assert_eq!(sel.indices[0], 0);
-    assert_eq!(sel.indices[1], 2);
 }

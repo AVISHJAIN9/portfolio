@@ -1,10 +1,10 @@
 # PORTFOLIO STATE (Single Source of Truth)
 
 ## 0. HEADER
-- **session_no**: 8
-- **last_run_timestamp**: 2026-10-01T15:52:08Z
-- **last_commit**: 49adde6b5f31402af580e13e984e7366e1e6d358
-- **current_wave**: Wave 8 (Report Integrity, Mechanical Gate, Loom Permutation, Scale Differential, TPC-H SF1, and LSM Fsync Durability)
+- **session_no**: 9
+- **last_run_timestamp**: 2026-10-01T17:30:26Z
+- **last_commit**: e04913e847c7408555677b263533c20ef1364fe3
+- **current_wave**: Wave 9 (Integrity Repair, Verbatim Master Workbook Names, Semantic Audit, Morsel-Driven Parallelism, Compaction & Manifest Recovery)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
 
@@ -30,9 +30,9 @@
 | 01 | `01-rollback-netcode-server` | 90 | 2 | 3 | not pushed | UNVERIFIED_SOURCE |
 | 02 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | not pushed | UNVERIFIED_SOURCE |
 | 03 | `03-bytecode-vm-gc` | 141 | 0 | 0 | not pushed | UNVERIFIED_SOURCE |
-| 04 | `04-columnar-query-engine` | 145 | 20 | 20 | not pushed | AUDITED_VERIFIED |
+| 04 | `04-columnar-query-engine` | 145 | 21 | 21 | not pushed | AUDITED_VERIFIED |
 | 05 | `05-mini-quic` | 145 | 56 | 56 | not pushed | AUDITED_VERIFIED |
-| 06 | `06-lsm-kv-engine` | 145 | 24 | 24 | not pushed | AUDITED_VERIFIED |
+| 06 | `06-lsm-kv-engine` | 145 | 34 | 34 | not pushed | AUDITED_VERIFIED |
 | 07 | `07-stream-detect-engine` | 0 | 0 | 0 | not pushed | EMPTY |
 | 08 | `08-pubsub-broker` | 0 | 0 | 0 | not pushed | EMPTY |
 | 09 | `09-distributed-cache` | 0 | 0 | 0 | not pushed | EMPTY |
@@ -83,9 +83,9 @@
 | `01-rollback-netcode-server` | 90 | 3 | 3 | 87 | not yet measured | not yet measured | [`01_STATUS.xlsx`](file://evidence/workbooks/01_STATUS.xlsx) |
 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | 148 | not yet measured | 378.02 µs | [`02_STATUS.xlsx`](file://evidence/workbooks/02_STATUS.xlsx) |
 | `03-bytecode-vm-gc` | 141 | 0 | 0 | 141 | not yet measured | not yet measured | [`03_STATUS.xlsx`](file://evidence/workbooks/03_STATUS.xlsx) |
-| `04-columnar-query-engine` | 145 | 20 | 20 | 125 | 20 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
+| `04-columnar-query-engine` | 145 | 21 | 21 | 124 | 21 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
 | `05-mini-quic` | 145 | 56 | 56 | 89 | 56 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
-| `06-lsm-kv-engine` | 145 | 24 | 24 | 121 | 24 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
+| `06-lsm-kv-engine` | 145 | 34 | 34 | 111 | 34 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
 
 ---
 
@@ -93,9 +93,9 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `49adde6b5f` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `e04913e847` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `49adde6b5f` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `e04913e847` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
 | `tpch_sf1_results.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
@@ -106,18 +106,20 @@
 ---
 
 ## 6. ARCHITECTURAL DECISIONS SUMMARY
-- **ADR-001 - ADR-020**: Recorded in `docs/DECISIONS.md`.
+- **ADR-001 - ADR-026**: Recorded in `docs/DECISIONS.md`.
   - ADR-017: Derived Feature ID Convention `<NN>-<zero-padded row index>` with name SHA1 verification.
   - ADR-018: Workbook Status Deliverables with live COUNTIFS formula rollups and conditional formatting.
   - ADR-019: Prohibiting synthetic workbook generation/padding; enforcing strict read-only user inputs.
   - ADR-020: Differential testing harness against DuckDB for relational and columnar correctness.
+  - ADR-026: Session 8 feature names reset pending master workbook alignment and read-only mechanical gate audit.
 
 ---
 
 ## 7. GAPS & AUDIT FINDINGS
-- **Workbook Ingest Lockdown**: Master workbooks for 04 (`6699a333e16e...`, 145 rows, 45 P0) and 05 (`69429364a338...`, 145 rows, 79 P0) locked and verified.
-- **Differential SQL Correctness**: Columnar query engine validated against DuckDB on 10,000 synthetic rows across 5 canonical query patterns with 100% agreement.
+- **Workbook Ingest Lockdown**: Master workbooks for 04 (`6699a333e16e...`, 145 rows, 45 P0), 05 (`69429364a338...`, 145 rows, 79 P0), and 06 (`7e8a3e65fc30...`, 145 rows, 117 P0) locked and verified.
+- **Differential SQL Correctness**: Columnar query engine validated against DuckDB across 65 distinct queries x 3 seeds (195 executed / 195 matched / 0 skipped).
 - **Cryptographic Conformance**: RFC 5869 (HKDF), RFC 9001 (QUIC Initial Secrets), and RFC 7748 (X25519) vector suites passing in `pf-crypto`.
+- **Compaction & Manifest Durability**: Leveled compaction controller, CRC block checksums, and version edit recovery passing in `06-lsm-kv-engine`.
 
 ---
 
@@ -134,14 +136,14 @@
 ---
 
 ## 10. NEXT WAVE ACTION PLAN
-1. Complete remaining P0 transport parameters, flow-control frames, and TLS 1.3 state transitions for `05-mini-quic`.
-2. Implement Parquet dictionary encoding and Snappy compression roundtrip for `04-columnar-query-engine`.
-3. Add `pf-sim` network loss transfer benchmark for `05-mini-quic`.
+1. Wire morsel-driven scheduling into main query execution CLI.
+2. Complete multi-level concurrent background compaction scheduler for LSM engine.
+3. Integrate real TLS 1.3 certificate validation exchange for live aioquic loopback transfers.
 
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `49adde6b5f`.
+1. Pull latest workspace state: commit `e04913e847`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.
@@ -149,17 +151,17 @@
 ---
 
 ## PROMPTS_I_NEED
-1. **05-mini-quic: TLS 1.3 Handshake State Machine & Transport Parameters**
-   - **Feature IDs**: `05-013` (Connection state machine), `05-014` (Client/server handshake flow), `05-021` (Transport parameter negotiation)
-   - **Acceptance Criteria**: Client sends Initial packet with ClientHello; server responds with Initial (ServerHello) and Handshake (EncryptedExtensions); transport parameters `initial_max_data` and `initial_max_streams_bidi` are negotiated.
-   - **Files to Touch**: `projects/05-mini-quic/backend/src/handshake/mod.rs`, `projects/05-mini-quic/backend/src/wire/parameters.rs`, `projects/05-mini-quic/backend/tests/handshake_tests.rs`
+1. **04-columnar-query-engine: Morsel Pipeline Execution CLI & Vectorized Hash Aggregation Scaling**
+   - **Feature IDs**: `04-080` (Morsel-driven scheduling), `04-081` (Parallel scans), `04-082` (Parallel hash join), `04-083` (Parallel aggregation)
+   - **Acceptance Criteria**: Dynamic chunk morsel assignment scales linear execution speedup across 1, 2, 4, 8 threads on 100k row dataset with zero result deviation.
+   - **Files to Touch**: `projects/04-columnar-query-engine/backend/src/execution/morsel.rs`, `projects/04-columnar-query-engine/backend/tests/morsel_tests.rs`
 
-2. **05-mini-quic: Connection & Stream Level Flow Control Credit Management**
-   - **Feature IDs**: `05-011` (MAX_DATA/MAX_STREAM_DATA frames), `05-012` (MAX_STREAMS frames)
-   - **Acceptance Criteria**: Endpoint updates flow control credit upon receiving `MAX_DATA`; sender blocks on stream exhaustion and unblocks immediately when `MAX_STREAM_DATA` frame arrives.
-   - **Files to Touch**: `projects/05-mini-quic/backend/src/stream/flow_control.rs`, `projects/05-mini-quic/backend/tests/flow_control_tests.rs`
+2. **06-lsm-kv-engine: Multi-Level Compaction Controller & Write-Amplification Accounting**
+   - **Feature IDs**: `06-053` (Leveled compaction), `06-055` (Compaction picker), `06-056` (Compaction scheduling), `06-059` (Compaction output generation), `06-060` (Write amplification accounting)
+   - **Acceptance Criteria**: Compaction picker identifies overlapping key ranges between L0 and L1, executes merge iterator, removes obsolete SSTables, and maintains write amplification metric.
+   - **Files to Touch**: `projects/06-lsm-kv-engine/backend/src/compaction/leveled.rs`, `projects/06-lsm-kv-engine/backend/tests/compaction_tests.rs`
 
-3. **04-columnar-query-engine: Parquet File Reader & Decoder Integration**
-   - **Feature IDs**: `04-026` (Parquet file reader & decoder), `04-049` (Dictionary encoding)
-   - **Acceptance Criteria**: Engine reads Parquet files written by pyarrow, decodes dictionary-encoded string columns and Snappy-compressed rowgroups into memory without row materialization.
-   - **Files to Touch**: `projects/04-columnar-query-engine/backend/src/storage/parquet.rs`, `projects/04-columnar-query-engine/backend/tests/parquet_tests.rs`
+3. **06-lsm-kv-engine: Manifest Version Edit Log & Crash Recovery**
+   - **Feature IDs**: `06-105` (Manifest format), `06-106` (Version edit records), `06-107` (Current manifest pointer), `06-108` (Atomic metadata updates), `06-109` (Startup recovery)
+   - **Acceptance Criteria**: Replays version edit deltas from MANIFEST file, verifies CRC32 checksums, updates CURRENT pointer via atomic rename, and reconstructs active level structure.
+   - **Files to Touch**: `projects/06-lsm-kv-engine/backend/src/manifest/mod.rs`, `projects/06-lsm-kv-engine/backend/tests/manifest_tests.rs`

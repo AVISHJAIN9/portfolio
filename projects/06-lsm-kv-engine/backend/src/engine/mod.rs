@@ -133,6 +133,14 @@ impl LsmEngine {
         Ok(None)
     }
 
+    pub fn batch_get(&self, keys: &[&[u8]]) -> std::io::Result<Vec<Option<Vec<u8>>>> {
+        let mut results = Vec::with_capacity(keys.len());
+        for &k in keys {
+            results.push(self.get(k)?);
+        }
+        Ok(results)
+    }
+
     pub fn delete(&self, key: &[u8]) -> std::io::Result<()> {
         let seq = self.next_seq_no.fetch_add(1, Ordering::SeqCst);
         let record = WalRecord {

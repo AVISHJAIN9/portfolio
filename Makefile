@@ -41,7 +41,8 @@ else
 			cargo test --manifest-path "$$p/backend/Cargo.toml"; \
 		fi \
 	done
-	@$(PYTEST) -v tests/test_feature_ingest.py tests/test_workbook_status.py
+	@$(PYTEST) -v tests/
+	@$(PYTHON) tools/audit_test_annotations.py
 	@$(PYTHON) tools/evidence_gen.py
 	@$(PYTHON) tools/workbook_status.py
 	@$(PYTHON) tools/state_writer.py

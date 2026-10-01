@@ -16,32 +16,11 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
 def load_master_workbook_names():
-    """Loads exact feature names from master workbooks' Detailed Analysis sheets."""
-    import openpyxl
-    mapping = {}
-    for p in sorted((ROOT_DIR / "inputs" / "specs").glob("*.xlsx")):
-        fname = p.name
-        slot = fname.split("_")[0]
-        try:
-            slot_int = int(slot)
-        except ValueError:
-            continue
-        wb = openpyxl.load_workbook(p, data_only=True)
-        ws = wb['Detailed Analysis'] if 'Detailed Analysis' in wb.sheetnames else wb.active
-        f_col = 1
-        for c in range(1, 15):
-            v = str(ws.cell(1, c).value or '').lower()
-            if 'feature' in v:
-                f_col = c
-                break
-        idx = 1
-        for r in range(2, ws.max_row + 1):
-            val = ws.cell(r, f_col).value
-            if val and str(val).strip():
-                fid = f"{slot_int:02d}-{idx:03d}"
-                mapping[fid] = str(val).strip()
-                idx += 1
-    return mapping
+    """Loads exact feature names from evidence/master_features_04_05_06.json."""
+    master_path = ROOT_DIR / "evidence" / "master_features_04_05_06.json"
+    with open(master_path, "r", encoding="utf-8") as f:
+        master = json.load(f)
+    return {fid: meta["name"] for fid, meta in master.items()}
 
 def extract_feature_annotations_and_assertions(project_dir: Path, master_names: dict):
     """

@@ -189,11 +189,16 @@ impl SsTableReader {
             });
         }
 
-        Ok(Self {
+        let mut reader = Self {
             path,
-            bloom: BloomFilter::with_capacity(1000, 0.01),
+            bloom: BloomFilter::with_capacity(std::cmp::max(100, num_blocks * 100), 0.01),
             index,
-        })
+        };
+        let entries = reader.scan_all()?;
+        for (k, _) in entries {
+            reader.bloom.insert(&k);
+        }
+        Ok(reader)
     }
 
     pub fn get(&self, key: &[u8]) -> std::io::Result<Option<Option<Vec<u8>>>> {
@@ -257,27 +262,39 @@ impl SsTableReader {
             file.seek(SeekFrom::Start(entry.offset))?;
             let mut header = [0u8; 8];
             file.read_exact(&mut header)?;
+            let expected_crc = u32::from_be_bytes(header[..4].try_into().unwrap());
             let block_payload_len = u32::from_be_bytes(header[4..8].try_into().unwrap()) as usize;
 
             let mut block_data = vec![0u8; block_payload_len];
             file.read_exact(&mut block_data)?;
 
+            if crc32(&block_data) != expected_crc {
+                return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable block CRC mismatch"));
+            }
+
             let mut cursor = 0;
             while cursor + 9 <= block_data.len() {
                 let k_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
+                if cursor + k_len + 5 > block_data.len() {
+                    return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable corrupt block key length"));
+                }
                 let k = block_data[cursor..cursor + k_len].to_vec();
                 cursor += k_len;
                 let is_tombstone = block_data[cursor] == 1;
                 cursor += 1;
                 let v_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
+                if !is_tombstone && cursor + v_len > block_data.len() {
+                    return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable corrupt block value length"));
+                }
                 let val = if is_tombstone {
                     None
                 } else {
-                    Some(block_data[cursor..cursor + v_len].to_vec())
+                    let v = block_data[cursor..cursor + v_len].to_vec();
+                    cursor += v_len;
+                    Some(v)
                 };
-                cursor += v_len;
 
                 entries.push((k, val));
             }

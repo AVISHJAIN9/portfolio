@@ -17,18 +17,6 @@ fn test_memtable_insertion_and_ordering() {
 }
 
 // FEAT: 06-028 "Memtable lookup"
-// ACCEPT: Tombstone deletion markers override earlier keys in reads and iterators
-#[test]
-fn test_memtable_tombstone_deletion() {
-    let mem = MemTable::new();
-    mem.put(b"key_1", b"val_1");
-    assert!(matches!(mem.get(b"key_1"), Some(ValueEntry::Value(_))));
-
-    mem.delete(b"key_1");
-    assert_eq!(mem.get(b"key_1"), Some(ValueEntry::Tombstone));
-}
-
-// FEAT: 06-029 "Memtable ordered iterator"
 // ACCEPT: Fast point lookup retrieves newest value entry or tombstone from active memtable
 #[test]
 fn test_memtable_point_lookup() {
@@ -41,6 +29,25 @@ fn test_memtable_point_lookup() {
     } else {
         panic!("Expected Value entry");
     }
+
+    mem.delete(b"target");
+    assert_eq!(mem.get(b"target"), Some(ValueEntry::Tombstone));
+}
+
+// FEAT: 06-029 "Memtable ordered iterator"
+// ACCEPT: Forward iterator traverses entries across memtable levels in ascending order
+#[test]
+fn test_memtable_ordered_iterator() {
+    let mem = MemTable::new();
+    mem.put(b"z", b"26");
+    mem.put(b"a", b"1");
+    mem.put(b"m", b"13");
+
+    let mut iter = mem.iter().into_iter();
+    assert_eq!(iter.next().unwrap().0, b"a");
+    assert_eq!(iter.next().unwrap().0, b"m");
+    assert_eq!(iter.next().unwrap().0, b"z");
+    assert_eq!(iter.next(), None);
 }
 
 // FEAT: 06-030 "Memtable size thresholds"

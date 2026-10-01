@@ -72,7 +72,7 @@ fn test_chacha20_poly1305_packet_protection() {
 // FEAT: 05-017 "Key derivation and key phase"
 // ACCEPT: Initial secrets, keys, IV, HP derivation and RFC 9001 Section 6 key update phase transitions
 #[test]
-fn test_rfc9001_initial_key_derivation() {
+fn test_key_derivation_and_key_phase_rfc9001() {
     let dcid = [0x83, 0x94, 0xc8, 0xf0, 0x3e, 0x51, 0x57, 0x08];
     let initial_salt = [
         0x38, 0x76, 0x2c, 0xf7, 0xf5, 0x59, 0x34, 0xb3, 0x4d, 0x17, 0x9a, 0xe6, 0xa4, 0xc8,
