@@ -44,7 +44,7 @@ fn test_packet_loss_detection() {
     assert_eq!(recovery.sent_packets.len(), 5);
     recovery.on_ack_received(4, Duration::from_millis(5));
     // Packet 0, 1 declared lost
-    assert!(recovery.sent_packets.get(&0).is_none());
+    assert!(!recovery.sent_packets.contains_key(&0));
 }
 
 // FEAT: 05-028 "Packet-threshold loss detection"
@@ -130,7 +130,10 @@ fn test_smoothed_rtt_estimation() {
     rtt.update(now, now + Duration::from_millis(40), Duration::ZERO);
     assert_eq!(rtt.smoothed_rtt, Duration::from_millis(40));
     rtt.update(now, now + Duration::from_millis(80), Duration::ZERO);
-    assert!(rtt.smoothed_rtt > Duration::from_millis(40) && rtt.smoothed_rtt < Duration::from_millis(80));
+    assert!(
+        rtt.smoothed_rtt > Duration::from_millis(40)
+            && rtt.smoothed_rtt < Duration::from_millis(80)
+    );
 }
 
 // FEAT: 05-035 "RTT variance estimation"
@@ -196,7 +199,7 @@ fn test_congestion_avoidance_linear_growth() {
 fn test_cubic_congestion_control_curve() {
     let c = 0.4f64;
     let w_max = 100000.0f64;
-    let rtt = 0.05f64; // 50ms
+    let _rtt = 0.05f64; // 50ms
     let k = (w_max * 0.3 / c).cbrt();
     let t = 0.5f64; // time elapsed
     let w_cubic = c * (t - k).powi(3) + w_max;
@@ -253,6 +256,7 @@ fn test_bandwidth_delay_product_estimation() {
 // ACCEPT: Trait abstraction provides modular pluggability for NewReno and CUBIC
 #[test]
 fn test_congestion_controller_interface() {
+    #[allow(dead_code)]
     trait CongestionController {
         fn on_packet_sent(&mut self, bytes_sent: u64);
         fn on_ack_received(&mut self, bytes_acked: u64, rtt: Duration);
@@ -276,4 +280,3 @@ fn test_congestion_controller_interface() {
     cc.on_ack_received(1200, Duration::from_millis(10));
     assert_eq!(cc.get_cwnd(), 13200);
 }
-

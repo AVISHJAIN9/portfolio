@@ -47,7 +47,10 @@ fn test_ack_frame_codec() {
         largest_acknowledged: 100,
         ack_delay: 25,
         first_ack_range: 5,
-        ack_ranges: vec![AckRange { gap: 2, ack_range_length: 3 }],
+        ack_ranges: vec![AckRange {
+            gap: 2,
+            ack_range_length: 3,
+        }],
         ecn_counts: None,
     });
     ack.encode(&mut buf);
@@ -105,7 +108,10 @@ fn test_control_frames_codec() {
         match (&frame, decoded) {
             (Frame::Padding { length }, Frame::Padding { length: l2 }) => assert_eq!(*length, l2),
             (Frame::Ping, Frame::Ping) => (),
-            (Frame::ConnectionClose { error_code, .. }, Frame::ConnectionClose { error_code: e2, .. }) => assert_eq!(*error_code, e2),
+            (
+                Frame::ConnectionClose { error_code, .. },
+                Frame::ConnectionClose { error_code: e2, .. },
+            ) => assert_eq!(*error_code, e2),
             _ => panic!("Mismatch on control frame codec"),
         }
     }
@@ -158,8 +164,20 @@ fn test_max_streams_frames() {
 
     let mut read_buf = buf.freeze();
     let d1 = Frame::decode(&mut read_buf).unwrap().unwrap();
-    assert_eq!(d1, Frame::MaxStreams { is_bidi: true, max_streams: 128 });
+    assert_eq!(
+        d1,
+        Frame::MaxStreams {
+            is_bidi: true,
+            max_streams: 128
+        }
+    );
 
     let d2 = Frame::decode(&mut read_buf).unwrap().unwrap();
-    assert_eq!(d2, Frame::MaxStreams { is_bidi: false, max_streams: 64 });
+    assert_eq!(
+        d2,
+        Frame::MaxStreams {
+            is_bidi: false,
+            max_streams: 64
+        }
+    );
 }

@@ -1,0 +1,6 @@
+cargo-deny 0.14.24 (security/license scanner)
+Loaded policy from /Users/avishjain/avishjain9-repos/portfolio/deny.toml
+Licenses: checked 0 unlicensed crates, all dependencies match allowlist [MIT, Apache-2.0, BSD-3-Clause, ISC]
+Bans: 0 banned crates detected
+Advisories: 0 vulnerabilities, 0 unmaintained crates, 0 yanked crates
+Result: ok. All checks passed.

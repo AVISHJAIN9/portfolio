@@ -95,11 +95,17 @@ impl TlsKeySchedule {
     }
 
     /// Client / Server Handshake Traffic Secret
-    pub fn derive_client_handshake_traffic_secret(handshake_secret: &[u8; 32], transcript_hash: &[u8; 32]) -> [u8; 32] {
+    pub fn derive_client_handshake_traffic_secret(
+        handshake_secret: &[u8; 32],
+        transcript_hash: &[u8; 32],
+    ) -> [u8; 32] {
         Self::derive_secret(handshake_secret, "c hs traffic", transcript_hash)
     }
 
-    pub fn derive_server_handshake_traffic_secret(handshake_secret: &[u8; 32], transcript_hash: &[u8; 32]) -> [u8; 32] {
+    pub fn derive_server_handshake_traffic_secret(
+        handshake_secret: &[u8; 32],
+        transcript_hash: &[u8; 32],
+    ) -> [u8; 32] {
         Self::derive_secret(handshake_secret, "s hs traffic", transcript_hash)
     }
 
@@ -112,11 +118,17 @@ impl TlsKeySchedule {
     }
 
     /// Client / Server Application Traffic Secret
-    pub fn derive_client_app_traffic_secret(master_secret: &[u8; 32], transcript_hash: &[u8; 32]) -> [u8; 32] {
+    pub fn derive_client_app_traffic_secret(
+        master_secret: &[u8; 32],
+        transcript_hash: &[u8; 32],
+    ) -> [u8; 32] {
         Self::derive_secret(master_secret, "c ap traffic", transcript_hash)
     }
 
-    pub fn derive_server_app_traffic_secret(master_secret: &[u8; 32], transcript_hash: &[u8; 32]) -> [u8; 32] {
+    pub fn derive_server_app_traffic_secret(
+        master_secret: &[u8; 32],
+        transcript_hash: &[u8; 32],
+    ) -> [u8; 32] {
         Self::derive_secret(master_secret, "s ap traffic", transcript_hash)
     }
 
@@ -214,10 +226,12 @@ impl QuicTransportParameters {
         let mut params = QuicTransportParameters::default();
 
         while !data.is_empty() {
-            let (param_id, consumed) = decode_varint(data).ok_or_else(|| TlsError::InvalidEncoding("Truncated param id".into()))?;
+            let (param_id, consumed) = decode_varint(data)
+                .ok_or_else(|| TlsError::InvalidEncoding("Truncated param id".into()))?;
             data = &data[consumed..];
 
-            let (len, consumed_len) = decode_varint(data).ok_or_else(|| TlsError::InvalidEncoding("Truncated param len".into()))?;
+            let (len, consumed_len) = decode_varint(data)
+                .ok_or_else(|| TlsError::InvalidEncoding("Truncated param len".into()))?;
             data = &data[consumed_len..];
 
             if data.len() < len as usize {
@@ -230,40 +244,49 @@ impl QuicTransportParameters {
             match param_id {
                 0x00 => params.original_destination_connection_id = Some(val_bytes.to_vec()),
                 0x01 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.max_idle_timeout = Some(v);
                 }
                 0x03 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.max_packet_size = Some(v);
                 }
                 0x04 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_data = Some(v);
                 }
                 0x05 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_stream_data_bidi_local = Some(v);
                 }
                 0x06 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_stream_data_bidi_remote = Some(v);
                 }
                 0x07 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_stream_data_uni = Some(v);
                 }
                 0x08 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_streams_bidi = Some(v);
                 }
                 0x09 => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.initial_max_streams_uni = Some(v);
                 }
                 0x0c => params.disable_active_migration = true,
                 0x0e => {
-                    let (v, _) = decode_varint(val_bytes).ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
+                    let (v, _) = decode_varint(val_bytes)
+                        .ok_or_else(|| TlsError::InvalidEncoding("Bad varint val".into()))?;
                     params.active_connection_id_limit = Some(v);
                 }
                 0x0f => params.initial_source_connection_id = Some(val_bytes.to_vec()),
@@ -426,7 +449,11 @@ impl TlsHandshakeMessage {
                 }
 
                 // 6. quic_transport_parameters (0x0039 and draft 0xffa5)
-                append_extension(EXT_QUIC_TRANSPORT_PARAMETERS, transport_parameters, &mut ext_buf);
+                append_extension(
+                    EXT_QUIC_TRANSPORT_PARAMETERS,
+                    transport_parameters,
+                    &mut ext_buf,
+                );
 
                 payload.extend_from_slice(&(ext_buf.len() as u16).to_be_bytes());
                 payload.extend_from_slice(&ext_buf);
@@ -465,7 +492,10 @@ impl TlsHandshakeMessage {
 
                 MSG_SERVER_HELLO
             }
-            TlsHandshakeMessage::EncryptedExtensions { alpn, transport_parameters } => {
+            TlsHandshakeMessage::EncryptedExtensions {
+                alpn,
+                transport_parameters,
+            } => {
                 let mut ext_buf = Vec::new();
 
                 if let Some(ref proto) = alpn {
@@ -478,7 +508,11 @@ impl TlsHandshakeMessage {
                     append_extension(EXT_ALPN, &alpn_buf, &mut ext_buf);
                 }
 
-                append_extension(EXT_QUIC_TRANSPORT_PARAMETERS, transport_parameters, &mut ext_buf);
+                append_extension(
+                    EXT_QUIC_TRANSPORT_PARAMETERS,
+                    transport_parameters,
+                    &mut ext_buf,
+                );
 
                 payload.extend_from_slice(&(ext_buf.len() as u16).to_be_bytes());
                 payload.extend_from_slice(&ext_buf);
@@ -505,7 +539,10 @@ impl TlsHandshakeMessage {
 
                 MSG_CERTIFICATE
             }
-            TlsHandshakeMessage::CertificateVerify { signature_scheme, signature } => {
+            TlsHandshakeMessage::CertificateVerify {
+                signature_scheme,
+                signature,
+            } => {
                 payload.extend_from_slice(&signature_scheme.to_be_bytes());
                 payload.extend_from_slice(&(signature.len() as u16).to_be_bytes());
                 payload.extend_from_slice(signature);
@@ -552,19 +589,24 @@ impl TlsHandshakeMessage {
 
                 let sess_id_len = payload[34] as usize;
                 if payload.len() < 35 + sess_id_len + 2 {
-                    return Err(TlsError::InvalidEncoding("ClientHello session ID overflow".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ClientHello session ID overflow".into(),
+                    ));
                 }
                 let legacy_session_id = payload[35..35 + sess_id_len].to_vec();
                 let mut offset = 35 + sess_id_len;
 
-                let cs_len = u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
+                let cs_len =
+                    u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
                 offset += 2;
                 if payload.len() < offset + cs_len + 2 {
-                    return Err(TlsError::InvalidEncoding("ClientHello cipher suite overflow".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ClientHello cipher suite overflow".into(),
+                    ));
                 }
                 let mut cipher_suites = Vec::new();
-                for chunk in payload[offset..offset + cs_len].chunks_exact(2) {
-                    cipher_suites.push(u16::from_be_bytes(chunk.try_into().unwrap()));
+                for &chunk in payload[offset..offset + cs_len].as_chunks::<2>().0 {
+                    cipher_suites.push(u16::from_be_bytes(chunk));
                 }
                 offset += cs_len;
 
@@ -572,12 +614,17 @@ impl TlsHandshakeMessage {
                 offset += 1 + comp_len;
 
                 if payload.len() < offset + 2 {
-                    return Err(TlsError::InvalidEncoding("ClientHello extensions length missing".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ClientHello extensions length missing".into(),
+                    ));
                 }
-                let ext_len = u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
+                let ext_len =
+                    u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
                 offset += 2;
                 if payload.len() < offset + ext_len {
-                    return Err(TlsError::InvalidEncoding("ClientHello extensions overflow".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ClientHello extensions overflow".into(),
+                    ));
                 }
 
                 let ext_bytes = &payload[offset..offset + ext_len];
@@ -591,8 +638,12 @@ impl TlsHandshakeMessage {
                             // ClientKeyShare: client_shares<0..2^16-1> -> KeyShareEntry
                             if ext_data.len() >= 6 {
                                 let group = u16::from_be_bytes(ext_data[2..4].try_into().unwrap());
-                                let key_len = u16::from_be_bytes(ext_data[4..6].try_into().unwrap()) as usize;
-                                if group == GROUP_X25519 && key_len == 32 && ext_data.len() >= 6 + 32 {
+                                let key_len =
+                                    u16::from_be_bytes(ext_data[4..6].try_into().unwrap()) as usize;
+                                if group == GROUP_X25519
+                                    && key_len == 32
+                                    && ext_data.len() >= 6 + 32
+                                {
                                     key_share.copy_from_slice(&ext_data[6..38]);
                                 }
                             }
@@ -604,7 +655,9 @@ impl TlsHandshakeMessage {
                                     let l = ext_data[p_off] as usize;
                                     p_off += 1;
                                     if p_off + l <= ext_data.len() {
-                                        if let Ok(s) = std::str::from_utf8(&ext_data[p_off..p_off + l]) {
+                                        if let Ok(s) =
+                                            std::str::from_utf8(&ext_data[p_off..p_off + l])
+                                        {
                                             alpn.push(s.to_string());
                                         }
                                         p_off += l;
@@ -639,18 +692,24 @@ impl TlsHandshakeMessage {
 
                 let sess_id_len = payload[34] as usize;
                 if payload.len() < 35 + sess_id_len + 3 {
-                    return Err(TlsError::InvalidEncoding("ServerHello session ID overflow".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ServerHello session ID overflow".into(),
+                    ));
                 }
                 let legacy_session_id_echo = payload[35..35 + sess_id_len].to_vec();
                 let mut offset = 35 + sess_id_len;
 
-                let cipher_suite = u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap());
+                let cipher_suite =
+                    u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap());
                 offset += 3; // cipher_suite (2) + compression (1)
 
                 if payload.len() < offset + 2 {
-                    return Err(TlsError::InvalidEncoding("ServerHello extensions length missing".into()));
+                    return Err(TlsError::InvalidEncoding(
+                        "ServerHello extensions length missing".into(),
+                    ));
                 }
-                let ext_len = u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
+                let ext_len =
+                    u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
                 offset += 2;
                 let ext_bytes = &payload[offset..offset + ext_len];
 
@@ -682,26 +741,27 @@ impl TlsHandshakeMessage {
                 let mut alpn = None;
                 let mut transport_parameters = Vec::new();
 
-                parse_extensions(ext_bytes, |ext_type, ext_data| {
-                    match ext_type {
-                        EXT_ALPN => {
-                            if ext_data.len() >= 3 {
-                                let l = ext_data[2] as usize;
-                                if ext_data.len() >= 3 + l {
-                                    if let Ok(s) = std::str::from_utf8(&ext_data[3..3 + l]) {
-                                        alpn = Some(s.to_string());
-                                    }
+                parse_extensions(ext_bytes, |ext_type, ext_data| match ext_type {
+                    EXT_ALPN => {
+                        if ext_data.len() >= 3 {
+                            let l = ext_data[2] as usize;
+                            if ext_data.len() >= 3 + l {
+                                if let Ok(s) = std::str::from_utf8(&ext_data[3..3 + l]) {
+                                    alpn = Some(s.to_string());
                                 }
                             }
                         }
-                        EXT_QUIC_TRANSPORT_PARAMETERS | EXT_QUIC_TRANSPORT_PARAMETERS_DRAFT => {
-                            transport_parameters = ext_data.to_vec();
-                        }
-                        _ => {}
                     }
+                    EXT_QUIC_TRANSPORT_PARAMETERS | EXT_QUIC_TRANSPORT_PARAMETERS_DRAFT => {
+                        transport_parameters = ext_data.to_vec();
+                    }
+                    _ => {}
                 })?;
 
-                TlsHandshakeMessage::EncryptedExtensions { alpn, transport_parameters }
+                TlsHandshakeMessage::EncryptedExtensions {
+                    alpn,
+                    transport_parameters,
+                }
             }
             MSG_CERTIFICATE => {
                 if payload.len() < 4 {
@@ -712,7 +772,9 @@ impl TlsHandshakeMessage {
                 if payload.len() < offset + 3 {
                     return Err(TlsError::InvalidLength);
                 }
-                let total_cert_len = ((payload[offset] as usize) << 16) | ((payload[offset + 1] as usize) << 8) | (payload[offset + 2] as usize);
+                let total_cert_len = ((payload[offset] as usize) << 16)
+                    | ((payload[offset + 1] as usize) << 8)
+                    | (payload[offset + 2] as usize);
                 offset += 3;
                 let cert_end = offset + total_cert_len;
                 if payload.len() < cert_end {
@@ -724,7 +786,9 @@ impl TlsHandshakeMessage {
                     if offset + 3 > cert_end {
                         return Err(TlsError::InvalidLength);
                     }
-                    let cert_len = ((payload[offset] as usize) << 16) | ((payload[offset + 1] as usize) << 8) | (payload[offset + 2] as usize);
+                    let cert_len = ((payload[offset] as usize) << 16)
+                        | ((payload[offset + 1] as usize) << 8)
+                        | (payload[offset + 2] as usize);
                     offset += 3;
                     if offset + cert_len > cert_end {
                         return Err(TlsError::InvalidLength);
@@ -733,7 +797,9 @@ impl TlsHandshakeMessage {
                     offset += cert_len;
                     // Skip extensions
                     if offset + 2 <= cert_end {
-                        let ext_len = u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap()) as usize;
+                        let ext_len =
+                            u16::from_be_bytes(payload[offset..offset + 2].try_into().unwrap())
+                                as usize;
                         offset += 2 + ext_len;
                     }
                 }
@@ -751,7 +817,10 @@ impl TlsHandshakeMessage {
                 }
                 let signature = payload[4..4 + sig_len].to_vec();
 
-                TlsHandshakeMessage::CertificateVerify { signature_scheme, signature }
+                TlsHandshakeMessage::CertificateVerify {
+                    signature_scheme,
+                    signature,
+                }
             }
             MSG_FINISHED => {
                 if payload.len() < 32 {
@@ -781,7 +850,9 @@ where
 {
     while !data.is_empty() {
         if data.len() < 4 {
-            return Err(TlsError::InvalidEncoding("Truncated extension header".into()));
+            return Err(TlsError::InvalidEncoding(
+                "Truncated extension header".into(),
+            ));
         }
         let ext_type = u16::from_be_bytes(data[0..2].try_into().unwrap());
         let ext_len = u16::from_be_bytes(data[2..4].try_into().unwrap()) as usize;

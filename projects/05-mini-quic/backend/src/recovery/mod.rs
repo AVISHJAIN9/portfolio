@@ -154,12 +154,21 @@ impl CongestionController {
     }
 }
 
+#[derive(Debug, Default, Clone)]
+pub struct EcnState {
+    pub ect0_count: u64,
+    pub ect1_count: u64,
+    pub ce_count: u64,
+    pub last_ecn_event_time: Option<Instant>,
+}
+
 pub struct LossRecovery {
     pub rtt: RttEstimator,
     pub cc: CongestionController,
     pub sent_packets: BTreeMap<u64, SentPacket>,
     pub largest_acked: u64,
     pub loss_time: Option<Instant>,
+    pub ecn_state: EcnState,
 }
 
 impl Default for LossRecovery {
@@ -176,17 +185,21 @@ impl LossRecovery {
             sent_packets: BTreeMap::new(),
             largest_acked: 0,
             loss_time: None,
+            ecn_state: EcnState::default(),
         }
     }
 
     pub fn on_packet_sent(&mut self, pn: u64, bytes: u64, is_ack_eliciting: bool) {
-        self.sent_packets.insert(pn, SentPacket {
-            packet_number: pn,
-            time_sent: Instant::now(),
-            bytes_sent: bytes,
-            is_ack_eliciting,
-            in_flight: true,
-        });
+        self.sent_packets.insert(
+            pn,
+            SentPacket {
+                packet_number: pn,
+                time_sent: Instant::now(),
+                bytes_sent: bytes,
+                is_ack_eliciting,
+                in_flight: true,
+            },
+        );
         self.cc.on_packet_sent(bytes);
     }
 
@@ -207,7 +220,8 @@ impl LossRecovery {
 
         for (&pn, pkt) in &self.sent_packets {
             if pn < self.largest_acked
-                && (self.largest_acked - pn >= 3 || now.duration_since(pkt.time_sent) >= loss_delay) {
+                && (self.largest_acked - pn >= 3 || now.duration_since(pkt.time_sent) >= loss_delay)
+            {
                 lost_pns.push(pn);
             }
         }
@@ -226,6 +240,38 @@ impl LossRecovery {
         acked_packets
     }
 
+    /// Process ECN counts reported in ACK frame per RFC 9000 sec 13.4.2 & RFC 9002
+    pub fn process_ecn(
+        &mut self,
+        ecn: &crate::wire::frame::EcnCounts,
+        now: Instant,
+    ) -> Result<bool, &'static str> {
+        if ecn.ect0 < self.ecn_state.ect0_count
+            || ecn.ect1 < self.ecn_state.ect1_count
+            || ecn.ce < self.ecn_state.ce_count
+        {
+            return Err("ECN count decreased");
+        }
+
+        let ce_increased = ecn.ce > self.ecn_state.ce_count;
+        self.ecn_state.ect0_count = ecn.ect0;
+        self.ecn_state.ect1_count = ecn.ect1;
+        self.ecn_state.ce_count = ecn.ce;
+
+        if ce_increased {
+            let can_react = match self.ecn_state.last_ecn_event_time {
+                Some(t) => now.duration_since(t) >= self.rtt.smoothed_rtt,
+                None => true,
+            };
+            if can_react {
+                self.ecn_state.last_ecn_event_time = Some(now);
+                self.cc.on_congestion_event(now);
+                return Ok(true);
+            }
+        }
+        Ok(false)
+    }
+
     pub fn pacing_interval(&self, packet_bytes: u64) -> Duration {
         let rtt = self.rtt.smoothed_rtt;
         let cwnd = self.cc.congestion_window;
@@ -235,4 +281,3 @@ impl LossRecovery {
         Duration::from_secs_f64((packet_bytes as f64 * rtt.as_secs_f64()) / cwnd as f64)
     }
 }
-

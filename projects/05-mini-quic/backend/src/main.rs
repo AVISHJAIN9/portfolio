@@ -1,5 +1,5 @@
-use mini_quic::wire::packet::ConnectionId;
 use mini_quic::connection::QuicConnection;
+use mini_quic::wire::packet::ConnectionId;
 
 #[tokio::main]
 async fn main() {
@@ -12,6 +12,10 @@ async fn main() {
     let server = QuicConnection::new_server(client_cid.clone(), server_cid.clone());
     let client = QuicConnection::new_client(server_cid);
 
-    tracing::info!("Initialized Client (SCID={:?}) and Server (SCID={:?})", client.scid.0, server.scid.0);
+    tracing::info!(
+        "Initialized Client (SCID={:?}) and Server (SCID={:?})",
+        client.scid.0,
+        server.scid.0
+    );
     tracing::info!("Mini-QUIC Engine ready for UDP ingestion.");
 }

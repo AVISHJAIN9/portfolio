@@ -1,7 +1,6 @@
 use bytes::{Bytes, BytesMut};
 use mini_quic::connection::{ConnectionState, QuicConnection};
 use mini_quic::wire::codec::PacketCodec;
-use mini_quic::wire::frame::{Frame, StreamFrame};
 use mini_quic::wire::packet::ConnectionId;
 use pf_sim::{DeterministicRng, DiscreteEventSimulator};
 use sha2::{Digest, Sha256};
@@ -92,7 +91,10 @@ fn test_simulated_network_transfer_at_loss_rates() {
         }
 
         let received_hash = Sha256::digest(&received);
-        assert_eq!(received_hash, sent_hash, "Payload SHA-256 integrity mismatch at loss={loss_rate}");
+        assert_eq!(
+            received_hash, sent_hash,
+            "Payload SHA-256 integrity mismatch at loss={loss_rate}"
+        );
         if loss_rate > 0.0 {
             assert!(
                 retransmit_count >= exp_min_retransmits,

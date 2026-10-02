@@ -1,9 +1,9 @@
 //! QUIC Packet & Frame Codec (RFC 9000 Section 17)
 
-use bytes::{Buf, Bytes, BytesMut};
-use pf_bytes::QuicVarInt;
 use crate::wire::frame::Frame;
 use crate::wire::packet::{ConnectionId, Header, Packet, PacketType, QUIC_VERSION_1};
+use bytes::{Buf, Bytes, BytesMut};
+use pf_bytes::QuicVarInt;
 
 #[derive(Debug, thiserror::Error)]
 pub enum CodecError {
@@ -78,7 +78,8 @@ impl PacketCodec {
             };
 
             let token = if packet_type == PacketType::Initial {
-                let token_len = QuicVarInt::decode(src).map_err(|_| CodecError::MalformedHeader)? as usize;
+                let token_len =
+                    QuicVarInt::decode(src).map_err(|_| CodecError::MalformedHeader)? as usize;
                 if src.remaining() < token_len {
                     return Err(CodecError::Underflow("Token truncated"));
                 }
@@ -119,7 +120,8 @@ impl PacketCodec {
         };
 
         // Decode payload length
-        let payload_len = QuicVarInt::decode(src).map_err(|_| CodecError::MalformedHeader)? as usize;
+        let payload_len =
+            QuicVarInt::decode(src).map_err(|_| CodecError::MalformedHeader)? as usize;
         if src.remaining() < payload_len {
             return Err(CodecError::Underflow("Payload truncated"));
         }

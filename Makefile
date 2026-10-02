@@ -5,7 +5,17 @@ PYTHON ?= $(shell if [ -f /Users/avishjain/venv/bin/python3 ]; then echo /Users/
 PYTEST ?= $(shell if [ -f /Users/avishjain/venv/bin/pytest ]; then echo /Users/avishjain/venv/bin/pytest; else echo pytest; fi)
 CARGO := cargo
 
-.PHONY: all help ci demo bench loom frames train export state dedupe clean
+.PHONY: all help ci lint demo bench loom frames train export state dedupe clean
+
+lint:
+	@echo "=== Running Workspace-Wide Rust Formatting & Linting Gates (05-143) ==="
+	@cargo fmt --all --manifest-path platform/rust/Cargo.toml -- --check
+	@cargo fmt --all --manifest-path projects/04-columnar-query-engine/backend/Cargo.toml -- --check
+	@cargo fmt --all --manifest-path projects/05-mini-quic/backend/Cargo.toml -- --check
+	@cargo fmt --all --manifest-path projects/06-lsm-kv-engine/backend/Cargo.toml -- --check
+	@cargo clippy --manifest-path projects/04-columnar-query-engine/backend/Cargo.toml --all-targets -- -D warnings
+	@cargo clippy --manifest-path projects/05-mini-quic/backend/Cargo.toml --all-targets -- -D warnings
+	@cargo clippy --manifest-path projects/06-lsm-kv-engine/backend/Cargo.toml --all-targets -- -D warnings
 
 loom:
 	@echo "=== Running Loom Permutation Concurrency Tests (LOOM_MAX_PREEMPTIONS=3) ==="
@@ -17,6 +27,7 @@ help:
 	@echo ""
 	@echo "Usage:"
 	@echo "  make ci [PROJECT=NN]        Run lint, formatting, test suites, and gates"
+	@echo "  make lint                   Run rustfmt --check and clippy -D warnings across projects"
 	@echo "  make demo [PROJECT=NN]      Launch standalone offline demo scenario"
 	@echo "  make bench [PROJECT=NN]     Execute Criterion microbenchmarks & record JSON results"
 	@echo "  make frames [PROJECT=NN]    Render procedural or video WebP frame sequences"
@@ -32,6 +43,7 @@ ifdef PROJECT
 	@cd projects/$(PROJECT)* && make ci
 else
 	@echo "=== Running Workspace-Wide CI ==="
+	@$(PYTHON) tools/run_timed.py 300 evidence/ci_steps/lint.log -- $(MAKE) lint
 	@if [ -d "platform/rust" ] && [ -f "platform/rust/Cargo.toml" ]; then \
 		$(PYTHON) tools/run_timed.py 600 evidence/ci_steps/platform_tests.log -- cargo test --manifest-path platform/rust/Cargo.toml; \
 	fi

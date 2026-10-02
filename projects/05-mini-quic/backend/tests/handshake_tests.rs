@@ -65,7 +65,7 @@ fn test_connection_state_machine_transitions() {
 // ACCEPT: Client-Server handshake exchange negotiating cryptographic context and CIDs
 #[test]
 fn test_client_server_handshake_flow() {
-    use mini_quic::crypto::handshake::{TlsHandshakeSession, HandshakeStatus};
+    use mini_quic::crypto::handshake::{HandshakeStatus, TlsHandshakeSession};
     use mini_quic::crypto::tls::QuicTransportParameters;
 
     let mut client = TlsHandshakeSession::new_client(true);
@@ -85,12 +85,20 @@ fn test_client_server_handshake_flow() {
         initial_max_data: Some(1048576),
         ..Default::default()
     };
-    let (sh_bytes, flight_bytes) = server.handle_client_hello(&ch_bytes, Some("mini-quic-test".to_string()), &server_tp).expect("Server processes CH");
+    let (sh_bytes, flight_bytes) = server
+        .handle_client_hello(&ch_bytes, Some("mini-quic-test".to_string()), &server_tp)
+        .expect("Server processes CH");
 
-    client.handle_server_hello(&sh_bytes).expect("Client handles SH");
-    let client_fin_bytes = client.handle_server_handshake_flight(&flight_bytes).expect("Client handles flight");
+    client
+        .handle_server_hello(&sh_bytes)
+        .expect("Client handles SH");
+    let client_fin_bytes = client
+        .handle_server_handshake_flight(&flight_bytes)
+        .expect("Client handles flight");
 
-    server.handle_client_finished(&client_fin_bytes).expect("Server handles Finished");
+    server
+        .handle_client_finished(&client_fin_bytes)
+        .expect("Server handles Finished");
 
     assert_eq!(client.status, HandshakeStatus::Complete);
     assert_eq!(server.status, HandshakeStatus::Complete);
@@ -181,6 +189,7 @@ fn test_version_negotiation() {
 // ACCEPT: Handshake error taxonomy covers crypto, parameter, and transport violations
 #[test]
 fn test_handshake_error_taxonomy() {
+    #[allow(dead_code)]
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     #[repr(u64)]
     enum QuicTransportError {
@@ -240,10 +249,14 @@ fn test_replay_duplicate_protection() {
 // ACCEPT: Crypto AEAD nonce derivation computes exact bitwise XOR with packet number
 #[test]
 fn test_crypto_nonce_correctness() {
-    let iv = [0xfa, 0x04, 0x4b, 0x2f, 0x42, 0xa3, 0xfd, 0x3b, 0x46, 0xfb, 0x25, 0x5c];
+    let iv = [
+        0xfa, 0x04, 0x4b, 0x2f, 0x42, 0xa3, 0xfd, 0x3b, 0x46, 0xfb, 0x25, 0x5c,
+    ];
     let pn = 2u64;
     let nonce = quic_aead_nonce(&iv, pn);
-    let expected = [0xfa, 0x04, 0x4b, 0x2f, 0x42, 0xa3, 0xfd, 0x3b, 0x46, 0xfb, 0x25, 0x5e];
+    let expected = [
+        0xfa, 0x04, 0x4b, 0x2f, 0x42, 0xa3, 0xfd, 0x3b, 0x46, 0xfb, 0x25, 0x5e,
+    ];
     assert_eq!(nonce, expected);
 
     // Sender refuses (key, pn) reuse
@@ -263,6 +276,7 @@ fn test_key_material_lifecycle() {
 
     // Old secret is dropped and replaced with next generation
     let mut active_secret = current_secret;
+    assert_eq!(active_secret, current_secret);
     active_secret = next_secret;
     assert_eq!(active_secret, next_secret);
 }
@@ -358,10 +372,14 @@ fn test_integration_client_server_udp_loopback() {
     server.state = ConnectionState::OneRtt;
 
     // 1. Client sends 1-RTT stream packet to Server over real UDP socket
-    let client_pkt = client.send_stream_data(0, b"CLIENT_TO_SERVER_UDP_PAYLOAD", true).unwrap();
+    let client_pkt = client
+        .send_stream_data(0, b"CLIENT_TO_SERVER_UDP_PAYLOAD", true)
+        .unwrap();
     let mut client_buf = BytesMut::new();
     PacketCodec::encode(&client_pkt, &mut client_buf);
-    client_sock.send_to(&client_buf, server_addr).expect("Send client packet");
+    client_sock
+        .send_to(&client_buf, server_addr)
+        .expect("Send client packet");
 
     // 2. Server receives from UDP socket and processes
     let mut recv_buf = [0u8; 65535];
@@ -369,11 +387,15 @@ fn test_integration_client_server_udp_loopback() {
     let start = std::time::Instant::now();
     while start.elapsed() < std::time::Duration::from_secs(2) {
         if let Ok((n, client_addr)) = server_sock.recv_from(&mut recv_buf) {
-            let resp = server.handle_packet(Bytes::copy_from_slice(&recv_buf[..n])).expect("Server handle packet");
+            let resp = server
+                .handle_packet(Bytes::copy_from_slice(&recv_buf[..n]))
+                .expect("Server handle packet");
             if let Some(ack_pkt) = resp {
                 let mut ack_buf = BytesMut::new();
                 PacketCodec::encode(&ack_pkt, &mut ack_buf);
-                server_sock.send_to(&ack_buf, client_addr).expect("Send server ACK");
+                server_sock
+                    .send_to(&ack_buf, client_addr)
+                    .expect("Send server ACK");
             }
             received = true;
             break;
@@ -384,7 +406,10 @@ fn test_integration_client_server_udp_loopback() {
 
     // Check data delivered into stream buffer
     let stream = server.streams.get_or_create(0, false, 256 * 1024);
-    assert_eq!(stream.read_contiguous().unwrap(), b"CLIENT_TO_SERVER_UDP_PAYLOAD"[..]);
+    assert_eq!(
+        stream.read_contiguous().unwrap(),
+        b"CLIENT_TO_SERVER_UDP_PAYLOAD"[..]
+    );
 }
 
 // FEAT: 05-139 "Interoperability test corpus"
@@ -398,8 +423,17 @@ fn test_interoperability_test_corpus() {
     let mut client = TlsHandshakeSession::new_client(true);
     let mut server = TlsHandshakeSession::new_server([0x77u8; 32], vec![0x30, 0x82, 0x01, 0x0a]);
 
-    let ch = client.create_client_hello(&["mini-quic-test".to_string()], &QuicTransportParameters::default());
-    let (sh, flight) = server.handle_client_hello(&ch, Some("mini-quic-test".to_string()), &QuicTransportParameters::default()).unwrap();
+    let ch = client.create_client_hello(
+        &["mini-quic-test".to_string()],
+        &QuicTransportParameters::default(),
+    );
+    let (sh, flight) = server
+        .handle_client_hello(
+            &ch,
+            Some("mini-quic-test".to_string()),
+            &QuicTransportParameters::default(),
+        )
+        .unwrap();
     client.handle_server_hello(&sh).unwrap();
     let fin = client.handle_server_handshake_flight(&flight).unwrap();
     server.handle_client_finished(&fin).unwrap();
@@ -408,4 +442,3 @@ fn test_interoperability_test_corpus() {
     let server_keys = server.app_keys.unwrap();
     assert_eq!(client_keys.client_1rtt_key, server_keys.client_1rtt_key);
 }
-

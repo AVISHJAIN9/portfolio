@@ -1,8 +1,6 @@
 //! TLS 1.3 Handshake State Machine for QUIC Endpoint Handshake Exchanges
 
 use super::tls::*;
-use sha2::{Digest, Sha256};
-use std::sync::Arc;
 
 pub const CONTEXT_SERVER_CERT_VERIFY: &[u8] = b"TLS 1.3, server CertificateVerify\0";
 
@@ -122,7 +120,11 @@ impl TlsHandshakeSession {
     }
 
     /// Client: creates initial ClientHello message
-    pub fn create_client_hello(&mut self, alpn: &[String], params: &QuicTransportParameters) -> Vec<u8> {
+    pub fn create_client_hello(
+        &mut self,
+        alpn: &[String],
+        params: &QuicTransportParameters,
+    ) -> Vec<u8> {
         let mut random = [0u8; 32];
         for (i, b) in random.iter_mut().enumerate() {
             *b = (i as u8) + 0x11;
@@ -150,7 +152,7 @@ impl TlsHandshakeSession {
         server_params: &QuicTransportParameters,
     ) -> Result<(Vec<u8>, Vec<u8>), TlsError> {
         let (msg, _) = TlsHandshakeMessage::decode(ch_bytes)?;
-        let (client_random, legacy_session_id, key_share, peer_tp) = match msg {
+        let (_client_random, legacy_session_id, key_share, peer_tp) = match msg {
             TlsHandshakeMessage::ClientHello {
                 random,
                 legacy_session_id,
@@ -189,8 +191,10 @@ impl TlsHandshakeSession {
         self.handshake_secret = Some(hs_secret);
 
         let th_sh = sha256_digest(&self.transcript);
-        let c_hs_secret = TlsKeySchedule::derive_client_handshake_traffic_secret(&hs_secret, &th_sh);
-        let s_hs_secret = TlsKeySchedule::derive_server_handshake_traffic_secret(&hs_secret, &th_sh);
+        let c_hs_secret =
+            TlsKeySchedule::derive_client_handshake_traffic_secret(&hs_secret, &th_sh);
+        let s_hs_secret =
+            TlsKeySchedule::derive_server_handshake_traffic_secret(&hs_secret, &th_sh);
         self.client_hs_traffic_secret = Some(c_hs_secret);
         self.server_hs_traffic_secret = Some(s_hs_secret);
 
@@ -228,7 +232,9 @@ impl TlsHandshakeSession {
         sign_msg.extend_from_slice(CONTEXT_SERVER_CERT_VERIFY);
         sign_msg.extend_from_slice(&th_cert);
 
-        let ed_secret = self.local_ed25519_secret.expect("Server must have Ed25519 secret");
+        let ed_secret = self
+            .local_ed25519_secret
+            .expect("Server must have Ed25519 secret");
         let sig = pf_crypto::ed25519_sign(&ed_secret, &sign_msg);
         let cv = TlsHandshakeMessage::CertificateVerify {
             signature_scheme: SIG_ED25519,
@@ -282,8 +288,10 @@ impl TlsHandshakeSession {
         self.handshake_secret = Some(hs_secret);
 
         let th_sh = sha256_digest(&self.transcript);
-        let c_hs_secret = TlsKeySchedule::derive_client_handshake_traffic_secret(&hs_secret, &th_sh);
-        let s_hs_secret = TlsKeySchedule::derive_server_handshake_traffic_secret(&hs_secret, &th_sh);
+        let c_hs_secret =
+            TlsKeySchedule::derive_client_handshake_traffic_secret(&hs_secret, &th_sh);
+        let s_hs_secret =
+            TlsKeySchedule::derive_server_handshake_traffic_secret(&hs_secret, &th_sh);
         self.client_hs_traffic_secret = Some(c_hs_secret);
         self.server_hs_traffic_secret = Some(s_hs_secret);
 
@@ -303,32 +311,48 @@ impl TlsHandshakeSession {
     }
 
     /// Client: handles server handshake flight (EE, Cert, CV, Fin) and returns client Finished message
-    pub fn handle_server_handshake_flight(&mut self, flight_bytes: &[u8]) -> Result<Vec<u8>, TlsError> {
+    pub fn handle_server_handshake_flight(
+        &mut self,
+        flight_bytes: &[u8],
+    ) -> Result<Vec<u8>, TlsError> {
         let mut offset = 0;
-        let s_hs_secret = self.server_hs_traffic_secret.ok_or(TlsError::UnexpectedMessage)?;
-        let c_hs_secret = self.client_hs_traffic_secret.ok_or(TlsError::UnexpectedMessage)?;
+        let s_hs_secret = self
+            .server_hs_traffic_secret
+            .ok_or(TlsError::UnexpectedMessage)?;
+        let c_hs_secret = self
+            .client_hs_traffic_secret
+            .ok_or(TlsError::UnexpectedMessage)?;
 
         while offset < flight_bytes.len() {
             let (msg, consumed) = TlsHandshakeMessage::decode(&flight_bytes[offset..])?;
             let msg_slice = &flight_bytes[offset..offset + consumed];
 
             match msg {
-                TlsHandshakeMessage::EncryptedExtensions { alpn: _, transport_parameters } => {
+                TlsHandshakeMessage::EncryptedExtensions {
+                    alpn: _,
+                    transport_parameters,
+                } => {
                     let tp = QuicTransportParameters::decode(&transport_parameters)?;
                     self.peer_transport_params = Some(tp);
                     self.transcript.extend_from_slice(msg_slice);
                 }
-                TlsHandshakeMessage::Certificate { certificate_list: _ } => {
+                TlsHandshakeMessage::Certificate {
+                    certificate_list: _,
+                } => {
                     self.transcript.extend_from_slice(msg_slice);
                 }
-                TlsHandshakeMessage::CertificateVerify { signature_scheme: _, signature: _ } => {
+                TlsHandshakeMessage::CertificateVerify {
+                    signature_scheme: _,
+                    signature: _,
+                } => {
                     self.transcript.extend_from_slice(msg_slice);
                 }
                 TlsHandshakeMessage::Finished { verify_data } => {
                     // Verify server Finished MAC
                     let th_before_fin = sha256_digest(&self.transcript);
                     let s_fin_key = TlsKeySchedule::derive_finished_key(&s_hs_secret);
-                    let expected_vd = TlsKeySchedule::compute_verify_data(&s_fin_key, &th_before_fin);
+                    let expected_vd =
+                        TlsKeySchedule::compute_verify_data(&s_fin_key, &th_before_fin);
 
                     if !pf_crypto::constant_time_eq(&verify_data, &expected_vd) {
                         self.status = HandshakeStatus::Failed(TlsError::FinishedMacMismatch);
@@ -387,7 +411,9 @@ impl TlsHandshakeSession {
             _ => return Err(TlsError::UnexpectedMessage),
         };
 
-        let c_hs_secret = self.client_hs_traffic_secret.ok_or(TlsError::UnexpectedMessage)?;
+        let c_hs_secret = self
+            .client_hs_traffic_secret
+            .ok_or(TlsError::UnexpectedMessage)?;
         let th_before_c_fin = sha256_digest(&self.transcript);
         let c_fin_key = TlsKeySchedule::derive_finished_key(&c_hs_secret);
         let expected_c_vd = TlsKeySchedule::compute_verify_data(&c_fin_key, &th_before_c_fin);

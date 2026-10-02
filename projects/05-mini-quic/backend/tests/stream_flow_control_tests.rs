@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use mini_quic::stream::{Stream, StreamManager, StreamState, StreamType};
+use mini_quic::stream::{Stream, StreamManager, StreamState};
 
 // FEAT: 05-047 "Bidirectional stream management"
 // ACCEPT: Manage bidirectional stream creation, read/write state transitions, and FIN handling
@@ -49,10 +49,14 @@ fn test_stream_id_allocation() {
 fn test_stream_receive_reassembly() {
     let mut stream = Stream::new(0, false, 65536);
     // Receive fragments out of order: offset 5..10, then 0..5
-    stream.receive_data(5, Bytes::from_static(b"WORLD"), false).unwrap();
+    stream
+        .receive_data(5, Bytes::from_static(b"WORLD"), false)
+        .unwrap();
     assert_eq!(stream.read_contiguous(), None);
 
-    stream.receive_data(0, Bytes::from_static(b"HELLO"), false).unwrap();
+    stream
+        .receive_data(0, Bytes::from_static(b"HELLO"), false)
+        .unwrap();
     let c1 = stream.read_contiguous().unwrap();
     assert_eq!(&c1[..], b"HELLO");
     let c2 = stream.read_contiguous().unwrap();
@@ -147,5 +151,7 @@ fn test_stream_reset_handling() {
     stream.reset(0x01); // Error code 1
     assert_eq!(stream.state, StreamState::ResetSent(1));
     assert_eq!(stream.send_buffer.len(), 0);
-    assert!(stream.write_data(b"cannot write after reset", false).is_err());
+    assert!(stream
+        .write_data(b"cannot write after reset", false)
+        .is_err());
 }

@@ -1,11 +1,11 @@
-pub mod wire;
+pub mod connection;
 pub mod crypto;
 pub mod recovery;
 pub mod stream;
-pub mod connection;
+pub mod wire;
 
-pub use wire::*;
+pub use connection::*;
 pub use crypto::*;
 pub use recovery::*;
 pub use stream::*;
-pub use connection::*;
+pub use wire::*;

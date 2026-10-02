@@ -78,7 +78,10 @@ impl Stream {
     }
 
     pub fn write_data(&mut self, data: &[u8], fin: bool) -> Result<u64, &'static str> {
-        if matches!(self.state, StreamState::SendClosed | StreamState::Closed | StreamState::ResetSent(_)) {
+        if matches!(
+            self.state,
+            StreamState::SendClosed | StreamState::Closed | StreamState::ResetSent(_)
+        ) {
             return Err("Stream send side is closed or reset");
         }
         let len = data.len() as u64;
@@ -98,7 +101,12 @@ impl Stream {
         Ok(len)
     }
 
-    pub fn receive_data(&mut self, offset: u64, data: Bytes, fin: bool) -> Result<(), &'static str> {
+    pub fn receive_data(
+        &mut self,
+        offset: u64,
+        data: Bytes,
+        fin: bool,
+    ) -> Result<(), &'static str> {
         let len = data.len() as u64;
         if offset + len > self.recv_max_stream_data {
             return Err("Received data exceeds stream flow control limit");
@@ -173,8 +181,15 @@ impl StreamManager {
         }
     }
 
-    pub fn get_or_create(&mut self, stream_id: u64, is_local: bool, max_stream_data: u64) -> &mut Stream {
-        self.streams.entry(stream_id).or_insert_with(|| Stream::new(stream_id, is_local, max_stream_data))
+    pub fn get_or_create(
+        &mut self,
+        stream_id: u64,
+        is_local: bool,
+        max_stream_data: u64,
+    ) -> &mut Stream {
+        self.streams
+            .entry(stream_id)
+            .or_insert_with(|| Stream::new(stream_id, is_local, max_stream_data))
     }
 
     /// Allocate a new stream ID according to initiator and bidirectionality
@@ -221,7 +236,12 @@ impl StreamManager {
         Ok(id)
     }
 
-    pub fn send_stream_data(&mut self, stream_id: u64, data: &[u8], fin: bool) -> Result<u64, &'static str> {
+    pub fn send_stream_data(
+        &mut self,
+        stream_id: u64,
+        data: &[u8],
+        fin: bool,
+    ) -> Result<u64, &'static str> {
         let len = data.len() as u64;
         if self.data_sent + len > self.max_data {
             return Err("Connection flow control limit exceeded (MAX_DATA)");
@@ -232,13 +252,22 @@ impl StreamManager {
         Ok(written)
     }
 
-    pub fn receive_stream_data(&mut self, stream_id: u64, offset: u64, data: Bytes, fin: bool) -> Result<(), &'static str> {
+    pub fn receive_stream_data(
+        &mut self,
+        stream_id: u64,
+        offset: u64,
+        data: Bytes,
+        fin: bool,
+    ) -> Result<(), &'static str> {
         let len = data.len() as u64;
         if self.data_received + len > self.max_data {
             return Err("Connection flow control limit exceeded on receive (MAX_DATA)");
         }
         let max_stream_data = self.max_stream_data_bidi_remote;
-        let stream = self.streams.entry(stream_id).or_insert_with(|| Stream::new(stream_id, false, max_stream_data));
+        let stream = self
+            .streams
+            .entry(stream_id)
+            .or_insert_with(|| Stream::new(stream_id, false, max_stream_data));
         stream.receive_data(offset, data, fin)?;
         self.data_received += len;
         Ok(())
@@ -250,7 +279,11 @@ impl StreamManager {
         }
     }
 
-    pub fn update_max_stream_data(&mut self, stream_id: u64, max_stream_data: u64) -> Result<(), &'static str> {
+    pub fn update_max_stream_data(
+        &mut self,
+        stream_id: u64,
+        max_stream_data: u64,
+    ) -> Result<(), &'static str> {
         let stream = self.streams.get_mut(&stream_id).ok_or("Stream not found")?;
         if max_stream_data > stream.send_max_stream_data {
             stream.send_max_stream_data = max_stream_data;

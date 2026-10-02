@@ -1,8 +1,8 @@
 //! QUIC Packet Header & Types (RFC 9000 Section 17)
 
+use crate::wire::frame::Frame;
 use bytes::{BufMut, Bytes, BytesMut};
 use pf_bytes::QuicVarInt;
-use crate::wire::frame::Frame;
 
 pub const QUIC_VERSION_1: u32 = 0x00000001;
 

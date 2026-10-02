@@ -1,6 +1,6 @@
 use bytes::{Bytes, BytesMut};
 use mini_quic::wire::codec::PacketCodec;
-use mini_quic::wire::frame::{CryptoFrame, Frame, StreamFrame};
+use mini_quic::wire::frame::Frame;
 use mini_quic::wire::packet::{ConnectionId, Header, Packet, PacketType, QUIC_VERSION_1};
 
 // FEAT: 05-001 "QUIC packet header encoding/decoding"
@@ -79,10 +79,18 @@ fn test_long_header_packet_support() {
 
     let mut read_buf = encoded.freeze();
     let decoded = PacketCodec::decode(&mut read_buf).expect("Decode should succeed");
-    
+
     // Assert all Long Header fields explicitly
     match &decoded.header {
-        Header::Long { packet_type, version, dcid: d, scid: s, token: t, packet_number, packet_number_len } => {
+        Header::Long {
+            packet_type,
+            version,
+            dcid: d,
+            scid: s,
+            token: t,
+            packet_number,
+            packet_number_len,
+        } => {
             assert_eq!(*packet_type, PacketType::Initial);
             assert_eq!(*version, QUIC_VERSION_1);
             assert_eq!(d, &dcid);
@@ -100,7 +108,7 @@ fn test_long_header_packet_support() {
 #[test]
 fn test_short_header_packet_support() {
     let dcid = ConnectionId::new(&[0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08]);
-    
+
     // 1. Verify spin_bit and key_phase combinations
     for (spin, key_ph) in [(false, false), (true, false), (false, true), (true, true)] {
         let header = Header::Short {
@@ -118,7 +126,13 @@ fn test_short_header_packet_support() {
         PacketCodec::encode(&packet, &mut encoded);
         let decoded = PacketCodec::decode(&mut encoded.freeze()).expect("Decode short header");
         match &decoded.header {
-            Header::Short { spin_bit, key_phase, dcid: d, packet_number, .. } => {
+            Header::Short {
+                spin_bit,
+                key_phase,
+                dcid: d,
+                packet_number,
+                ..
+            } => {
                 assert_eq!(*spin_bit, spin);
                 assert_eq!(*key_phase, key_ph);
                 assert_eq!(d, &dcid);
@@ -133,7 +147,12 @@ fn test_short_header_packet_support() {
     let raw_sample_hdr = [0x42u8, 0x00, 0x27, 0x03, 0x13, 0xf4];
     assert_eq!(raw_sample_hdr[0] & 0x80, 0); // Short header flag (bit 7 == 0)
     assert_eq!(raw_sample_hdr[0] & 0x40, 0x40); // Fixed bit (bit 6 == 1)
-    let pn = u32::from_be_bytes([raw_sample_hdr[2], raw_sample_hdr[3], raw_sample_hdr[4], raw_sample_hdr[5]]);
+    let pn = u32::from_be_bytes([
+        raw_sample_hdr[2],
+        raw_sample_hdr[3],
+        raw_sample_hdr[4],
+        raw_sample_hdr[5],
+    ]);
     assert_eq!(pn, 0x270313f4); // 654360564
 }
 
@@ -161,7 +180,10 @@ fn test_packet_number_encoding_decoding() {
             packet_number: pn,
             packet_number_len: len,
         };
-        let packet = Packet { header, frames: vec![Frame::Ping] };
+        let packet = Packet {
+            header,
+            frames: vec![Frame::Ping],
+        };
         let mut encoded = BytesMut::new();
         PacketCodec::encode(&packet, &mut encoded);
         let mut read_buf = encoded.freeze();

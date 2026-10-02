@@ -1,0 +1,5 @@
+cargo-audit 0.20.0 (RustSec Advisory Database)
+Scanning dependencies in /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.lock...
+Fetching advisory database from https://github.com/RustSec/advisory-db
+0 vulnerabilities found in 0 crates
+Result: 0 advisories detected (0 unmaintained, 0 unsound, 0 yanked)

@@ -1,7 +1,7 @@
-pub mod tls;
 pub mod handshake;
+pub mod tls;
 
-use pf_crypto::{hkdf_extract, hkdf_expand_label, keyed_mac, verify_mac};
+use pf_crypto::{hkdf_expand_label, hkdf_extract, keyed_mac, verify_mac};
 use std::collections::HashMap;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
@@ -67,12 +67,22 @@ impl CryptoContext {
     /// Derives Initial Secrets from Destination Connection ID per RFC 9001 Section 5.2
     pub fn new_initial(dcid: &[u8]) -> Self {
         let initial_secret = hkdf_extract(&QUIC_V1_INITIAL_SALT, dcid);
-        
+
         let mut client_initial_secret = [0u8; 32];
         let mut server_initial_secret = [0u8; 32];
-        
-        hkdf_expand_label(&initial_secret, "client in", b"", &mut client_initial_secret);
-        hkdf_expand_label(&initial_secret, "server in", b"", &mut server_initial_secret);
+
+        hkdf_expand_label(
+            &initial_secret,
+            "client in",
+            b"",
+            &mut client_initial_secret,
+        );
+        hkdf_expand_label(
+            &initial_secret,
+            "server in",
+            b"",
+            &mut server_initial_secret,
+        );
 
         Self {
             initial_secret,
@@ -90,12 +100,18 @@ impl CryptoContext {
 
     /// Educational / Diagnostic packet MAC authentication (Blake3 keyed mode)
     pub fn compute_tag(&self, message: &[u8]) -> [u8; 32] {
-        let key = self.application_secret.as_ref().unwrap_or(&self.initial_secret);
+        let key = self
+            .application_secret
+            .as_ref()
+            .unwrap_or(&self.initial_secret);
         keyed_mac(key, message)
     }
 
     pub fn verify_tag(&self, message: &[u8], expected: &[u8; 32]) -> bool {
-        let key = self.application_secret.as_ref().unwrap_or(&self.initial_secret);
+        let key = self
+            .application_secret
+            .as_ref()
+            .unwrap_or(&self.initial_secret);
         verify_mac(key, message, expected)
     }
 }
