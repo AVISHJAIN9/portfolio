@@ -1,0 +1,21 @@
+=== CLEAN CLONE CI RUN SUMMARY (SHA: ba0477ab419246a0476409ed56627f0d3e6dd964) ===
+
+| Step | Exit Code | Timed Out | Elapsed | Status | Log File |
+|:---|:---:|:---:|:---:|:---:|:---|n| `01_clone` | **0** | no | 1.57s | ✓ PASS | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+| `02_clean_clone_ci` | **0** | no | 115.48s | ✓ PASS | [`02_clean_clone_ci.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_clean_clone_ci.log) |
+| `03_clean_clone_interop` | **0** | no | 2.01s | ✓ PASS | [`03_clean_clone_interop.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/03_clean_clone_interop.log) |
+| `04_report_generator_check` | **0** | no | 0.55s | ✓ PASS | [`04_report_generator_check.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/04_report_generator_check.log) |
+
+Overall Result: ✓ PASS (100% of Clean Clone CI Steps Passed)
+
+
+--- LOG: 01_clone ---
+Cloning into '/tmp/pf-ci'...
+done.
+
+--- LOG: 02_clean_clone_ci ---
+=== Running Workspace-Wide CI ===
+
+--- LOG: 03_clean_clone_interop ---
+
+--- LOG: 04_report_generator_check ---
