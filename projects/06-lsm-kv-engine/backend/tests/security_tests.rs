@@ -252,14 +252,19 @@ fn test_fuzz_testing_robustness_against_corrupted_inputs() {
     let mut valid_block = DataBlock::new(4096);
     valid_block.add_entry(b"test_key", b"test_val");
     let encoded = valid_block.encode();
-    assert!(DataBlock::decode(&encoded).is_ok(), "Valid block must decode");
+    assert!(
+        DataBlock::decode(&encoded).is_ok(),
+        "Valid block must decode"
+    );
 
     // 3. Corrupted trailer bit flip is rejected safely
     let mut corrupted = encoded.clone();
     if !corrupted.is_empty() {
         let last_idx = corrupted.len() - 1;
         corrupted[last_idx] ^= 0xFF;
-        assert!(DataBlock::decode(&corrupted).is_err(), "Bit-flipped block must return Err");
+        assert!(
+            DataBlock::decode(&corrupted).is_err(),
+            "Bit-flipped block must return Err"
+        );
     }
 }
-

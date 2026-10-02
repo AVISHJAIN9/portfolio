@@ -45,7 +45,10 @@ fn test_zonemap_rowgroup_skipping() {
     };
     let result2 = PhysicalEngine::execute(&plan2, &table).expect("Execution failed");
     if let QueryResult::Scalar(AggValue::Count(c)) = result2 {
-        assert_eq!(c, 0, "Should prune all row groups when predicate out of bounds");
+        assert_eq!(
+            c, 0,
+            "Should prune all row groups when predicate out of bounds"
+        );
     } else {
         panic!("Expected Scalar Count");
     }

@@ -2,8 +2,8 @@
 
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
-use std::collections::BinaryHeap;
 use std::cmp::Ordering;
+use std::collections::BinaryHeap;
 use std::time::Duration;
 
 #[derive(Debug, Clone)]
@@ -30,7 +30,10 @@ impl PartialOrd for SimulatedPacket {
 impl Ord for SimulatedPacket {
     fn cmp(&self, other: &Self) -> Ordering {
         // Reverse for min-heap by delivery time
-        other.deliver_at_ns.cmp(&self.deliver_at_ns).then_with(|| other.id.cmp(&self.id))
+        other
+            .deliver_at_ns
+            .cmp(&self.deliver_at_ns)
+            .then_with(|| other.id.cmp(&self.id))
     }
 }
 
@@ -80,7 +83,8 @@ impl NetworkSimulator {
 
         // 2. Latency calculation (05-065)
         let jitter = if self.latency_jitter_ms > 0.0 {
-            self.rng.gen_range(-self.latency_jitter_ms..=self.latency_jitter_ms)
+            self.rng
+                .gen_range(-self.latency_jitter_ms..=self.latency_jitter_ms)
         } else {
             0.0
         };
@@ -88,11 +92,12 @@ impl NetworkSimulator {
         let delay_ns = (delay_ms * 1_000_000.0) as u64;
 
         // 3. Reordering injection (05-068)
-        let effective_delay_ns = if self.reorder_rate > 0.0 && self.rng.gen::<f64>() < self.reorder_rate {
-            delay_ns / 2 // Deliver earlier to create out-of-order delivery
-        } else {
-            delay_ns
-        };
+        let effective_delay_ns =
+            if self.reorder_rate > 0.0 && self.rng.gen::<f64>() < self.reorder_rate {
+                delay_ns / 2 // Deliver earlier to create out-of-order delivery
+            } else {
+                delay_ns
+            };
 
         let deliver_at_ns = self.virtual_time_ns + effective_delay_ns;
         let pkt_id = self.next_packet_id;

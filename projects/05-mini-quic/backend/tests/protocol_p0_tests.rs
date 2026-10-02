@@ -66,7 +66,11 @@ fn test_ecn_ready_congestion_signals_rfc9000() {
         ce: 3,
     };
     let res4 = lr.process_ecn(&ecn4, now + Duration::from_millis(150));
-    assert_eq!(res4, Ok(true), "CE increase after RTT triggers congestion event");
+    assert_eq!(
+        res4,
+        Ok(true),
+        "CE increase after RTT triggers congestion event"
+    );
 }
 
 // FEAT: 05-023 "Connection establishment metrics"
@@ -111,18 +115,35 @@ fn test_connection_establishment_metrics() {
         .expect("Server handles Finished");
 
     let handshake_duration = start.elapsed();
-    assert!(handshake_duration < Duration::from_secs(5), "Handshake completes in reasonable duration");
+    assert!(
+        handshake_duration < Duration::from_secs(5),
+        "Handshake completes in reasonable duration"
+    );
     assert_eq!(client.status, HandshakeStatus::Complete);
     assert_eq!(server.status, HandshakeStatus::Complete);
-    assert!(client.app_keys.is_some(), "Client 1-RTT application keys established");
-    assert!(server.app_keys.is_some(), "Server 1-RTT application keys established");
+    assert!(
+        client.app_keys.is_some(),
+        "Client 1-RTT application keys established"
+    );
+    assert!(
+        server.app_keys.is_some(),
+        "Server 1-RTT application keys established"
+    );
 
     // Negative / Error Metric Assertion: Corrupt ClientHello aborts handshake
     let mut bad_server = TlsHandshakeSession::new_server([0x99u8; 32], vec![0x30]);
     let bad_ch = vec![0xFF, 0xEE, 0xDD, 0xCC];
-    let bad_res = bad_server.handle_client_hello(&bad_ch, Some("mini-quic-metrics".to_string()), &server_tp);
-    assert!(bad_res.is_err(), "Corrupted ClientHello must fail handshake");
-    assert_ne!(bad_server.status, HandshakeStatus::Complete, "Failed handshake must not be Complete");
+    let bad_res =
+        bad_server.handle_client_hello(&bad_ch, Some("mini-quic-metrics".to_string()), &server_tp);
+    assert!(
+        bad_res.is_err(),
+        "Corrupted ClientHello must fail handshake"
+    );
+    assert_ne!(
+        bad_server.status,
+        HandshakeStatus::Complete,
+        "Failed handshake must not be Complete"
+    );
 }
 
 // FEAT: 05-080 "Input validation and bounds checks"
@@ -147,15 +168,24 @@ fn test_input_validation_and_bounds_checks() {
 
     // 2. Negative: Truncated buffer (empty / 1 byte)
     let mut empty_buf = Bytes::from_static(&[]);
-    assert!(PacketCodec::decode(&mut empty_buf).is_err(), "Empty buffer rejected");
+    assert!(
+        PacketCodec::decode(&mut empty_buf).is_err(),
+        "Empty buffer rejected"
+    );
 
     let mut one_byte = Bytes::from_static(&[0xc0]); // Long header flag but 0 remaining bytes
-    assert!(PacketCodec::decode(&mut one_byte).is_err(), "Truncated long header rejected");
+    assert!(
+        PacketCodec::decode(&mut one_byte).is_err(),
+        "Truncated long header rejected"
+    );
 
     // 3. Negative: Unknown frame type in payload
     let bad_frame_bytes = Bytes::from_static(&[0x40, 1, 2, 3, 4, 5, 6, 7, 8, 0, 0xfe]); // 0xfe invalid frame
     let mut bad_buf = bad_frame_bytes;
-    assert!(PacketCodec::decode(&mut bad_buf).is_err(), "Unknown frame type must be rejected");
+    assert!(
+        PacketCodec::decode(&mut bad_buf).is_err(),
+        "Unknown frame type must be rejected"
+    );
 }
 
 // FEAT: 05-136 "Property-based protocol tests"
@@ -207,7 +237,9 @@ fn test_deterministic_replay_packet_trace_hash() {
         let mut prng_state = seed;
 
         for step in 0..100 {
-            prng_state = prng_state.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            prng_state = prng_state
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             let mut event_val = (prng_state >> 32) as u32;
 
             if let Some(m_idx) = mutate_idx {
@@ -264,13 +296,28 @@ fn test_rust_formatting_and_linting_gates() {
 #[test]
 fn test_dependency_security_scanning_deny_toml() {
     let deny_toml = include_str!("../../../../deny.toml");
-    assert!(deny_toml.contains("[advisories]"), "Must configure advisory checking");
-    assert!(deny_toml.contains("[licenses]"), "Must configure license allowlist");
+    assert!(
+        deny_toml.contains("[advisories]"),
+        "Must configure advisory checking"
+    );
+    assert!(
+        deny_toml.contains("[licenses]"),
+        "Must configure license allowlist"
+    );
     assert!(deny_toml.contains("MIT"), "Must permit MIT license");
-    assert!(deny_toml.contains("Apache-2.0"), "Must permit Apache-2.0 license");
-    assert!(deny_toml.contains("BSD-3-Clause"), "Must permit BSD-3-Clause license");
+    assert!(
+        deny_toml.contains("Apache-2.0"),
+        "Must permit Apache-2.0 license"
+    );
+    assert!(
+        deny_toml.contains("BSD-3-Clause"),
+        "Must permit BSD-3-Clause license"
+    );
     assert!(deny_toml.contains("[bans]"), "Must configure bans");
-    assert!(deny_toml.contains("banned-test-crate"), "Negative control: banned crates configured");
+    assert!(
+        deny_toml.contains("banned-test-crate"),
+        "Negative control: banned crates configured"
+    );
 }
 
 // FEAT: 05-145 "Reproducible builds"
@@ -283,6 +330,12 @@ fn test_reproducible_builds_configuration() {
 
     let rustflags =
         "--remap-path-prefix=/tmp/build_a=/build --remap-path-prefix=/tmp/build_b=/build";
-    assert!(rustflags.contains("--remap-path-prefix"), "Must include path remapping flag");
-    assert!(!rustflags.contains("--unknown-flag"), "Must not include invalid flags");
+    assert!(
+        rustflags.contains("--remap-path-prefix"),
+        "Must include path remapping flag"
+    );
+    assert!(
+        !rustflags.contains("--unknown-flag"),
+        "Must not include invalid flags"
+    );
 }

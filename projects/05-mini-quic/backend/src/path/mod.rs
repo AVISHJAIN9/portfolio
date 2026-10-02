@@ -56,8 +56,16 @@ impl PathManager {
         }
     }
 
+    pub fn anti_amplification_limit(&self) -> usize {
+        self.anti_amplification_limit
+    }
+
     /// 05-058: Path state management
-    pub fn transition_state(&mut self, peer_addr: SocketAddr, new_state: PathState) -> Result<(), &'static str> {
+    pub fn transition_state(
+        &mut self,
+        peer_addr: SocketAddr,
+        new_state: PathState,
+    ) -> Result<(), &'static str> {
         let path = self.paths.get_mut(&peer_addr).ok_or("path not found")?;
         match (path.state, new_state) {
             (PathState::New, PathState::Validating) => path.state = new_state,
@@ -71,7 +79,12 @@ impl PathManager {
     }
 
     /// 05-059: Path validation with 8-byte PATH_CHALLENGE / PATH_RESPONSE
-    pub fn start_path_validation(&mut self, peer_addr: SocketAddr, challenge: [u8; 8], now: Instant) -> Result<(), &'static str> {
+    pub fn start_path_validation(
+        &mut self,
+        peer_addr: SocketAddr,
+        challenge: [u8; 8],
+        now: Instant,
+    ) -> Result<(), &'static str> {
         self.transition_state(peer_addr, PathState::Validating)?;
         let path = self.paths.get_mut(&peer_addr).unwrap();
         path.challenge_data = Some(challenge);
@@ -79,7 +92,11 @@ impl PathManager {
         Ok(())
     }
 
-    pub fn handle_path_response(&mut self, peer_addr: SocketAddr, response_data: [u8; 8]) -> Result<bool, &'static str> {
+    pub fn handle_path_response(
+        &mut self,
+        peer_addr: SocketAddr,
+        response_data: [u8; 8],
+    ) -> Result<bool, &'static str> {
         let path = self.paths.get_mut(&peer_addr).ok_or("path not found")?;
         if let Some(expected) = path.challenge_data {
             if response_data == expected {
@@ -95,7 +112,12 @@ impl PathManager {
         }
     }
 
-    pub fn check_validation_timeout(&mut self, peer_addr: SocketAddr, now: Instant, timeout: Duration) -> bool {
+    pub fn check_validation_timeout(
+        &mut self,
+        peer_addr: SocketAddr,
+        now: Instant,
+        timeout: Duration,
+    ) -> bool {
         if let Some(path) = self.paths.get_mut(&peer_addr) {
             if path.state == PathState::Validating {
                 if let Some(sent_at) = path.challenge_sent_at {
@@ -149,7 +171,11 @@ impl PathManager {
     }
 
     /// 05-063: NAT rebinding support
-    pub fn handle_nat_rebinding(&mut self, local_addr: SocketAddr, new_peer_addr: SocketAddr) -> bool {
+    pub fn handle_nat_rebinding(
+        &mut self,
+        local_addr: SocketAddr,
+        new_peer_addr: SocketAddr,
+    ) -> bool {
         if self.paths.contains_key(&new_peer_addr) {
             return false;
         }

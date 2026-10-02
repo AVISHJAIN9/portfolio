@@ -55,7 +55,9 @@ impl CsvReader {
                         }
                         current_row.push(current_field.trim().to_string());
                         current_field.clear();
-                        if !current_row.is_empty() && !(current_row.len() == 1 && current_row[0].is_empty()) {
+                        if !current_row.is_empty()
+                            && !(current_row.len() == 1 && current_row[0].is_empty())
+                        {
                             lines.push(current_row);
                         }
                         current_row = Vec::new();
@@ -68,7 +70,10 @@ impl CsvReader {
         }
 
         if in_quotes {
-            return Err(format!("RFC 4180 parse error: unclosed quote at line {}", line_num));
+            return Err(format!(
+                "RFC 4180 parse error: unclosed quote at line {}",
+                line_num
+            ));
         }
 
         if !current_field.is_empty() || !current_row.is_empty() {

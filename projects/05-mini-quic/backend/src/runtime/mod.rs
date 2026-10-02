@@ -122,6 +122,12 @@ pub struct LatencyMeasurement {
     samples: Mutex<Vec<u64>>,
 }
 
+impl Default for LatencyMeasurement {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LatencyMeasurement {
     pub fn new() -> Self {
         Self {

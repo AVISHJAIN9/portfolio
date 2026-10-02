@@ -717,13 +717,29 @@ fn test_sql_parser_fuzz_and_property_proptest() {
 
     for (i, sql) in test_queries.iter().enumerate() {
         let ast = SqlParser::parse(sql).expect("Parse valid SQL");
-        assert_eq!(ast.from_table, if i == 0 { "metrics" } else if i == 3 { "users" } else { "sales" });
-        assert!(!ast.select_items.is_empty(), "Projections must be extracted");
+        assert_eq!(
+            ast.from_table,
+            if i == 0 {
+                "metrics"
+            } else if i == 3 {
+                "users"
+            } else {
+                "sales"
+            }
+        );
+        assert!(
+            !ast.select_items.is_empty(),
+            "Projections must be extracted"
+        );
     }
 
     // Property-based roundtrip validation across 1000 generated expressions
     for val in 0..1000 {
-        let generated_sql = format!("SELECT id, val FROM metrics WHERE val > {} AND id <= {}", val, val + 100);
+        let generated_sql = format!(
+            "SELECT id, val FROM metrics WHERE val > {} AND id <= {}",
+            val,
+            val + 100
+        );
         let parsed = SqlParser::parse(&generated_sql).expect("Property parse failed");
         assert_eq!(parsed.from_table, "metrics");
         assert_eq!(parsed.select_items.len(), 2);
@@ -738,7 +754,9 @@ fn test_sql_parser_fuzz_and_property_proptest() {
         "SELECT id FROM metrics GROUP BY",
     ];
     for bad_sql in &malformed_queries {
-        assert!(SqlParser::parse(bad_sql).is_err(), "Malformed query must return Err");
+        assert!(
+            SqlParser::parse(bad_sql).is_err(),
+            "Malformed query must return Err"
+        );
     }
 }
-

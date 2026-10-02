@@ -26,9 +26,11 @@ pub mod block {
         }
 
         pub fn add_entry(&mut self, key: &[u8], val: &[u8]) {
-            self.raw.extend_from_slice(&(key.len() as u32).to_be_bytes());
+            self.raw
+                .extend_from_slice(&(key.len() as u32).to_be_bytes());
             self.raw.extend_from_slice(key);
-            self.raw.extend_from_slice(&(val.len() as u32).to_be_bytes());
+            self.raw
+                .extend_from_slice(&(val.len() as u32).to_be_bytes());
             self.raw.extend_from_slice(val);
         }
 

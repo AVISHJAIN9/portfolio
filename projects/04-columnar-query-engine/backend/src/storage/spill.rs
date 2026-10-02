@@ -3,7 +3,7 @@
 use pf_checksum::crc32;
 use std::collections::HashMap;
 use std::fs::{self, File};
-use std::io::{Read, Write};
+use std::io::Write;
 use std::path::{Path, PathBuf};
 
 /// 04-063: Spill-to-Disk Manager
@@ -29,7 +29,9 @@ impl SpillManager {
     pub fn maybe_spill(&mut self, data: &[i64]) -> std::io::Result<Option<PathBuf>> {
         let data_bytes = data.len() * 8;
         if self.current_memory_bytes + data_bytes > self.memory_limit_bytes {
-            let file_path = self.spill_dir.join(format!("spill_{}.bin", self.spilled_files.len()));
+            let file_path = self
+                .spill_dir
+                .join(format!("spill_{}.bin", self.spilled_files.len()));
             let mut file = File::create(&file_path)?;
             let mut buf = Vec::with_capacity(data.len() * 8);
             for &val in data {
@@ -114,7 +116,11 @@ impl ChecksummedBlock {
 pub struct AtomicCommitter;
 
 impl AtomicCommitter {
-    pub fn commit_file<P: AsRef<Path>>(target_path: P, content: &[u8], failpoint: Option<&str>) -> std::io::Result<()> {
+    pub fn commit_file<P: AsRef<Path>>(
+        target_path: P,
+        content: &[u8],
+        failpoint: Option<&str>,
+    ) -> std::io::Result<()> {
         let target = target_path.as_ref();
         let tmp_path = target.with_extension("tmp");
 
@@ -124,7 +130,7 @@ impl AtomicCommitter {
         file.sync_data()?;
 
         if failpoint == Some("before_rename") {
-            return Err(std::io::Error::new(std::io::ErrorKind::Other, "injected failpoint before rename"));
+            return Err(std::io::Error::other("injected failpoint before rename"));
         }
 
         // 2. Atomic rename

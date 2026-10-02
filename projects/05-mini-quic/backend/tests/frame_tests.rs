@@ -231,8 +231,9 @@ fn test_all_extended_frame_codecs() {
         let mut buf = BytesMut::new();
         frame.encode(&mut buf);
         let mut read_buf = buf.freeze();
-        let decoded = Frame::decode(&mut read_buf).expect("Decode successful").expect("Frame present");
+        let decoded = Frame::decode(&mut read_buf)
+            .expect("Decode successful")
+            .expect("Frame present");
         assert_eq!(frame, decoded);
     }
 }
-

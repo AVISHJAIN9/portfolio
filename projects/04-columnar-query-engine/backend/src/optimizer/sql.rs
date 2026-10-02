@@ -314,7 +314,11 @@ impl SqlParser {
         let mut where_clauses = Vec::new();
         if idx < tokens.len() && tokens[idx] == Token::Where {
             idx += 1;
-            while idx < tokens.len() && tokens[idx] != Token::GroupBy && tokens[idx] != Token::OrderBy && tokens[idx] != Token::Limit {
+            while idx < tokens.len()
+                && tokens[idx] != Token::GroupBy
+                && tokens[idx] != Token::OrderBy
+                && tokens[idx] != Token::Limit
+            {
                 if let Token::Ident(col) = &tokens[idx] {
                     idx += 1;
                     if idx >= tokens.len() {
@@ -435,7 +439,6 @@ impl SqlParser {
             if idx < tokens.len() {
                 if let Token::Ident(g) = &tokens[idx] {
                     group_by = Some(g.clone());
-                    idx += 1;
                 } else {
                     return Err("Expected column identifier after GROUP BY");
                 }

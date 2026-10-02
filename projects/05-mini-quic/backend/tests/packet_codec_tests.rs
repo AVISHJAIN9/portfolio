@@ -237,6 +237,8 @@ fn test_unit_tests_for_packet_frame_codecs_coverage() {
 
     // 3. Negative control on malformed length
     let mut bad_buf = Bytes::from_static(&[0x00]);
-    assert!(PacketCodec::decode(&mut bad_buf).is_err(), "Invalid short buffer rejected");
+    assert!(
+        PacketCodec::decode(&mut bad_buf).is_err(),
+        "Invalid short buffer rejected"
+    );
 }
-

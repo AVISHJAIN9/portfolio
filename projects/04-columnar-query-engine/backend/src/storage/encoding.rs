@@ -257,7 +257,11 @@ impl BitPackedColumn {
         let mut data = vec![0u64; num_u64s];
 
         for (i, &val) in values.iter().enumerate() {
-            let mask = if bit_width == 64 { u64::MAX } else { (1u64 << bit_width) - 1 };
+            let mask = if bit_width == 64 {
+                u64::MAX
+            } else {
+                (1u64 << bit_width) - 1
+            };
             let val = val & mask;
             let bit_offset = i * bit_width as usize;
             let word_idx = bit_offset / 64;

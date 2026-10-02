@@ -1,6 +1,5 @@
 //! Integration & Unit Tests for 05 Mini-QUIC P1 Features (05-058..05-069, 05-071, 05-072, 05-078, 05-079)
 
-use bytes::BytesMut;
 use mini_quic::*;
 use sha2::{Digest, Sha256};
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
@@ -27,8 +26,8 @@ fn test_deterministic_network_simulator_seeded_trace_replay() {
         for _ in 0..10 {
             let delivered = sim.step(Duration::from_millis(10));
             for p in delivered {
-                hasher.update(&p.id.to_be_bytes());
-                hasher.update(&p.deliver_at_ns.to_be_bytes());
+                hasher.update(p.id.to_be_bytes());
+                hasher.update(p.deliver_at_ns.to_be_bytes());
                 hasher.update(&p.payload);
             }
         }
@@ -71,7 +70,7 @@ fn test_configurable_latency_injection_distribution() {
     assert!((mean_delay - 20.0).abs() < 1.0);
 
     // Negative assertion: no packet delivered in under 15ms or over 25ms
-    assert!(delays.iter().all(|&d| d >= 15.0 && d <= 25.0));
+    assert!(delays.iter().all(|&d| (15.0..=25.0).contains(&d)));
 }
 
 // FEAT: 05-066 "Packet loss injection"
@@ -187,11 +186,11 @@ fn test_path_validation_rfc9000_challenge_response() {
 
     // Negative assertion: mismatching response rejected
     let bad_response = [9, 9, 9, 9, 9, 9, 9, 9];
-    assert_eq!(mgr.handle_path_response(peer2, bad_response).unwrap(), false);
+    assert!(!mgr.handle_path_response(peer2, bad_response).unwrap());
     assert_eq!(mgr.get_path(&peer2).unwrap().state, PathState::Validating);
 
     // Matching response validates path
-    assert_eq!(mgr.handle_path_response(peer2, challenge).unwrap(), true);
+    assert!(mgr.handle_path_response(peer2, challenge).unwrap());
     assert_eq!(mgr.get_path(&peer2).unwrap().state, PathState::Validated);
 }
 
@@ -267,10 +266,10 @@ fn test_nat_rebinding_detection_and_anti_amplification() {
     let rebind_peer = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(203, 0, 113, 5)), 50001);
 
     let mut mgr = PathManager::new(local, original_peer);
-    assert_eq!(mgr.handle_nat_rebinding(local, rebind_peer), true);
+    assert!(mgr.handle_nat_rebinding(local, rebind_peer));
 
     // Negative assertion: duplicate rebind returns false
-    assert_eq!(mgr.handle_nat_rebinding(local, rebind_peer), false);
+    assert!(!mgr.handle_nat_rebinding(local, rebind_peer));
     assert_eq!(mgr.get_path(&rebind_peer).unwrap().state, PathState::New);
 }
 
@@ -287,7 +286,10 @@ async fn test_tokio_udp_socket_runtime_loopback_transfer() {
     let server_addr = runtime2.socket.local_addr().unwrap();
 
     let msg = b"QUIC_TOKIO_PAYLOAD_TEST";
-    runtime1.send_to(msg, server_addr).await.expect("Send succeeds");
+    runtime1
+        .send_to(msg, server_addr)
+        .await
+        .expect("Send succeeds");
 
     let mut buf = [0u8; 128];
     let (len, from) = runtime2.recv_from(&mut buf).await.expect("Recv succeeds");
@@ -326,7 +328,9 @@ fn test_packet_parsing_zero_alloc_budget() {
     let budget = PacketParseBudget::new(0); // 0 allocations budget
     assert_eq!(budget.max_allocations(), 0);
 
-    let raw_packet = vec![0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0xAA, 0xBB, 0xCC];
+    let raw_packet = vec![
+        0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0xAA, 0xBB, 0xCC,
+    ];
     let parsed = budget.parse_zero_alloc(&raw_packet);
     assert!(parsed.is_ok());
 

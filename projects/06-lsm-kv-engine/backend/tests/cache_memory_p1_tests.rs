@@ -50,7 +50,9 @@ fn test_cache_admission_policy_scan_bypass() {
     for i in 0..20 {
         let scan_key = format!("scan_key_{}", i).into_bytes();
         let scan_val = vec![0x99; 300];
-        cache.insert_with_admission(&scan_key, scan_val, true).unwrap();
+        cache
+            .insert_with_admission(&scan_key, scan_val, true)
+            .unwrap();
     }
 
     // Hot key must still be intact in cache
@@ -199,8 +201,8 @@ fn test_file_descriptor_limits_and_eviction() {
     assert_eq!(cache.current_open(), 0);
 
     let fd1 = cache.get_or_open(1).unwrap();
-    let fd2 = cache.get_or_open(2).unwrap();
-    let fd3 = cache.get_or_open(3).unwrap();
+    let _fd2 = cache.get_or_open(2).unwrap();
+    let _fd3 = cache.get_or_open(3).unwrap();
     assert_eq!(cache.current_open(), 3);
     assert_eq!(cache.total_opens(), 3);
     assert_eq!(cache.total_closes(), 0);
@@ -255,8 +257,8 @@ fn test_read_ahead_policy_sequential_detection() {
     // Sequential scan: blocks 100, 101, 102, 103
     assert!(!policy.record_access(100));
     assert!(!policy.record_access(101)); // 1st step
-    assert!(policy.record_access(102));  // 2nd sequential step triggers prefetch
-    assert!(policy.record_access(103));  // Continues prefetching
+    assert!(policy.record_access(102)); // 2nd sequential step triggers prefetch
+    assert!(policy.record_access(103)); // Continues prefetching
     assert_eq!(policy.total_prefetches(), 2);
 }
 
@@ -274,7 +276,10 @@ fn test_resource_quotas_rate_limiting_and_window_reset() {
     // Negative assertion: exceeding quota returns typed error
     let err = quota.check_and_consume("client_A", 20, 3000, t0);
     assert!(err.is_err());
-    assert_eq!(err.unwrap_err(), "Err(QuotaExceeded): client rate quota exceeded");
+    assert_eq!(
+        err.unwrap_err(),
+        "Err(QuotaExceeded): client rate quota exceeded"
+    );
 
     // Next window reset: after window duration, quota resets
     let t1 = t0 + Duration::from_secs(2);
@@ -312,7 +317,10 @@ fn test_operation_metrics_accounting() {
 
     assert_eq!(metrics.puts.load(std::sync::atomic::Ordering::Relaxed), 2);
     assert_eq!(metrics.gets.load(std::sync::atomic::Ordering::Relaxed), 1);
-    assert_eq!(metrics.deletes.load(std::sync::atomic::Ordering::Relaxed), 1);
+    assert_eq!(
+        metrics.deletes.load(std::sync::atomic::Ordering::Relaxed),
+        1
+    );
     assert_eq!(metrics.errors.load(std::sync::atomic::Ordering::Relaxed), 1);
 
     // Negative assertion: unknown op type does not panic

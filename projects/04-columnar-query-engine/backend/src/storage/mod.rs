@@ -12,4 +12,4 @@ pub use csv_reader::*;
 pub use encoding::*;
 pub use parquet_reader::*;
 pub use spill::*;
-pub use table::*;
+pub use table::ColumnarTable;

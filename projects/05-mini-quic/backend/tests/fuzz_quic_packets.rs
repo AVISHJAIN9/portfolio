@@ -26,8 +26,14 @@ fn test_fuzz_corpus_minimization_and_packet_decode() {
             minimized.push(entry.clone());
         }
     }
-    assert!(minimized.len() <= corpus.len(), "Minimized corpus must be subset");
-    assert!(!minimized.is_empty(), "Minimized corpus must retain coverage");
+    assert!(
+        minimized.len() <= corpus.len(),
+        "Minimized corpus must be subset"
+    );
+    assert!(
+        !minimized.is_empty(),
+        "Minimized corpus must retain coverage"
+    );
 
     // 3. Fuzz execution across randomized packet buffers ensures zero panics
     for sample in &minimized {
@@ -37,5 +43,8 @@ fn test_fuzz_corpus_minimization_and_packet_decode() {
 
     // 4. Negative: Corrupted empty buffer safely returns Err
     let mut empty = Bytes::new();
-    assert!(PacketCodec::decode(&mut empty).is_err(), "Empty buffer returns Err");
+    assert!(
+        PacketCodec::decode(&mut empty).is_err(),
+        "Empty buffer returns Err"
+    );
 }

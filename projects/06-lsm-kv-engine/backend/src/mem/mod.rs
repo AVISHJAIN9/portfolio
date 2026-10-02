@@ -27,19 +27,18 @@ impl Arena {
             return std::ptr::null_mut();
         }
         let mut chunks = self.chunks.lock();
-        if chunks.is_empty() || chunks.last().unwrap().capacity() - chunks.last().unwrap().len() < size {
+        if chunks.is_empty()
+            || chunks.last().unwrap().capacity() - chunks.last().unwrap().len() < size
+        {
             let cap = self.chunk_size.max(size);
             chunks.push(Vec::with_capacity(cap));
         }
         let current_chunk = chunks.last_mut().unwrap();
         let current_len = current_chunk.len();
-        current_chunk.reserve(size);
-        unsafe {
-            current_chunk.set_len(current_len + size);
-            let ptr = current_chunk.as_mut_ptr().add(current_len);
-            self.allocated_bytes.fetch_add(size, Ordering::Relaxed);
-            ptr
-        }
+        current_chunk.resize(current_len + size, 0);
+        let ptr = unsafe { current_chunk.as_mut_ptr().add(current_len) };
+        self.allocated_bytes.fetch_add(size, Ordering::Relaxed);
+        ptr
     }
 
     pub fn total_allocated_bytes(&self) -> usize {
@@ -77,7 +76,12 @@ impl MemoryTracker {
         let new_val = self.used_bytes.fetch_add(bytes, Ordering::Relaxed) + bytes;
         let mut peak = self.peak_bytes.load(Ordering::Relaxed);
         while new_val > peak {
-            match self.peak_bytes.compare_exchange_weak(peak, new_val, Ordering::Relaxed, Ordering::Relaxed) {
+            match self.peak_bytes.compare_exchange_weak(
+                peak,
+                new_val,
+                Ordering::Relaxed,
+                Ordering::Relaxed,
+            ) {
                 Ok(_) => break,
                 Err(actual) => peak = actual,
             }
@@ -86,7 +90,10 @@ impl MemoryTracker {
     }
 
     pub fn deallocate(&self, bytes: usize) {
-        self.used_bytes.fetch_sub(bytes.min(self.used_bytes.load(Ordering::Relaxed)), Ordering::Relaxed);
+        self.used_bytes.fetch_sub(
+            bytes.min(self.used_bytes.load(Ordering::Relaxed)),
+            Ordering::Relaxed,
+        );
     }
 
     pub fn used_bytes(&self) -> usize {
@@ -229,7 +236,13 @@ impl ResourceQuota {
         }
     }
 
-    pub fn check_and_consume(&self, client_id: &str, ops: u64, bytes: u64, now: Instant) -> Result<(), &'static str> {
+    pub fn check_and_consume(
+        &self,
+        client_id: &str,
+        ops: u64,
+        bytes: u64,
+        now: Instant,
+    ) -> Result<(), &'static str> {
         let mut clients = self.clients.lock();
         let entry = clients.entry(client_id.to_string()).or_insert((0, 0, now));
         if now.duration_since(entry.2) >= self.window_duration {
@@ -310,6 +323,12 @@ impl OperationMetrics {
 /// 06-137: Latency Histograms
 pub struct LatencyHistogram {
     buckets: [AtomicU64; 32], // Log2 buckets from 1µs to 2^31µs (~2147s)
+}
+
+impl Default for LatencyHistogram {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl LatencyHistogram {

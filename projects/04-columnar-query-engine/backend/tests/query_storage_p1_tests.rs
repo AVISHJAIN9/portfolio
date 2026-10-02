@@ -13,18 +13,40 @@ fn test_builtin_function_registry_and_type_checks() {
     assert!(reg.function_count() >= 30);
 
     // Math functions
-    assert_eq!(reg.call("abs", &[ScalarValue::Integer(-42)]).unwrap(), ScalarValue::Integer(42));
-    assert_eq!(reg.call("sqrt", &[ScalarValue::Float(16.0)]).unwrap(), ScalarValue::Float(4.0));
-    assert_eq!(reg.call("power", &[ScalarValue::Integer(2), ScalarValue::Integer(3)]).unwrap(), ScalarValue::Integer(8));
+    assert_eq!(
+        reg.call("abs", &[ScalarValue::Integer(-42)]).unwrap(),
+        ScalarValue::Integer(42)
+    );
+    assert_eq!(
+        reg.call("sqrt", &[ScalarValue::Float(16.0)]).unwrap(),
+        ScalarValue::Float(4.0)
+    );
+    assert_eq!(
+        reg.call("power", &[ScalarValue::Integer(2), ScalarValue::Integer(3)])
+            .unwrap(),
+        ScalarValue::Integer(8)
+    );
 
     // String functions
-    assert_eq!(reg.call("lower", &[ScalarValue::String("HELLO".to_string())]).unwrap(), ScalarValue::String("hello".to_string()));
-    assert_eq!(reg.call("length", &[ScalarValue::String("world".to_string())]).unwrap(), ScalarValue::Integer(5));
+    assert_eq!(
+        reg.call("lower", &[ScalarValue::String("HELLO".to_string())])
+            .unwrap(),
+        ScalarValue::String("hello".to_string())
+    );
+    assert_eq!(
+        reg.call("length", &[ScalarValue::String("world".to_string())])
+            .unwrap(),
+        ScalarValue::Integer(5)
+    );
 
     // Negative assertions: arity mismatch and type errors
     assert!(reg.call("abs", &[]).is_err());
-    assert!(reg.call("abs", &[ScalarValue::Integer(1), ScalarValue::Integer(2)]).is_err());
-    assert!(reg.call("sqrt", &[ScalarValue::String("bad".to_string())]).is_err());
+    assert!(reg
+        .call("abs", &[ScalarValue::Integer(1), ScalarValue::Integer(2)])
+        .is_err());
+    assert!(reg
+        .call("sqrt", &[ScalarValue::String("bad".to_string())])
+        .is_err());
 }
 
 // FEAT: 04-030 "CTEs"
@@ -32,47 +54,92 @@ fn test_builtin_function_registry_and_type_checks() {
 #[test]
 fn test_cte_resolution_and_multiple_cte_shadowing() {
     let mut resolver = CteResolver::new();
-    resolver.add_cte("regional_sales", "SELECT region, sum(amount) FROM sales GROUP BY region");
-    resolver.add_cte("top_regions", "SELECT region FROM regional_sales WHERE sum > 1000");
+    resolver.add_cte(
+        "regional_sales",
+        "SELECT region, sum(amount) FROM sales GROUP BY region",
+    );
+    resolver.add_cte(
+        "top_regions",
+        "SELECT region FROM regional_sales WHERE sum > 1000",
+    );
 
     let query = "SELECT * FROM regional_sales";
     let expanded = resolver.resolve(query);
-    assert!(expanded.contains("FROM (SELECT region, sum(amount) FROM sales GROUP BY region) AS regional_sales"));
+    assert!(expanded.contains(
+        "FROM (SELECT region, sum(amount) FROM sales GROUP BY region) AS regional_sales"
+    ));
 
     let multi_query = "SELECT * FROM top_regions";
     let multi_expanded = resolver.resolve(multi_query);
     assert!(multi_expanded.contains("AS top_regions"));
 
     // Negative assertion: non-existent CTE is unchanged
-    assert_eq!(resolver.resolve("SELECT * FROM plain_table"), "SELECT * FROM plain_table");
+    assert_eq!(
+        resolver.resolve("SELECT * FROM plain_table"),
+        "SELECT * FROM plain_table"
+    );
 }
 
 // FEAT: 04-031 "Subqueries"
 // ACCEPT: Scalar, IN, EXISTS, simple correlated; NOT IN with NULL; >= 12 queries compared
 #[test]
 fn test_subquery_classification_and_planning() {
-    assert_eq!(SubqueryPlanner::classify("SELECT * FROM a WHERE EXISTS (SELECT 1 FROM b)"), SubqueryType::Exists);
-    assert_eq!(SubqueryPlanner::classify("SELECT * FROM a WHERE id IN (SELECT id FROM b)"), SubqueryType::In);
-    assert_eq!(SubqueryPlanner::classify("SELECT * FROM a WHERE val = (SELECT avg(val) FROM a)"), SubqueryType::Correlated);
-    assert_eq!(SubqueryPlanner::classify("SELECT (SELECT count(*) FROM b) FROM a"), SubqueryType::Scalar);
+    assert_eq!(
+        SubqueryPlanner::classify("SELECT * FROM a WHERE EXISTS (SELECT 1 FROM b)"),
+        SubqueryType::Exists
+    );
+    assert_eq!(
+        SubqueryPlanner::classify("SELECT * FROM a WHERE id IN (SELECT id FROM b)"),
+        SubqueryType::In
+    );
+    assert_eq!(
+        SubqueryPlanner::classify("SELECT * FROM a WHERE val = (SELECT avg(val) FROM a)"),
+        SubqueryType::Correlated
+    );
+    assert_eq!(
+        SubqueryPlanner::classify("SELECT (SELECT count(*) FROM b) FROM a"),
+        SubqueryType::Scalar
+    );
 
     // Negative assertion: scalar subquery is not classified as EXISTS
-    assert_ne!(SubqueryPlanner::classify("SELECT (SELECT 1)"), SubqueryType::Exists);
+    assert_ne!(
+        SubqueryPlanner::classify("SELECT (SELECT 1)"),
+        SubqueryType::Exists
+    );
 }
 
 // FEAT: 04-036 "Prepared statements"
 // ACCEPT: Prepare once, bind ? params, execute many; plan reuse counter; type mismatch error
 #[test]
 fn test_prepared_statements_binding_and_plan_reuse() {
-    let stmt = PreparedStatement::new("SELECT * FROM sales WHERE amount > ? AND region = ?".to_string(), 2);
+    let stmt = PreparedStatement::new(
+        "SELECT * FROM sales WHERE amount > ? AND region = ?".to_string(),
+        2,
+    );
     assert_eq!(stmt.plan_reuse_count(), 0);
 
-    let exec1 = stmt.bind_and_execute(&[ScalarValue::Integer(500), ScalarValue::String("US-East".to_string())]).unwrap();
-    assert_eq!(exec1, "SELECT * FROM sales WHERE amount > 500 AND region = 'US-East'");
+    let exec1 = stmt
+        .bind_and_execute(&[
+            ScalarValue::Integer(500),
+            ScalarValue::String("US-East".to_string()),
+        ])
+        .unwrap();
+    assert_eq!(
+        exec1,
+        "SELECT * FROM sales WHERE amount > 500 AND region = 'US-East'"
+    );
     assert_eq!(stmt.plan_reuse_count(), 1);
 
-    let exec2 = stmt.bind_and_execute(&[ScalarValue::Integer(200), ScalarValue::String("EU-Central".to_string())]).unwrap();
-    assert_eq!(exec2, "SELECT * FROM sales WHERE amount > 200 AND region = 'EU-Central'");
+    let exec2 = stmt
+        .bind_and_execute(&[
+            ScalarValue::Integer(200),
+            ScalarValue::String("EU-Central".to_string()),
+        ])
+        .unwrap();
+    assert_eq!(
+        exec2,
+        "SELECT * FROM sales WHERE amount > 200 AND region = 'EU-Central'"
+    );
     assert_eq!(stmt.plan_reuse_count(), 2);
 
     // Negative assertion: parameter count mismatch returns Err
@@ -138,7 +205,11 @@ fn test_bloom_filter_zero_false_negatives() {
     // Zero false negatives: all 10k inserted keys MUST be present
     for i in 0..10_000 {
         let k = format!("key_{}", i);
-        assert!(filter.contains(k.as_bytes()), "False negative detected for key {}", i);
+        assert!(
+            filter.contains(k.as_bytes()),
+            "False negative detected for key {}",
+            i
+        );
     }
 
     // False positive rate test over 10k non-existent keys
@@ -150,7 +221,11 @@ fn test_bloom_filter_zero_false_negatives() {
         }
     }
     let fp_rate = fp_count as f64 / 10_000.0;
-    assert!(fp_rate <= 0.03, "Observed FP rate {:.3} exceeds tolerance", fp_rate);
+    assert!(
+        fp_rate <= 0.03,
+        "Observed FP rate {:.3} exceeds tolerance",
+        fp_rate
+    );
 }
 
 // FEAT: 04-058 "CSV reader"
@@ -215,7 +290,13 @@ fn test_external_sorting_multi_chunk() {
 // ACCEPT: Group count exceeds budget; results equal the in-memory run
 #[test]
 fn test_external_hash_aggregation_grouping() {
-    let keys = vec!["A".to_string(), "B".to_string(), "A".to_string(), "C".to_string(), "B".to_string()];
+    let keys = vec![
+        "A".to_string(),
+        "B".to_string(),
+        "A".to_string(),
+        "C".to_string(),
+        "B".to_string(),
+    ];
     let values = vec![10, 20, 30, 40, 50];
 
     let agg = ExternalHashAggregator::aggregate_sum(&keys, &values);
@@ -277,5 +358,5 @@ fn test_pipeline_execution_breaker_identification() {
     assert!(!simple[0].is_breaker);
 
     // Negative assertion: filter-only pipeline is never marked as a breaker
-    assert_ne!(simple[0].is_breaker, true);
+    assert!(!simple[0].is_breaker);
 }

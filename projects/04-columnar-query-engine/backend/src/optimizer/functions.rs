@@ -80,14 +80,18 @@ impl FunctionRegistry {
             _ => Err("invalid type for sign"),
         });
         self.register("power", 2, |args| match (&args[0], &args[1]) {
-            (ScalarValue::Float(base), ScalarValue::Float(exp)) => Ok(ScalarValue::Float(base.powf(*exp))),
+            (ScalarValue::Float(base), ScalarValue::Float(exp)) => {
+                Ok(ScalarValue::Float(base.powf(*exp)))
+            }
             (ScalarValue::Integer(base), ScalarValue::Integer(exp)) if *exp >= 0 => {
                 Ok(ScalarValue::Integer(base.pow(*exp as u32)))
             }
             _ => Err("invalid types for power"),
         });
         self.register("mod", 2, |args| match (&args[0], &args[1]) {
-            (ScalarValue::Integer(a), ScalarValue::Integer(b)) if *b != 0 => Ok(ScalarValue::Integer(a % b)),
+            (ScalarValue::Integer(a), ScalarValue::Integer(b)) if *b != 0 => {
+                Ok(ScalarValue::Integer(a % b))
+            }
             _ => Err("division by zero or invalid type in mod"),
         });
 
@@ -124,7 +128,9 @@ impl FunctionRegistry {
             _ => Err("invalid type for reverse"),
         });
         self.register("concat", 2, |args| match (&args[0], &args[1]) {
-            (ScalarValue::String(a), ScalarValue::String(b)) => Ok(ScalarValue::String(format!("{}{}", a, b))),
+            (ScalarValue::String(a), ScalarValue::String(b)) => {
+                Ok(ScalarValue::String(format!("{}{}", a, b)))
+            }
             _ => Err("invalid types for concat"),
         });
         self.register("coalesce", 2, |args| match (&args[0], &args[1]) {
@@ -213,7 +219,8 @@ impl CteResolver {
     }
 
     pub fn add_cte(&mut self, name: &str, subquery_sql: &str) {
-        self.ctes.insert(name.to_lowercase(), subquery_sql.to_string());
+        self.ctes
+            .insert(name.to_lowercase(), subquery_sql.to_string());
     }
 
     pub fn resolve(&self, query: &str) -> String {
@@ -278,15 +285,23 @@ impl PipelineCompiler {
         if plan_description.contains("JOIN") {
             pipelines.push(PhysicalPipeline {
                 operators: vec![
-                    PipelineOperator::SourceScan { table: "right_table".to_string() },
-                    PipelineOperator::HashJoinBuild { key: "join_key".to_string() },
+                    PipelineOperator::SourceScan {
+                        table: "right_table".to_string(),
+                    },
+                    PipelineOperator::HashJoinBuild {
+                        key: "join_key".to_string(),
+                    },
                 ],
                 is_breaker: true,
             });
             pipelines.push(PhysicalPipeline {
                 operators: vec![
-                    PipelineOperator::SourceScan { table: "left_table".to_string() },
-                    PipelineOperator::HashJoinProbe { key: "join_key".to_string() },
+                    PipelineOperator::SourceScan {
+                        table: "left_table".to_string(),
+                    },
+                    PipelineOperator::HashJoinProbe {
+                        key: "join_key".to_string(),
+                    },
                     PipelineOperator::SinkMaterialize,
                 ],
                 is_breaker: false,
@@ -294,8 +309,12 @@ impl PipelineCompiler {
         } else {
             pipelines.push(PhysicalPipeline {
                 operators: vec![
-                    PipelineOperator::SourceScan { table: "main_table".to_string() },
-                    PipelineOperator::Filter { predicate: "amount > 100".to_string() },
+                    PipelineOperator::SourceScan {
+                        table: "main_table".to_string(),
+                    },
+                    PipelineOperator::Filter {
+                        predicate: "amount > 100".to_string(),
+                    },
                     PipelineOperator::SinkMaterialize,
                 ],
                 is_breaker: false,

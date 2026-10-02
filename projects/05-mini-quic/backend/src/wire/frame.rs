@@ -403,13 +403,12 @@ impl Frame {
             }
             0x18 => {
                 let seq_num = QuicVarInt::decode(src).map_err(|_| "new conn id seq")?;
-                let retire_prior_to =
-                    QuicVarInt::decode(src).map_err(|_| "new conn id retire")?;
+                let retire_prior_to = QuicVarInt::decode(src).map_err(|_| "new conn id retire")?;
                 if !src.has_remaining() {
                     return Err("truncated new conn id len");
                 }
                 let cid_len = src.get_u8() as usize;
-                if cid_len < 1 || cid_len > 20 || src.remaining() < cid_len + 16 {
+                if !(1..=20).contains(&cid_len) || src.remaining() < cid_len + 16 {
                     return Err("invalid new conn id length or truncated");
                 }
                 let connection_id = src.split_to(cid_len).to_vec();
