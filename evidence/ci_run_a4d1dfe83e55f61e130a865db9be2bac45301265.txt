@@ -1,0 +1,2165 @@
+=== CLEAN CLONE CI RUN SUMMARY (SHA: a4d1dfe83e55f61e130a865db9be2bac45301265) ===
+
+| Step | Exit Code | Timed Out | Elapsed (s) | Log File |
+|:---|:---:|:---:|:---:|:---|
+| `01_clone` | **0** | no | 1.31s | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+| `02_platform_tests` | **0** | no | 34.06s | [`02_platform_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_platform_tests.log) |
+| `03_p01_tests` | **0** | no | 25.19s | [`03_p01_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/03_p01_tests.log) |
+| `04_p02_tests` | **0** | no | 23.63s | [`04_p02_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/04_p02_tests.log) |
+| `05_p03_tests` | **0** | no | 6.67s | [`05_p03_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/05_p03_tests.log) |
+| `06_p04_tests` | **0** | no | 22.18s | [`06_p04_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/06_p04_tests.log) |
+| `07_p05_tests` | **0** | no | 26.59s | [`07_p05_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/07_p05_tests.log) |
+| `08_p06_tests` | **0** | no | 21.49s | [`08_p06_tests.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/08_p06_tests.log) |
+| `09_pytest` | **0** | no | 0.67s | [`09_pytest.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/09_pytest.log) |
+| `10_audit_annotations` | **0** | no | 0.04s | [`10_audit_annotations.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/10_audit_annotations.log) |
+| `11_evidence_gen` | **0** | no | 24.77s | [`11_evidence_gen.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/11_evidence_gen.log) |
+| `12_workbook_status` | **0** | no | 0.46s | [`12_workbook_status.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/12_workbook_status.log) |
+| `13_state_writer` | **0** | no | 0.51s | [`13_state_writer.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/13_state_writer.log) |
+| `14_report_check` | **0** | no | 0.24s | [`14_report_check.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/14_report_check.log) |
+| `15_quic_interop` | **0** | no | 0.08s | [`15_quic_interop.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/15_quic_interop.log) |
+
+Overall Result: ✓ PASS
+
+
+--- LOG: 01_clone ---
+Cloning into '/tmp/pf-ci'...
+done.
+
+--- LOG: 02_platform_tests ---
+    Updating crates.io index
+     Locking 220 packages to latest compatible versions
+      Adding axum v0.7.9 (available: v0.8.9)
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding hmac v0.12.1 (available: v0.13.0)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding rand_xoshiro v0.6.0 (available: v0.8.1)
+      Adding sha2 v0.10.9 (available: v0.11.0)
+      Adding thiserror v1.0.69 (available: v2.0.21)
+      Adding tower v0.4.13 (available: v0.5.3)
+      Adding tower-http v0.5.2 (available: v0.7.1)
+      Adding twox-hash v1.6.3 (available: v2.1.4)
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling memchr v2.8.3
+   Compiling thiserror v1.0.69
+   Compiling serde_json v1.0.151
+   Compiling zerocopy v0.8.59
+   Compiling smallvec v1.16.2
+   Compiling parking_lot_core v0.9.12
+   Compiling typenum v1.20.1
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling scopeguard v1.2.0
+   Compiling thiserror-impl v1.0.69
+   Compiling zerocopy-derive v0.8.59
+   Compiling lock_api v0.4.14
+   Compiling once_cell v1.21.4
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling serde_derive v1.0.229
+   Compiling cc v1.5.1
+   Compiling getrandom v0.4.3
+   Compiling getrandom v0.2.17
+   Compiling rand_core v0.10.1
+   Compiling rand_core v0.6.4
+   Compiling bytes v1.12.1
+   Compiling pin-project-lite v0.2.17
+   Compiling autocfg v1.5.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling num-traits v0.2.19
+   Compiling blake3 v1.8.7
+   Compiling parking_lot v0.12.5
+   Compiling errno v0.3.14
+   Compiling hybrid-array v0.4.15
+   Compiling arrayvec v0.7.8
+   Compiling regex-syntax v0.8.11
+   Compiling constant_time_eq v0.4.2
+   Compiling crc32fast v1.5.2
+   Compiling log v0.4.34
+   Compiling crypto-common v0.2.2
+   Compiling tracing-core v0.1.36
+   Compiling version_check v0.9.5
+   Compiling crossbeam-epoch v0.9.21
+   Compiling generic-array v0.14.7
+   Compiling regex-automata v0.4.18
+   Compiling crossbeam-deque v0.8.8
+   Compiling rustversion v1.0.23
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.8
+   Compiling tracing v0.1.44
+   Compiling subtle v2.6.1
+   Compiling rayon-core v1.13.0
+   Compiling either v1.18.0
+   Compiling static_assertions v1.1.0
+   Compiling byteorder v1.5.0
+   Compiling twox-hash v1.6.3
+   Compiling half v2.7.1
+   Compiling anstyle v1.0.14
+   Compiling plotters-backend v0.3.7
+   Compiling clap_lex v1.1.1
+   Compiling ciborium-io v0.2.2
+   Compiling ciborium-ll v0.2.2
+   Compiling clap_builder v4.6.7
+   Compiling pf-errors v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-errors)
+   Compiling plotters-svg v0.3.7
+   Compiling itertools v0.10.5
+   Compiling block-buffer v0.12.1
+   Compiling cast v0.3.0
+   Compiling same-file v1.0.6
+   Compiling criterion-plot v0.5.0
+   Compiling walkdir v2.5.0
+   Compiling plotters v0.3.7
+   Compiling ciborium v0.2.2
+   Compiling tinytemplate v1.2.1
+   Compiling clap v4.6.7
+   Compiling regex v1.13.1
+   Compiling is-terminal v0.4.17
+   Compiling futures-core v0.3.34
+   Compiling oorandom v11.1.5
+   Compiling anes v0.1.6
+   Compiling bitflags v2.13.2
+   Compiling signal-hook-registry v1.4.8
+   Compiling http v1.5.0
+   Compiling tokio-macros v2.7.2
+   Compiling socket2 v0.6.5
+   Compiling mio v1.2.3
+   Compiling getrandom v0.3.4
+   Compiling tokio v1.53.1
+   Compiling pf-checksum v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-checksum)
+   Compiling cpufeatures v0.2.17
+   Compiling inout v0.2.2
+   Compiling httparse v1.10.1
+   Compiling cmov v0.5.4
+   Compiling rustix v1.1.5
+   Compiling ctutils v0.4.2
+   Compiling generator v0.8.10
+   Compiling http-body v1.1.0
+   Compiling cpufeatures v0.3.1
+   Compiling lazy_static v1.5.1
+   Compiling tower-service v0.3.3
+   Compiling semver v1.0.28
+   Compiling crypto-common v0.1.7
+   Compiling rayon v1.12.0
+   Compiling block-buffer v0.10.4
+   Compiling rand_core v0.9.5
+   Compiling digest v0.10.7
+   Compiling rustc_version v0.4.1
+   Compiling sharded-slab v0.1.7
+   Compiling universal-hash v0.6.1
+   Compiling cipher v0.5.2
+   Compiling matchers v0.2.0
+   Compiling tracing-log v0.2.0
+   Compiling thread_local v1.1.10
+   Compiling futures-sink v0.3.34
+   Compiling nu-ansi-term v0.50.3
+   Compiling base64 v0.22.1
+   Compiling fastrand v2.5.0
+   Compiling slab v0.4.12
+   Compiling futures-task v0.3.34
+   Compiling tower-layer v0.3.3
+   Compiling tracing-subscriber v0.3.23
+   Compiling futures-util v0.3.34
+   Compiling curve25519-dalek v5.0.0
+   Compiling digest v0.11.3
+   Compiling wait-timeout v0.2.1
+   Compiling bit-vec v0.8.0
+   Compiling fnv v1.0.7
+   Compiling quick-error v1.2.3
+   Compiling scoped-tls v1.0.1
+   Compiling cpubits v0.1.1
+   Compiling bit-set v0.8.0
+   Compiling sha1 v0.10.7
+   Compiling tempfile v3.27.0
+   Compiling rand_xorshift v0.4.0
+   Compiling criterion v0.5.1
+   Compiling rusty-fork v0.3.1
+   Compiling rand_chacha v0.9.0
+   Compiling rand v0.9.5
+   Compiling http-body-util v0.1.5
+   Compiling loom v0.7.2
+   Compiling futures-channel v0.3.34
+   Compiling httpdate v1.0.3
+   Compiling adler2 v2.0.1
+   Compiling sync_wrapper v1.0.2
+   Compiling data-encoding v2.11.1
+   Compiling simd-adler32 v0.3.10
+   Compiling utf-8 v0.7.6
+   Compiling zeroize v1.9.0
+   Compiling unarray v0.1.4
+   Compiling percent-encoding v2.3.2
+   Compiling atomic-waker v1.1.2
+   Compiling tungstenite v0.24.0
+   Compiling form_urlencoded v1.2.2
+   Compiling proptest v1.11.0
+   Compiling miniz_oxide v0.9.1
+   Compiling hyper v1.11.1
+   Compiling polyval v0.7.3
+   Compiling aead v0.6.1
+   Compiling async-trait v0.1.92
+   Compiling mime v0.3.17
+   Compiling signature v3.0.0
+   Compiling ryu v1.0.23
+   Compiling ed25519 v3.0.0
+   Compiling serde_urlencoded v0.7.1
+   Compiling ghash v0.6.0
+   Compiling hyper-util v0.1.21
+   Compiling flate2 v1.1.10
+   Compiling tokio-tungstenite v0.24.0
+   Compiling axum-core v0.4.5
+   Compiling tower v0.5.3
+   Compiling aes v0.9.3
+   Compiling sha2 v0.11.0
+   Compiling chacha20 v0.10.2
+   Compiling ctr v0.10.1
+   Compiling poly1305 v0.9.1
+   Compiling pf-bytes v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-bytes)
+   Compiling crossbeam-channel v0.5.17
+   Compiling serde_path_to_error v0.1.20
+   Compiling nom v8.0.0
+   Compiling matchit v0.7.3
+   Compiling ed25519-dalek v3.0.0
+   Compiling chacha20poly1305 v0.11.0
+   Compiling aes-gcm v0.11.1
+   Compiling x25519-dalek v3.0.0
+   Compiling tower-http v0.5.2
+   Compiling tower v0.4.13
+   Compiling hmac v0.12.1
+   Compiling sha2 v0.10.9
+   Compiling rand_xoshiro v0.6.0
+   Compiling pf-crypto v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-crypto)
+   Compiling pf-sim v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sim)
+   Compiling pf-wal v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-wal)
+   Compiling pf-testkit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-testkit)
+   Compiling pf-net v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-net)
+   Compiling pf-collections v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-collections)
+   Compiling pf-hashring v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-hashring)
+   Compiling pf-cache v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-cache)
+   Compiling axum v0.7.9
+   Compiling pf-storage-kit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-storage-kit)
+   Compiling pf-sync v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sync)
+   Compiling pf-time v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-time)
+   Compiling pf-config v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-config)
+   Compiling pf-vector-kit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-vector-kit)
+   Compiling pf-ratelimit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-ratelimit)
+   Compiling hdrhistogram v7.6.0
+   Compiling pf-metrics v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-metrics)
+   Compiling pf-http v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-http)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 27.54s
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_bytes-925911112f1ae1a2)
+
+running 3 tests
+test tests::test_bit_reader ... ok
+test tests::test_quic_varint_roundtrip ... ok
+test tests::test_uleb128_roundtrip ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_cache-229c4c2363c832e3)
+
+running 1 test
+test tests::test_s3_fifo_cache ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_checksum-3b09aef659e7bda5)
+
+running 1 test
+test tests::test_checksums ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_collections-55ecae6d7003677c)
+
+running 2 tests
+test tests::test_ring_buffer ... ok
+test tests::test_bloom_filter ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_config-154fb56df48d5635)
+
+running 1 test
+test tests::test_config_helpers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_crypto-4ec4b01ff8facb65)
+
+running 6 tests
+test tests::test_rfc5869_test_case_3 ... ok
+test tests::test_rfc5869_test_case_1 ... ok
+test tests::test_rfc5869_test_case_2 ... ok
+test tests::test_rfc9001_aead_and_hp_sample ... ok
+test tests::test_rfc9001_initial_secrets ... ok
+test tests::test_rfc7748_x25519_vectors ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_errors-f183e93c2c7d960e)
+
+running 1 test
+test tests::test_error_to_problem_details ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_hashring-b543e2846112277d)
+
+running 2 tests
+test tests::test_jump_hash ... ok
+test tests::test_hash_ring ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_http-e606a1eb4b1d5379)
+
+running 1 test
+test tests::test_health_routes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_metrics-a9e7bcc45afec32a)
+
+running 1 test
+test tests::test_histogram_and_counter ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_net-9f57a629e21f3ac2)
+
+running 1 test
+test tests::test_udp_endpoint ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_ratelimit-693a92312eaf6b47)
+
+running 2 tests
+test tests::test_token_bucket ... ok
+test tests::test_gcra_limiter ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_sim-2699258af8a67d8f)
+
+running 1 test
+test tests::test_discrete_event_sim ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_storage_kit-5c826af594e80fda)
+
+running 1 test
+test tests::test_buffer_pool ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_sync-8b4c2e1fee769446)
+
+running 6 tests
+test tests::test_seqlock ... ok
+test tests::test_spsc_queue ... ok
+test tests::test_spsc_queue_concurrent ... ok
+test tests::test_seqlock_concurrent ... ok
+test tests::test_loom_seqlock_model ... ok
+test tests::test_loom_spsc_queue_model ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_testkit-6215e46f19e113fe)
+
+running 1 test
+test tests::test_golden_verification ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_time-5e60f864f2fff8cf)
+
+running 1 test
+test tests::test_hlc_monotonicity ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_vector_kit-d16b1fd3a8dd40cd)
+
+running 1 test
+test tests::test_vector_kernels ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (/tmp/pf-ci/platform/rust/target/debug/deps/pf_wal-db7211748ced7293)
+
+running 1 test
+test tests::test_wal_write_and_recover ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_bytes
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_cache
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_checksum
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_collections
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_config
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_crypto
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_errors
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_hashring
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_http
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_metrics
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_net
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_ratelimit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_sim
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_storage_kit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_sync
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_testkit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_time
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_vector_kit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests pf_wal
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 03_p01_tests ---
+    Updating crates.io index
+     Locking 138 packages to latest compatible versions
+      Adding bincode v1.3.3 (available: v3.0.0)
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding thiserror v1.0.69 (available: v2.0.21)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling zerocopy v0.8.59
+   Compiling serde_core v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling serde v1.0.229
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.16.2
+   Compiling pin-project-lite v0.2.17
+   Compiling scopeguard v1.2.0
+   Compiling zmij v1.0.23
+   Compiling regex-syntax v0.8.11
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling lock_api v0.4.14
+   Compiling serde_json v1.0.151
+   Compiling getrandom v0.3.4
+   Compiling crossbeam-utils v0.8.23
+   Compiling errno v0.3.14
+   Compiling signal-hook-registry v1.4.8
+   Compiling parking_lot v0.12.5
+   Compiling socket2 v0.6.5
+   Compiling mio v1.2.3
+   Compiling regex-automata v0.4.18
+   Compiling tracing-core v0.1.36
+   Compiling find-msvc-tools v0.1.14
+   Compiling autocfg v1.5.1
+   Compiling itoa v1.0.18
+   Compiling bytes v1.12.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling memchr v2.8.3
+   Compiling shlex v2.0.1
+   Compiling num-traits v0.2.19
+   Compiling cc v1.5.1
+   Compiling getrandom v0.2.17
+   Compiling rustix v1.1.5
+   Compiling getrandom v0.4.3
+   Compiling crossbeam-deque v0.8.8
+   Compiling futures-core v0.3.34
+   Compiling serde_derive v1.0.229
+   Compiling tokio-macros v2.7.2
+   Compiling blake3 v1.8.7
+   Compiling zerocopy-derive v0.8.59
+   Compiling tracing-attributes v0.1.31
+   Compiling rand_core v0.6.4
+   Compiling tokio v1.53.1
+   Compiling rand_core v0.9.5
+   Compiling log v0.4.34
+   Compiling thiserror v1.0.69
+   Compiling either v1.18.0
+   Compiling bitflags v2.13.2
+   Compiling lazy_static v1.5.1
+   Compiling rayon-core v1.13.0
+   Compiling tracing v0.1.44
+   Compiling sharded-slab v0.1.7
+   Compiling tracing-log v0.2.0
+   Compiling thiserror-impl v1.0.69
+   Compiling matchers v0.2.0
+   Compiling thread_local v1.1.10
+   Compiling arrayvec v0.7.8
+   Compiling constant_time_eq v0.4.2
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling futures-sink v0.3.34
+   Compiling nu-ansi-term v0.50.3
+   Compiling fastrand v2.5.0
+   Compiling ciborium-io v0.2.2
+   Compiling plotters-backend v0.3.7
+   Compiling tempfile v3.27.0
+   Compiling clap_builder v4.6.7
+   Compiling plotters-svg v0.3.7
+   Compiling itertools v0.10.5
+   Compiling wait-timeout v0.2.1
+   Compiling tokio-util v0.7.19
+   Compiling byteorder v1.5.0
+   Compiling tracing-serde v0.2.0
+   Compiling bincode v1.3.3
+   Compiling tracing-subscriber v0.3.23
+   Compiling bit-vec v0.8.0
+   Compiling fnv v1.0.7
+   Compiling cast v0.3.0
+   Compiling same-file v1.0.6
+   Compiling quick-error v1.2.3
+   Compiling rusty-fork v0.3.1
+   Compiling criterion-plot v0.5.0
+   Compiling walkdir v2.5.0
+   Compiling bit-set v0.8.0
+   Compiling tinytemplate v1.2.1
+   Compiling clap v4.6.7
+   Compiling tokio-stream v0.1.19
+   Compiling rayon v1.12.0
+   Compiling plotters v0.3.7
+   Compiling rand v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling regex v1.13.1
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.9.0
+   Compiling rand v0.8.8
+   Compiling ciborium-ll v0.2.2
+   Compiling is-terminal v0.4.17
+   Compiling oorandom v11.1.5
+   Compiling ciborium v0.2.2
+   Compiling unarray v0.1.4
+   Compiling anes v0.1.6
+   Compiling proptest v1.11.0
+   Compiling tokio-test v0.4.6
+   Compiling rollback-netcode-server v0.1.0 (/tmp/pf-ci/projects/01-rollback-netcode-server/backend)
+   Compiling criterion v0.5.1
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.17s
+     Running unittests src/lib.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/rollback_netcode_server-fc0d7c53f09fe690)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/rollback_netcode_server-0f82b6a8df18e30d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fuzz_decoder.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/fuzz_decoder-21dbb5e773c5aae7)
+
+running 1 test
+test test_10000_packet_decoder_fuzz ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+     Running tests/golden_test.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/golden_test-98961489ea6888cc)
+
+running 1 test
+test test_golden_replay_milestones ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/module_isolation_test.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/module_isolation_test-56ef87308d8eaf6b)
+
+running 1 test
+test test_module_boundary_isolation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/protocol_tests.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/protocol_tests-9798c356a2901740)
+
+running 9 tests
+test test_error_and_kick_roundtrip ... ok
+test test_checksum_roundtrip ... ok
+test test_input_frame_roundtrip_with_redundancy ... ok
+test test_magic_and_header_validation ... ok
+test test_oversized_packet_rejection ... ok
+test test_handshake_roundtrip ... ok
+test test_version_negotiation_matrix ... ok
+test proptest_input_frame_arbitrary ... ok
+test proptest_fuzz_random_bytes_no_panic ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.22s
+
+     Running tests/simulation_determinism_test.rs (/tmp/pf-ci/projects/01-rollback-netcode-server/backend/target/debug/deps/simulation_determinism_test-31add69e97e5301e)
+
+running 6 tests
+test test_duplicate_input_deduplication ... ok
+test test_forced_desync_detection_and_authoritative_recovery ... ok
+test test_100_percent_snapshot_restore ... ok
+test test_two_peer_convergence_under_network_delay ... ok
+test proptest_simulation_invariants ... ok
+test test_1000_run_randomized_rollback_determinism ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.21s
+
+   Doc-tests rollback_netcode_server
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 04_p02_tests ---
+    Updating crates.io index
+     Locking 119 packages to latest compatible versions
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding rand_chacha v0.3.1 (available: v0.10.0)
+      Adding roaring v0.10.12 (available: v0.11.5)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling zerocopy v0.8.59
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling thiserror v1.0.69
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling once_cell v1.21.4
+   Compiling cc v1.5.1
+   Compiling crossbeam-utils v0.8.23
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.16.2
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling getrandom v0.2.17
+   Compiling blake3 v1.8.7
+   Compiling crossbeam-epoch v0.9.21
+   Compiling rand_core v0.6.4
+   Compiling scopeguard v1.2.0
+   Compiling crc32fast v1.5.2
+   Compiling lock_api v0.4.14
+   Compiling tracing-core v0.1.36
+   Compiling crossbeam-deque v0.8.8
+   Compiling autocfg v1.5.1
+   Compiling arrayvec v0.7.8
+   Compiling constant_time_eq v0.4.2
+   Compiling static_assertions v1.1.0
+   Compiling parking_lot v0.12.5
+   Compiling num-traits v0.2.19
+   Compiling errno v0.3.14
+   Compiling lazy_static v1.5.1
+   Compiling either v1.18.0
+   Compiling pin-project-lite v0.2.17
+   Compiling rayon-core v1.13.0
+   Compiling log v0.4.34
+   Compiling signal-hook-registry v1.4.8
+   Compiling sharded-slab v0.1.7
+   Compiling tracing-log v0.2.0
+   Compiling mio v1.2.3
+   Compiling socket2 v0.6.5
+   Compiling thread_local v1.1.10
+   Compiling bytemuck v1.25.2
+   Compiling byteorder v1.5.0
+   Compiling nu-ansi-term v0.50.3
+   Compiling anstyle v1.0.14
+   Compiling plotters-backend v0.3.7
+   Compiling bytes v1.12.1
+   Compiling ciborium-io v0.2.2
+   Compiling clap_lex v1.1.1
+   Compiling regex-syntax v0.8.11
+   Compiling tracing-subscriber v0.3.23
+   Compiling roaring v0.10.12
+   Compiling clap_builder v4.6.7
+   Compiling plotters-svg v0.3.7
+   Compiling serde_derive v1.0.229
+   Compiling tokio-macros v2.7.2
+   Compiling regex-automata v0.4.18
+   Compiling tokio v1.53.1
+   Compiling zerocopy-derive v0.8.59
+   Compiling thiserror-impl v1.0.69
+   Compiling tracing-attributes v0.1.31
+   Compiling tracing v0.1.44
+   Compiling itertools v0.10.5
+   Compiling memmap2 v0.9.11
+   Compiling cast v0.3.0
+   Compiling same-file v1.0.6
+   Compiling walkdir v2.5.0
+   Compiling plotters v0.3.7
+   Compiling regex v1.13.1
+   Compiling clap v4.6.7
+   Compiling rayon v1.12.0
+   Compiling criterion-plot v0.5.0
+   Compiling is-terminal v0.4.17
+   Compiling anes v0.1.6
+   Compiling oorandom v11.1.5
+   Compiling pf-errors v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-errors)
+   Compiling tinytemplate v1.2.1
+   Compiling pf-vector-kit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-vector-kit)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.3.1
+   Compiling ciborium-ll v0.2.2
+   Compiling rand v0.8.8
+   Compiling ciborium v0.2.2
+   Compiling criterion v0.5.1
+   Compiling twox-hash v1.6.3
+   Compiling pf-checksum v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-checksum)
+   Compiling pf-collections v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-collections)
+   Compiling hnsw-filtered-vector-index v0.1.0 (/tmp/pf-ci/projects/02-hnsw-filtered-vector-index/backend)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.64s
+     Running unittests src/lib.rs (/tmp/pf-ci/projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_filtered_vector_index-0c4f9df475f887f8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/pf-ci/projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_filtered_vector_index-3c306ee67adb4346)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/hnsw_tests.rs (/tmp/pf-ci/projects/02-hnsw-filtered-vector-index/backend/target/debug/deps/hnsw_tests-a53318de4c61724f)
+
+running 5 tests
+test test_scalar_quantization_roundtrip ... ok
+test test_hnsw_insertion_and_search ... ok
+test test_wal_persistence ... ok
+test test_hnsw_filtered_search ... ok
+test test_hnsw_high_recall_acceptance ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.03s
+
+   Doc-tests hnsw_filtered_vector_index
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 05_p03_tests ---
+    Updating crates.io index
+     Locking 44 packages to latest compatible versions
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling serde_core v1.0.229
+   Compiling once_cell v1.21.4
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.16.2
+   Compiling zmij v1.0.23
+   Compiling tracing-core v0.1.36
+   Compiling scopeguard v1.2.0
+   Compiling lock_api v0.4.14
+   Compiling lazy_static v1.5.1
+   Compiling serde_json v1.0.151
+   Compiling log v0.4.34
+   Compiling serde v1.0.229
+   Compiling pin-project-lite v0.2.17
+   Compiling tracing-log v0.2.0
+   Compiling sharded-slab v0.1.7
+   Compiling thread_local v1.1.10
+   Compiling memchr v2.8.3
+   Compiling bytes v1.12.1
+   Compiling nu-ansi-term v0.50.3
+   Compiling itoa v1.0.18
+   Compiling tracing-subscriber v0.3.23
+   Compiling syn v3.0.6
+   Compiling syn v2.0.119
+   Compiling errno v0.3.14
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.3
+   Compiling parking_lot v0.12.5
+   Compiling socket2 v0.6.5
+   Compiling tokio-macros v2.7.2
+   Compiling serde_derive v1.0.229
+   Compiling tokio v1.53.1
+   Compiling tracing-attributes v0.1.31
+   Compiling tracing v0.1.44
+   Compiling bytecode-vm-gc v0.1.0 (/tmp/pf-ci/projects/03-bytecode-vm-gc/backend)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.00s
+     Running unittests src/main.rs (/tmp/pf-ci/projects/03-bytecode-vm-gc/backend/target/debug/deps/bytecode_vm_gc-24ac906c29039c55)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 06_p04_tests ---
+    Updating crates.io index
+     Locking 191 packages to latest compatible versions
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding thiserror v1.0.69 (available: v2.0.21)
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling itoa v1.0.18
+   Compiling serde_core v1.0.229
+   Compiling zerocopy v0.8.59
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling memchr v2.8.3
+   Compiling once_cell v1.21.4
+   Compiling parking_lot_core v0.9.12
+   Compiling bytes v1.12.1
+   Compiling serde_json v1.0.151
+   Compiling smallvec v1.16.2
+   Compiling thiserror v1.0.69
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling scopeguard v1.2.0
+   Compiling lock_api v0.4.14
+   Compiling pin-project-lite v0.2.17
+   Compiling log v0.4.34
+   Compiling version_check v0.9.5
+   Compiling futures-core v0.3.34
+   Compiling http v1.5.0
+   Compiling generic-array v0.14.7
+   Compiling errno v0.3.14
+   Compiling getrandom v0.2.17
+   Compiling rand_core v0.6.4
+   Compiling crossbeam-utils v0.8.23
+   Compiling tracing-core v0.1.36
+   Compiling parking_lot v0.12.5
+   Compiling typenum v1.20.1
+   Compiling autocfg v1.5.1
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling num-traits v0.2.19
+   Compiling getrandom v0.3.4
+   Compiling crc32fast v1.5.2
+   Compiling httparse v1.10.1
+   Compiling cc v1.5.1
+   Compiling http-body v1.1.0
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.3
+   Compiling socket2 v0.6.5
+   Compiling tower-service v0.3.3
+   Compiling bitflags v2.13.2
+   Compiling byteorder v1.5.0
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling rustix v1.1.5
+   Compiling tower-layer v0.3.3
+   Compiling futures-task v0.3.34
+   Compiling futures-sink v0.3.34
+   Compiling getrandom v0.4.3
+   Compiling slab v0.4.12
+   Compiling crossbeam-epoch v0.9.21
+   Compiling futures-util v0.3.34
+   Compiling serde_derive v1.0.229
+   Compiling tokio-macros v2.7.2
+   Compiling blake3 v1.8.7
+   Compiling digest v0.10.7
+   Compiling rand_core v0.9.5
+   Compiling tokio v1.53.1
+   Compiling zerocopy-derive v0.8.59
+   Compiling thiserror-impl v1.0.69
+   Compiling tracing-attributes v0.1.31
+   Compiling cpufeatures v0.2.17
+   Compiling crossbeam-deque v0.8.8
+   Compiling arrayvec v0.7.8
+   Compiling constant_time_eq v0.4.2
+   Compiling regex-syntax v0.8.11
+   Compiling rustversion v1.0.23
+   Compiling tracing v0.1.44
+   Compiling sha1 v0.10.7
+   Compiling http-body-util v0.1.5
+   Compiling futures-channel v0.3.34
+   Compiling base64 v0.22.1
+   Compiling adler2 v2.0.1
+   Compiling either v1.18.0
+   Compiling atomic-waker v1.1.2
+   Compiling utf-8 v0.7.6
+   Compiling percent-encoding v2.3.2
+   Compiling rayon-core v1.13.0
+   Compiling sync_wrapper v1.0.2
+   Compiling httpdate v1.0.3
+   Compiling static_assertions v1.1.0
+   Compiling simd-adler32 v0.3.10
+   Compiling data-encoding v2.11.1
+   Compiling fastrand v2.5.0
+   Compiling miniz_oxide v0.9.1
+   Compiling tempfile v3.27.0
+   Compiling hyper v1.11.1
+   Compiling form_urlencoded v1.2.2
+   Compiling async-trait v0.1.92
+   Compiling wait-timeout v0.2.1
+   Compiling fnv v1.0.7
+   Compiling quick-error v1.2.3
+   Compiling mime v0.3.17
+   Compiling bit-vec v0.8.0
+   Compiling ryu v1.0.23
+   Compiling bit-set v0.8.0
+   Compiling rusty-fork v0.3.1
+   Compiling hyper-util v0.1.21
+   Compiling pf-errors v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-errors)
+   Compiling axum-core v0.4.5
+   Compiling serde_urlencoded v0.7.1
+   Compiling flate2 v1.1.10
+   Compiling tower v0.5.3
+   Compiling rand v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling crossbeam-channel v0.5.17
+   Compiling serde_path_to_error v0.1.20
+   Compiling nom v8.0.0
+   Compiling matchit v0.7.3
+   Compiling lazy_static v1.5.1
+   Compiling unarray v0.1.4
+   Compiling sharded-slab v0.1.7
+   Compiling rayon v1.12.0
+   Compiling tower-http v0.5.2
+   Compiling tower v0.4.13
+   Compiling tracing-log v0.2.0
+   Compiling thread_local v1.1.10
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling plotters-backend v0.3.7
+   Compiling nu-ansi-term v0.50.3
+   Compiling ciborium-io v0.2.2
+   Compiling clap_builder v4.6.7
+   Compiling plotters-svg v0.3.7
+   Compiling pf-bytes v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-bytes)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling tracing-subscriber v0.3.23
+   Compiling pf-sync v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sync)
+   Compiling pf-storage-kit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-storage-kit)
+   Compiling rand_chacha v0.3.1
+   Compiling rand_chacha v0.9.0
+   Compiling rand v0.8.8
+   Compiling proptest v1.11.0
+   Compiling ciborium-ll v0.2.2
+   Compiling itertools v0.10.5
+   Compiling regex-automata v0.4.18
+   Compiling tungstenite v0.24.0
+   Compiling twox-hash v1.6.3
+   Compiling hdrhistogram v7.6.0
+   Compiling pf-checksum v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-checksum)
+   Compiling pf-collections v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-collections)
+   Compiling pf-cache v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-cache)
+   Compiling tokio-tungstenite v0.24.0
+   Compiling same-file v1.0.6
+   Compiling pf-metrics v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-metrics)
+   Compiling axum v0.7.9
+   Compiling cast v0.3.0
+   Compiling criterion-plot v0.5.0
+   Compiling walkdir v2.5.0
+   Compiling clap v4.6.7
+   Compiling regex v1.13.1
+   Compiling ciborium v0.2.2
+   Compiling plotters v0.3.7
+   Compiling tinytemplate v1.2.1
+   Compiling is-terminal v0.4.17
+   Compiling anes v0.1.6
+   Compiling oorandom v11.1.5
+   Compiling pf-testkit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-testkit)
+   Compiling criterion v0.5.1
+   Compiling pf-http v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-http)
+   Compiling columnar-query-engine v0.1.0 (/tmp/pf-ci/projects/04-columnar-query-engine/backend)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 17.21s
+     Running unittests src/lib.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/columnar_query_engine-b2ad800e32246f54)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/columnar_query_engine-32477a62a0846300)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/encoding_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/encoding_tests-ecca1520a7e606e2)
+
+running 6 tests
+test test_rle_encoding_roundtrip ... ok
+test test_columnar_table_format ... ok
+test test_file_statistics ... ok
+test test_dictionary_encoding_roundtrip ... ok
+test test_validity_null_bitmap ... ok
+test test_row_group_partitioning ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/morsel_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/morsel_tests-48567cda00e40277)
+
+running 7 tests
+test test_morsel_driven_scheduling ... ok
+test test_morsel_selection_vectors ... ok
+test test_task_scheduler_morsel_exhaustion ... ok
+test test_thread_pool_sizing ... ok
+test test_parallel_scans_across_threads ... ok
+test test_parallel_aggregation_across_threads ... ok
+test test_parallel_hash_join_execution ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/query_cache_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/query_cache_tests-eefaec4fa24d4d56)
+
+running 1 test
+test test_query_result_cache_hit_and_eviction ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/sql_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/sql_tests-2c9cf92cd408977e)
+
+running 23 tests
+test test_cost_model_estimation ... ok
+test test_file_pruning_zonemap ... ok
+test test_benchmark_harness_output_schema ... ok
+test test_join_reordering_cardinality ... ok
+test test_having_filter_aggregation ... ok
+test test_distinct_deduplication ... ok
+test test_expression_evaluator_zonemap_bounds ... ok
+test test_logical_optimizer_pipeline ... ok
+test test_group_by_aggregation_optimizer ... ok
+test test_metadata_catalog_registration ... ok
+test test_null_semantics_three_valued_logic ... ok
+test test_order_by_limit_sorting ... ok
+test test_predicate_pushdown_optimization ... ok
+test test_projection_pruning_optimization ... ok
+test test_query_cancellation_token ... ok
+test test_query_timeout_deadline ... ok
+test test_semantic_analyzer_validation ... ok
+test test_sql_ast_model_nodes ... ok
+test test_sql_lexer_tokenization ... ok
+test test_sql_parser_select_where_join ... ok
+test test_statistics_catalog_tracking ... ok
+test test_sql_injection_defense_corpus ... ok
+test test_sql_join_support_parser ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vectorized_exec_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/vectorized_exec_tests-972e4a249f242378)
+
+running 1 test
+test test_vectorized_sum_filter_aggregation ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/zonemap_pruning_tests.rs (/tmp/pf-ci/projects/04-columnar-query-engine/backend/target/debug/deps/zonemap_pruning_tests-8b7b075bcc0e9a2b)
+
+running 1 test
+test test_zonemap_rowgroup_skipping ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests columnar_query_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 07_p05_tests ---
+    Updating crates.io index
+     Locking 230 packages to latest compatible versions
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding generic-array v0.14.7 (available: v0.14.9)
+      Adding hmac v0.12.1 (available: v0.13.0)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding sha2 v0.10.9 (available: v0.11.0)
+      Adding thiserror v1.0.69 (available: v2.0.21)
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.5
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.26
+   Compiling quote v1.0.47
+   Compiling typenum v1.20.1
+   Compiling itoa v1.0.18
+   Compiling getrandom v0.4.3
+   Compiling rand_core v0.10.1
+   Compiling serde_core v1.0.229
+   Compiling zerocopy v0.8.59
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling hybrid-array v0.4.15
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling thiserror v1.0.69
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling crypto-common v0.2.2
+   Compiling parking_lot_core v0.9.12
+   Compiling smallvec v1.16.2
+   Compiling scopeguard v1.2.0
+   Compiling once_cell v1.21.4
+   Compiling lock_api v0.4.14
+   Compiling bytes v1.12.1
+   Compiling version_check v0.9.5
+   Compiling getrandom v0.2.17
+   Compiling errno v0.3.14
+   Compiling pin-project-lite v0.2.17
+   Compiling rand_core v0.6.4
+   Compiling block-buffer v0.12.1
+   Compiling generic-array v0.14.7
+   Compiling subtle v2.6.1
+   Compiling parking_lot v0.12.5
+   Compiling log v0.4.34
+   Compiling futures-core v0.3.34
+   Compiling http v1.5.0
+   Compiling crossbeam-utils v0.8.23
+   Compiling tracing-core v0.1.36
+   Compiling find-msvc-tools v0.1.14
+   Compiling shlex v2.0.1
+   Compiling autocfg v1.5.1
+   Compiling cc v1.5.1
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling num-traits v0.2.19
+   Compiling digest v0.10.7
+   Compiling inout v0.2.2
+   Compiling crc32fast v1.5.2
+   Compiling cmov v0.5.4
+   Compiling getrandom v0.3.4
+   Compiling httparse v1.10.1
+   Compiling ctutils v0.4.2
+   Compiling http-body v1.1.0
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.3
+   Compiling serde_derive v1.0.229
+   Compiling tokio-macros v2.7.2
+   Compiling socket2 v0.6.5
+   Compiling blake3 v1.8.7
+   Compiling cpufeatures v0.2.17
+   Compiling cpufeatures v0.3.1
+   Compiling bitflags v2.13.2
+   Compiling semver v1.0.28
+   Compiling tower-service v0.3.3
+   Compiling byteorder v1.5.0
+   Compiling tokio v1.53.1
+   Compiling rustc_version v0.4.1
+   Compiling universal-hash v0.6.1
+   Compiling cipher v0.5.2
+   Compiling rustix v1.1.5
+   Compiling zerocopy-derive v0.8.59
+   Compiling thiserror-impl v1.0.69
+   Compiling tracing-attributes v0.1.31
+   Compiling slab v0.4.12
+   Compiling futures-task v0.3.34
+   Compiling constant_time_eq v0.4.2
+   Compiling futures-sink v0.3.34
+   Compiling tower-layer v0.3.3
+   Compiling arrayvec v0.7.8
+   Compiling futures-util v0.3.34
+   Compiling zeroize_derive v1.5.0
+   Compiling tracing v0.1.44
+   Compiling curve25519-dalek v5.0.0
+   Compiling rand_core v0.9.5
+   Compiling digest v0.11.3
+   Compiling regex-syntax v0.8.11
+   Compiling cpubits v0.1.1
+   Compiling rustversion v1.0.23
+   Compiling zeroize v1.9.0
+   Compiling sha1 v0.10.7
+   Compiling http-body-util v0.1.5
+   Compiling futures-channel v0.3.34
+   Compiling base64 v0.22.1
+   Compiling pf-errors v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-errors)
+   Compiling simd-adler32 v0.3.10
+   Compiling data-encoding v2.11.1
+   Compiling utf-8 v0.7.6
+   Compiling fastrand v2.5.0
+   Compiling percent-encoding v2.3.2
+   Compiling atomic-waker v1.1.2
+   Compiling sync_wrapper v1.0.2
+   Compiling httpdate v1.0.3
+   Compiling static_assertions v1.1.0
+   Compiling adler2 v2.0.1
+   Compiling crossbeam-epoch v0.9.21
+   Compiling miniz_oxide v0.9.1
+   Compiling hyper v1.11.1
+   Compiling form_urlencoded v1.2.2
+   Compiling tempfile v3.27.0
+   Compiling polyval v0.7.3
+   Compiling async-trait v0.1.92
+   Compiling aead v0.6.1
+   Compiling wait-timeout v0.2.1
+   Compiling crossbeam-deque v0.8.8
+   Compiling ryu v1.0.23
+   Compiling mime v0.3.17
+   Compiling fnv v1.0.7
+   Compiling bit-vec v0.8.0
+   Compiling quick-error v1.2.3
+   Compiling signature v3.0.0
+   Compiling rusty-fork v0.3.1
+   Compiling bit-set v0.8.0
+   Compiling ed25519 v3.0.0
+   Compiling serde_urlencoded v0.7.1
+   Compiling hyper-util v0.1.21
+   Compiling ghash v0.6.0
+   Compiling flate2 v1.1.10
+   Compiling tower v0.5.3
+   Compiling aes v0.9.3
+   Compiling rand_xorshift v0.4.0
+   Compiling axum-core v0.4.5
+   Compiling rand v0.9.5
+   Compiling sha2 v0.11.0
+   Compiling chacha20 v0.10.2
+   Compiling ctr v0.10.1
+   Compiling poly1305 v0.9.1
+   Compiling crossbeam-channel v0.5.17
+   Compiling serde_path_to_error v0.1.20
+   Compiling nom v8.0.0
+   Compiling lazy_static v1.5.1
+   Compiling unarray v0.1.4
+   Compiling rayon-core v1.13.0
+   Compiling either v1.18.0
+   Compiling matchit v0.7.3
+   Compiling ed25519-dalek v3.0.0
+   Compiling sharded-slab v0.1.7
+   Compiling aes-gcm v0.11.1
+   Compiling chacha20poly1305 v0.11.0
+   Compiling x25519-dalek v3.0.0
+   Compiling tower-http v0.5.2
+   Compiling tower v0.4.13
+   Compiling sha2 v0.10.9
+   Compiling hmac v0.12.1
+   Compiling tracing-log v0.2.0
+   Compiling rand_xoshiro v0.6.0
+   Compiling thread_local v1.1.10
+   Compiling ciborium-io v0.2.2
+   Compiling plotters-backend v0.3.7
+   Compiling nu-ansi-term v0.50.3
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling tracing-subscriber v0.3.23
+   Compiling rand_chacha v0.3.1
+   Compiling rand_chacha v0.9.0
+   Compiling ciborium-ll v0.2.2
+   Compiling clap_builder v4.6.7
+   Compiling rand v0.8.8
+   Compiling proptest v1.11.0
+   Compiling plotters-svg v0.3.7
+   Compiling pf-crypto v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-crypto)
+   Compiling tungstenite v0.24.0
+   Compiling twox-hash v1.6.3
+   Compiling tokio-tungstenite v0.24.0
+   Compiling hdrhistogram v7.6.0
+   Compiling pf-checksum v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-checksum)
+   Compiling axum v0.7.9
+   Compiling pf-collections v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-collections)
+   Compiling pf-cache v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-cache)
+   Compiling pf-sim v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sim)
+   Compiling itertools v0.10.5
+   Compiling pf-bytes v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-bytes)
+   Compiling pf-ratelimit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-ratelimit)
+   Compiling pf-time v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-time)
+   Compiling pf-sync v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sync)
+   Compiling regex-automata v0.4.18
+   Compiling cast v0.3.0
+   Compiling pf-metrics v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-metrics)
+   Compiling same-file v1.0.6
+   Compiling walkdir v2.5.0
+   Compiling clap v4.6.7
+   Compiling rayon v1.12.0
+   Compiling plotters v0.3.7
+   Compiling pf-testkit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-testkit)
+   Compiling ciborium v0.2.2
+   Compiling criterion-plot v0.5.0
+   Compiling tinytemplate v1.2.1
+   Compiling is-terminal v0.4.17
+   Compiling oorandom v11.1.5
+   Compiling anes v0.1.6
+   Compiling regex v1.13.1
+   Compiling criterion v0.5.1
+   Compiling pf-http v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-http)
+   Compiling mini-quic v0.1.0 (/tmp/pf-ci/projects/05-mini-quic/backend)
+warning: unused import: `Sha256`
+ --> src/crypto/handshake.rs:4:20
+  |
+4 | use sha2::{Digest, Sha256};
+  |                    ^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `std::sync::Arc`
+ --> src/crypto/handshake.rs:5:5
+  |
+5 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+
+warning: unused import: `Digest`
+ --> src/crypto/handshake.rs:4:12
+  |
+4 | use sha2::{Digest, Sha256};
+  |            ^^^^^^
+
+warning: unused variable: `client_random`
+   --> src/crypto/handshake.rs:153:14
+    |
+153 |         let (client_random, legacy_session_id, key_share, peer_tp) = match msg {
+    |              ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_client_random`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-quic` (lib) generated 4 warnings (run `cargo fix --lib -p mini-quic` to apply 3 suggestions)
+warning: unused import: `StreamType`
+ --> tests/stream_flow_control_tests.rs:2:61
+  |
+2 | use mini_quic::stream::{Stream, StreamManager, StreamState, StreamType};
+  |                                                             ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `quic_aes_gcm_decrypt`, `quic_aes_gcm_encrypt`, `quic_aes_hp_mask`, `quic_chacha20_hp_mask`, and `x25519_public_key`
+ --> tests/crypto_tests.rs:2:55
+  |
+2 |     hkdf_expand_label, hkdf_extract, quic_aead_nonce, quic_aes_gcm_decrypt, quic_aes_gcm_encrypt,
+  |                                                       ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+3 |     quic_aes_hp_mask, quic_chacha20_hp_mask, quic_chacha20_poly1305_decrypt,
+  |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^
+4 |     quic_chacha20_poly1305_encrypt, quic_key_update, x25519, x25519_public_key,
+  |                                                              ^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Frame` and `StreamFrame`
+ --> tests/simulation_tests.rs:4:30
+  |
+4 | use mini_quic::wire::frame::{Frame, StreamFrame};
+  |                              ^^^^^  ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `CryptoFrame` and `StreamFrame`
+ --> tests/packet_codec_tests.rs:3:30
+  |
+3 | use mini_quic::wire::frame::{CryptoFrame, Frame, StreamFrame};
+  |                              ^^^^^^^^^^^         ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-quic` (test "crypto_tests") generated 1 warning (run `cargo fix --test "crypto_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (test "stream_flow_control_tests") generated 1 warning (run `cargo fix --test "stream_flow_control_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (test "packet_codec_tests") generated 1 warning (run `cargo fix --test "packet_codec_tests" -p mini-quic` to apply 1 suggestion)
+warning: value assigned to `active_secret` is never read
+   --> tests/handshake_tests.rs:265:29
+    |
+265 |     let mut active_secret = current_secret;
+    |                             ^^^^^^^^^^^^^^ this value is reassigned later and never used
+266 |     active_secret = next_secret;
+    |     --------------------------- `active_secret` is overwritten here before the previous value is read
+    |
+    = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: multiple variants are never constructed
+   --> tests/handshake_tests.rs:188:9
+    |
+186 |     enum QuicTransportError {
+    |          ------------------ variants in this enum
+187 |         NoError = 0x00,
+188 |         InternalError = 0x01,
+    |         ^^^^^^^^^^^^^
+189 |         ConnectionRefused = 0x02,
+    |         ^^^^^^^^^^^^^^^^^
+190 |         FlowControlError = 0x03,
+    |         ^^^^^^^^^^^^^^^^
+191 |         StreamLimitError = 0x04,
+    |         ^^^^^^^^^^^^^^^^
+192 |         StreamStateError = 0x05,
+    |         ^^^^^^^^^^^^^^^^
+193 |         FinalSizeError = 0x06,
+    |         ^^^^^^^^^^^^^^
+194 |         FrameEncodingError = 0x07,
+    |         ^^^^^^^^^^^^^^^^^^
+195 |         TransportParameterError = 0x08,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `QuicTransportError` has derived impls for the traits `Clone` and `Debug`, but these are intentionally ignored during dead code analysis
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `rtt`
+   --> tests/recovery_tests.rs:199:9
+    |
+199 |     let rtt = 0.05f64; // 50ms
+    |         ^^^ help: if this is intentional, prefix it with an underscore: `_rtt`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `on_packet_sent` is never used
+   --> tests/recovery_tests.rs:257:12
+    |
+256 |     trait CongestionController {
+    |           -------------------- method in this trait
+257 |         fn on_packet_sent(&mut self, bytes_sent: u64);
+    |            ^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `mini-quic` (test "simulation_tests") generated 1 warning (run `cargo fix --test "simulation_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (lib test) generated 4 warnings (4 duplicates)
+warning: `mini-quic` (test "recovery_tests") generated 2 warnings (run `cargo fix --test "recovery_tests" -p mini-quic` to apply 1 suggestion)
+warning: `mini-quic` (test "handshake_tests") generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.81s
+     Running unittests src/lib.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/mini_quic-2be807514e9824f5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/mini_quic-3510b667bad27511)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/crypto_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/crypto_tests-0a46ba657913ac1b)
+
+running 3 tests
+test test_key_derivation_and_key_phase_rfc9001 ... ok
+test test_chacha20_poly1305_packet_protection ... ok
+test test_x25519_key_agreement_rfc7748 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/frame_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/frame_tests-c4e09b2490e3ef19)
+
+running 7 tests
+test test_frame_type_registry ... ok
+test test_ack_frame_codec ... ok
+test test_crypto_frame_handling ... ok
+test test_control_frames_codec ... ok
+test test_max_streams_frames ... ok
+test test_max_data_and_max_stream_data_frames ... ok
+test test_stream_frame_codec ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fuzz_quic_packets.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/fuzz_quic_packets-27f5d07d5d78298b)
+
+running 1 test
+test test_fuzz_10000_quic_packets_no_panic ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.45s
+
+     Running tests/handshake_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/handshake_tests-5e4c640868c4efc7)
+
+running 20 tests
+test test_anti_amplification_limit ... ok
+test test_handshake_error_taxonomy ... ok
+test test_crypto_nonce_correctness ... ok
+test test_connection_stream_quotas ... ok
+test test_connection_close_draining_states ... ok
+test test_connection_state_machine_transitions ... ok
+test test_handshake_timeout_handling ... ok
+test test_error_containment ... ok
+test test_key_material_lifecycle ... ok
+test test_malformed_packet_rejection ... ok
+test test_packet_number_spaces_isolation ... ok
+test test_replay_duplicate_protection ... ok
+test test_resource_exhaustion_defenses ... ok
+test test_secret_zeroization ... ok
+test test_timeout_abuse_defenses ... ok
+test test_version_negotiation ... ok
+test test_transport_parameter_negotiation ... ok
+test test_integration_client_server_udp_loopback ... ok
+test test_client_server_handshake_flow ... ok
+test test_interoperability_test_corpus ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/packet_codec_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/packet_codec_tests-bc5fee469b3eb59b)
+
+running 5 tests
+test test_packet_number_encoding_decoding ... ok
+test test_long_header_packet_support ... ok
+test test_short_header_packet_support ... ok
+test test_quic_packet_header_codec ... ok
+test test_connection_id_management ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recovery_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/recovery_tests-3d45a69b82262008)
+
+running 21 tests
+test test_congestion_controller_interface ... ok
+test test_cubic_congestion_control_curve ... ok
+test test_bandwidth_delay_product_estimation ... ok
+test test_ack_range_tracking ... ok
+test test_duplicate_ack_handling ... ok
+test test_congestion_window_tracking ... ok
+test test_congestion_avoidance_linear_growth ... ok
+test test_fast_recovery_window_reduction ... ok
+test test_newreno_congestion_control ... ok
+test test_pacing_timer_scheduling ... ok
+test test_packet_loss_detection ... ok
+test test_packet_pacing_interval ... ok
+test test_packet_threshold_loss_detection ... ok
+test test_pto_calculation ... ok
+test test_pto_probe_transmission ... ok
+test test_retransmission_bookkeeping ... ok
+test test_rtt_sampling ... ok
+test test_rtt_variance_estimation ... ok
+test test_slow_start_growth ... ok
+test test_smoothed_rtt_estimation ... ok
+test test_time_threshold_loss_detection ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/simulation_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/simulation_tests-4bf11c03116b80f1)
+
+running 1 test
+test test_simulated_network_transfer_at_loss_rates ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/stream_flow_control_tests.rs (/tmp/pf-ci/projects/05-mini-quic/backend/target/debug/deps/stream_flow_control_tests-398215eb4eedc95e)
+
+running 11 tests
+test test_connection_level_flow_control ... ok
+test test_stream_level_flow_control ... ok
+test test_max_streams_enforcement ... ok
+test test_stream_id_allocation ... ok
+test test_max_data_enforcement ... ok
+test test_max_stream_data_enforcement ... ok
+test test_stream_receive_reassembly ... ok
+test test_bidirectional_stream_management ... ok
+test test_stream_reset_handling ... ok
+test test_stream_send_buffering ... ok
+test test_unidirectional_stream_management ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests mini_quic
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 08_p06_tests ---
+    Updating crates.io index
+     Locking 145 packages to latest compatible versions
+      Adding criterion v0.5.1 (available: v0.8.2)
+      Adding rand v0.8.8 (available: v0.10.3)
+      Adding thiserror v1.0.69 (available: v2.0.21)
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling libc v0.2.189
+   Compiling unicode-ident v1.0.26
+   Compiling cfg-if v1.0.5
+   Compiling serde_core v1.0.229
+   Compiling zerocopy v0.8.59
+   Compiling serde v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling thiserror v1.0.69
+   Compiling smallvec v1.16.2
+   Compiling shlex v2.0.1
+   Compiling once_cell v1.21.4
+   Compiling find-msvc-tools v0.1.14
+   Compiling parking_lot_core v0.9.12
+   Compiling cc v1.5.1
+   Compiling getrandom v0.3.4
+   Compiling syn v2.0.119
+   Compiling syn v3.0.6
+   Compiling scopeguard v1.2.0
+   Compiling getrandom v0.2.17
+   Compiling crossbeam-utils v0.8.23
+   Compiling errno v0.3.14
+   Compiling rand_core v0.6.4
+   Compiling lock_api v0.4.14
+   Compiling blake3 v1.8.7
+   Compiling crossbeam-epoch v0.9.21
+   Compiling autocfg v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling parking_lot v0.12.5
+   Compiling rustix v1.1.5
+   Compiling getrandom v0.4.3
+   Compiling crc32fast v1.5.2
+   Compiling constant_time_eq v0.4.2
+   Compiling arrayvec v0.7.8
+   Compiling rand_core v0.9.5
+   Compiling regex-syntax v0.8.11
+   Compiling bitflags v2.13.2
+   Compiling static_assertions v1.1.0
+   Compiling bytes v1.12.1
+   Compiling fastrand v2.5.0
+   Compiling wait-timeout v0.2.1
+   Compiling tracing-core v0.1.36
+   Compiling crossbeam-deque v0.8.8
+   Compiling tempfile v3.27.0
+   Compiling quick-error v1.2.3
+   Compiling bit-vec v0.8.0
+   Compiling fnv v1.0.7
+   Compiling bit-set v0.8.0
+   Compiling serde_derive v1.0.229
+   Compiling rusty-fork v0.3.1
+   Compiling rand v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling unarray v0.1.4
+   Compiling byteorder v1.5.0
+   Compiling lazy_static v1.5.1
+   Compiling pin-project-lite v0.2.17
+   Compiling either v1.18.0
+   Compiling rayon-core v1.13.0
+   Compiling log v0.4.34
+   Compiling sharded-slab v0.1.7
+   Compiling tracing-log v0.2.0
+   Compiling tokio-macros v2.7.2
+   Compiling signal-hook-registry v1.4.8
+   Compiling mio v1.2.3
+   Compiling socket2 v0.6.5
+   Compiling thread_local v1.1.10
+   Compiling clap_lex v1.1.1
+   Compiling ciborium-io v0.2.2
+   Compiling anstyle v1.0.14
+   Compiling plotters-backend v0.3.7
+   Compiling zerocopy-derive v0.8.59
+   Compiling thiserror-impl v1.0.69
+   Compiling tracing-attributes v0.1.31
+   Compiling nu-ansi-term v0.50.3
+   Compiling plotters-svg v0.3.7
+   Compiling clap_builder v4.6.7
+   Compiling tracing-subscriber v0.3.23
+   Compiling tokio v1.53.1
+   Compiling tracing v0.1.44
+   Compiling itertools v0.10.5
+   Compiling regex-automata v0.4.18
+   Compiling crossbeam-skiplist v0.1.3
+   Compiling same-file v1.0.6
+   Compiling cast v0.3.0
+   Compiling walkdir v2.5.0
+   Compiling criterion-plot v0.5.0
+   Compiling clap v4.6.7
+   Compiling rayon v1.12.0
+   Compiling plotters v0.3.7
+   Compiling is-terminal v0.4.17
+   Compiling anes v0.1.6
+   Compiling oorandom v11.1.5
+   Compiling regex v1.13.1
+   Compiling pf-errors v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-errors)
+   Compiling tinytemplate v1.2.1
+   Compiling pf-bytes v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-bytes)
+   Compiling pf-sync v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-sync)
+   Compiling pf-time v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-time)
+   Compiling pf-storage-kit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-storage-kit)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.3.1
+   Compiling rand_chacha v0.9.0
+   Compiling ciborium-ll v0.2.2
+   Compiling ciborium v0.2.2
+   Compiling proptest v1.11.0
+   Compiling rand v0.8.8
+   Compiling criterion v0.5.1
+   Compiling twox-hash v1.6.3
+   Compiling pf-checksum v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-checksum)
+   Compiling pf-collections v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-collections)
+   Compiling pf-wal v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-wal)
+   Compiling pf-cache v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-cache)
+   Compiling pf-testkit v0.1.0 (/tmp/pf-ci/platform/rust/crates/pf-testkit)
+   Compiling lsm-kv-engine v0.1.0 (/tmp/pf-ci/projects/06-lsm-kv-engine/backend)
+warning: unused import: `Bytes`
+ --> src/wal/mod.rs:3:26
+  |
+3 | use bytes::{Buf, BufMut, Bytes, BytesMut};
+  |                          ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `SeekFrom` and `Seek`
+ --> src/wal/mod.rs:6:21
+  |
+6 | use std::io::{Read, Seek, SeekFrom, Write};
+  |                     ^^^^  ^^^^^^^^
+
+warning: unused import: `std::collections::HashMap`
+ --> src/manifest/mod.rs:1:5
+  |
+1 | use std::collections::HashMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `SeekFrom` and `Seek`
+ --> src/manifest/mod.rs:3:21
+  |
+3 | use std::io::{Read, Seek, SeekFrom, Write};
+  |                     ^^^^  ^^^^^^^^
+
+warning: unused import: `Buf`
+ --> src/sstable/mod.rs:3:13
+  |
+3 | use bytes::{Buf, BufMut, BytesMut};
+  |             ^^^
+
+warning: unused variable: `reader`
+   --> src/compaction/leveled.rs:179:13
+    |
+179 |         let reader = builder.finish()?;
+    |             ^^^^^^ help: if this is intentional, prefix it with an underscore: `_reader`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `path` is never read
+  --> src/wal/mod.rs:33:5
+   |
+31 | pub struct WalWriter {
+   |            --------- field in this struct
+32 |     file: File,
+33 |     path: PathBuf,
+   |     ^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `estimated_entries` is never read
+  --> src/sstable/mod.rs:23:5
+   |
+19 | pub struct SsTableBuilder {
+   |            -------------- field in this struct
+...
+23 |     estimated_entries: usize,
+   |     ^^^^^^^^^^^^^^^^^
+
+warning: `lsm-kv-engine` (lib) generated 8 warnings (run `cargo fix --lib -p lsm-kv-engine` to apply 5 suggestions)
+warning: unused variable: `obsolete`
+   --> tests/compaction_tests.rs:297:19
+    |
+297 |     let (outputs, obsolete) = controller.execute_compaction(&task, dir.path(), 2).unwrap();
+    |                   ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_obsolete`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: `lsm-kv-engine` (lib test) generated 8 warnings (8 duplicates)
+warning: `lsm-kv-engine` (test "compaction_tests") generated 1 warning (run `cargo fix --test "compaction_tests" -p lsm-kv-engine` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.19s
+     Running unittests src/lib.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/lsm_kv_engine-1d53bcef6d800f69)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/lsm_kv_engine-73290987c1eba997)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/compaction_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/compaction_tests-ad8c014e03c4b175)
+
+running 5 tests
+test test_compaction_scheduling_threshold_guards ... ok
+test test_compaction_picker_overlapping_key_ranges ... ok
+test test_write_amplification_accounting_metrics ... ok
+test test_compaction_output_generation_and_cleanup ... ok
+test test_leveled_compaction_state_preservation ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/engine_api_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/engine_api_tests-de133a5090d6218e)
+
+running 25 tests
+test test_fault_injection_handling ... ok
+test test_delete_markers_insertion ... ok
+test test_batch_read_api ... ok
+test test_batch_write_api ... ok
+test test_forward_iterator_traversal ... ok
+test test_bloom_filter_short_circuit ... ok
+test test_crash_consistency_recovery ... ok
+test test_kv_delete_api ... ok
+test test_kv_put_api ... ok
+test test_kv_get_api ... ok
+test test_iterator_api ... ok
+test test_iterator_merge_streams ... ok
+test test_memtable_flush_scheduling ... ok
+test test_sequence_number_allocation ... ok
+test test_point_lookup_path_traversal ... ok
+test test_prefix_scan_api ... ok
+test test_range_scan_api ... ok
+test test_snapshot_creation ... ok
+test test_snapshot_api ... ok
+test test_multilevel_read_path ... ok
+test test_snapshot_visibility ... ok
+test test_sstable_writer_format ... ok
+test test_sstable_reader_lookup ... ok
+test test_tombstone_semantics_masking ... ok
+test test_immutable_memtable_transition ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+     Running tests/manifest_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/manifest_tests-e4f2ff1051f5f3bd)
+
+running 5 tests
+test test_current_manifest_pointer ... ok
+test test_atomic_metadata_updates ... ok
+test test_version_edit_records_application ... ok
+test test_manifest_format_and_checksum_integrity ... ok
+test test_startup_recovery_from_manifest_log ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/memtable_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/memtable_tests-e89a556d302a2160)
+
+running 4 tests
+test test_memtable_insertion_and_ordering ... ok
+test test_memtable_size_tracking ... ok
+test test_memtable_point_lookup ... ok
+test test_memtable_ordered_iterator ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/model_oracle_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/model_oracle_tests-83d4f4a0d2f263f2)
+
+running 2 tests
+test test_lsm_crash_recovery_injected_kill ... ok
+test test_lsm_engine_model_oracle_differential ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+
+     Running tests/sstable_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/sstable_tests-62d86964d4f9d76e)
+
+running 5 tests
+test test_sstable_data_block_encoding_and_boundaries ... ok
+test test_sstable_sparse_index_binary_search ... ok
+test test_sstable_file_format_serialization ... ok
+test test_sstable_block_checksums_corruption_detected ... ok
+test test_sstable_bloom_filter_rejection ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/wal_tests.rs (/tmp/pf-ci/projects/06-lsm-kv-engine/backend/target/debug/deps/wal_tests-49ced11db716db40)
+
+running 10 tests
+test test_wal_group_commit_batching ... ok
+test test_wal_record_format_encoding ... ok
+test test_durability_fault_injection_recovery ... ok
+test test_wal_checksums_validation ... ok
+test test_wal_corruption_detection_crc ... ok
+test test_wal_recovery_replay_startup ... ok
+test test_wal_truncation_policy_recovery ... ok
+test test_wal_append_path_sequential ... ok
+test test_wal_fsync_policy_modes_durability ... ok
+test test_wal_segment_rotation_threshold ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+   Doc-tests lsm_kv_engine
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+--- LOG: 09_pytest ---
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.1.1, pluggy-1.6.0 -- /Users/avishjain/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /tmp/pf-ci/tests
+plugins: anyio-4.15.1
+collecting ... collected 3 items
+
+../../../tmp/pf-ci/tests/test_audit_annotations.py::test_audit_annotations_negative_cases PASSED [ 33%]
+../../../tmp/pf-ci/tests/test_feature_ingest.py::test_feature_ingest_integrity PASSED [ 66%]
+../../../tmp/pf-ci/tests/test_workbook_status.py::test_status_workbooks_integrity PASSED [100%]
+
+============================== 3 passed in 0.36s ===============================
+
+--- LOG: 10_audit_annotations ---
+=== Auditing Test Annotations Against Master Workbooks ===
+✓ All test annotations strictly match master workbook names, IDs, priorities, and keyword signatures.
+
+--- LOG: 11_evidence_gen ---
+=== Running Autonomous Evidence Generation Pipeline ===
+
+| Feature ID | Project | Test Function | Assertions | Acceptance Summary | Status |
+|---|---|---|---|---|---|
+| 04-046 | 04-columnar-query-engine | `test_columnar_table_format` | 2 | Columnar table format with vertical colu | ✓ Verified |
+| 04-047 | 04-columnar-query-engine | `test_row_group_partitioning` | 1 | Row group partitioning allows independen | ✓ Verified |
+| 04-048 | 04-columnar-query-engine | `test_validity_null_bitmap` | 7 | Validity null bitmask compactly tracks n | ✓ Verified |
+| 04-049 | 04-columnar-query-engine | `test_dictionary_encoding_roundtrip` | 4 | Dictionary encoding maps low-cardinality | ✓ Verified |
+| 04-050 | 04-columnar-query-engine | `test_rle_encoding_roundtrip` | 3 | Run-length encoding compresses repeated  | ✓ Verified |
+| 04-055 | 04-columnar-query-engine | `test_file_statistics` | 2 | File statistics catalog tracks min/max b | ✓ Verified |
+| 04-079 | 04-columnar-query-engine | `test_morsel_selection_vectors` | 8 | Selection vectors represent row index fi | ✓ Verified |
+| 04-080 | 04-columnar-query-engine | `test_morsel_driven_scheduling` | 5 | Morsel-driven scheduling dynamically ass | ✓ Verified |
+| 04-081 | 04-columnar-query-engine | `test_parallel_scans_across_threads` | 3 | Parallel scans execute across 1, 2, and  | ✓ Verified |
+| 04-082 | 04-columnar-query-engine | `test_parallel_hash_join_execution` | 5 | Parallel hash join builds shared hash ta | ✓ Verified |
+| 04-083 | 04-columnar-query-engine | `test_parallel_aggregation_across_threads` | 7 | Parallel grouped aggregation combines th | ✓ Verified |
+| 04-084 | 04-columnar-query-engine | `test_task_scheduler_morsel_exhaustion` | 2 | Dynamic task scheduler assigns morsels a | ✓ Verified |
+| 04-085 | 04-columnar-query-engine | `test_thread_pool_sizing` | 2 | Thread pool configures worker thread cou | ✓ Verified |
+| 04-021 | 04-columnar-query-engine | `test_sql_lexer_tokenization` | 10 | Lexical tokenizer converts SQL text stre | ✓ Verified |
+| 04-022 | 04-columnar-query-engine | `test_sql_parser_select_where_join` | 4 | Recursive descent parser transforms toke | ✓ Verified |
+| 04-023 | 04-columnar-query-engine | `test_sql_ast_model_nodes` | 2 | Strongly-typed AST nodes model SELECT, F | ✓ Verified |
+| 04-024 | 04-columnar-query-engine | `test_semantic_analyzer_validation` | 2 | Semantic analyzer validates table refere | ✓ Verified |
+| 04-025 | 04-columnar-query-engine | `test_expression_evaluator_zonemap_bounds` | 4 | Vectorized expression evaluator processe | ✓ Verified |
+| 04-027 | 04-columnar-query-engine | `test_sql_join_support_parser` | 5 | Hash-join algorithm builds in-memory has | ✓ Verified |
+| 04-028 | 04-columnar-query-engine | `test_group_by_aggregation_optimizer` | 4 | Grouped hash aggregation computes SUM an | ✓ Verified |
+| 04-040 | 04-columnar-query-engine | `test_predicate_pushdown_optimization` | 3 | Rule-based optimizer pushes filtering pr | ✓ Verified |
+| 04-041 | 04-columnar-query-engine | `test_projection_pruning_optimization` | 3 | Projection pruning removes unused column | ✓ Verified |
+| 04-032 | 04-columnar-query-engine | `test_order_by_limit_sorting` | 1 | ORDER BY sorts result rows and LIMIT tru | ✓ Verified |
+| 04-033 | 04-columnar-query-engine | `test_distinct_deduplication` | 2 | Deduplicate projection vectors using has | ✓ Verified |
+| 04-034 | 04-columnar-query-engine | `test_having_filter_aggregation` | 4 | Post-aggregation filter evaluates predic | ✓ Verified |
+| 04-035 | 04-columnar-query-engine | `test_null_semantics_three_valued_logic` | 6 | Enforce ANSI SQL three-valued logic (TRU | ✓ Verified |
+| 04-037 | 04-columnar-query-engine | `test_query_cancellation_token` | 2 | Atomic cancellation token aborts query e | ✓ Verified |
+| 04-039 | 04-columnar-query-engine | `test_logical_optimizer_pipeline` | 3 | Rule-based logical optimizer applies pre | ✓ Verified |
+| 04-042 | 04-columnar-query-engine | `test_join_reordering_cardinality` | 3 | Cost-based join graph reorders tables to | ✓ Verified |
+| 04-043 | 04-columnar-query-engine | `test_cost_model_estimation` | 3 | Cost model estimates CPU, memory, and I/ | ✓ Verified |
+| 04-067 | 04-columnar-query-engine | `test_file_pruning_zonemap` | 1 | ZoneMap file pruning skips non-overlappi | ✓ Verified |
+| 04-100 | 04-columnar-query-engine | `test_query_timeout_deadline` | 1 | Query timeout timer triggers execution c | ✓ Verified |
+| 04-104 | 04-columnar-query-engine | `test_metadata_catalog_registration` | 2 | Schema catalog registers tables, columns | ✓ Verified |
+| 04-105 | 04-columnar-query-engine | `test_statistics_catalog_tracking` | 3 | Catalog records column cardinality, null | ✓ Verified |
+| 04-127 | 04-columnar-query-engine | `test_sql_injection_defense_corpus` | 2 | Reject stacked queries, enforce paramete | ✓ Verified |
+| 04-134 | 04-columnar-query-engine | `test_benchmark_harness_output_schema` | 2 | Benchmark runner executes TPC-H query su | ✓ Verified |
+| 05-015 | 05-mini-quic | `test_x25519_key_agreement_rfc7748` | 1 | RFC 7748 X25519 Diffie-Hellman key agree | ✓ Verified |
+| 05-016 | 05-mini-quic | `test_chacha20_poly1305_packet_protection` | 5 | ChaCha20-Poly1305 packet protection vali | ✓ Verified |
+| 05-017 | 05-mini-quic | `test_key_derivation_and_key_phase_rfc9001` | 6 | Initial secrets, keys, IV, HP derivation | ✓ Verified |
+| 05-006 | 05-mini-quic | `test_frame_type_registry` | 1 | Registry and serialization for core QUIC | ✓ Verified |
+| 05-007 | 05-mini-quic | `test_stream_frame_codec` | 4 | Encode and decode STREAM frames with str | ✓ Verified |
+| 05-008 | 05-mini-quic | `test_ack_frame_codec` | 4 | Encode and decode ACK frames with larges | ✓ Verified |
+| 05-009 | 05-mini-quic | `test_crypto_frame_handling` | 2 | Handle CRYPTO frames containing TLS hand | ✓ Verified |
+| 05-010 | 05-mini-quic | `test_control_frames_codec` | 2 | Encode and decode PING, PADDING, and CON | ✓ Verified |
+| 05-011 | 05-mini-quic | `test_max_data_and_max_stream_data_frames` | 2 | Encode and decode MAX_DATA and MAX_STREA | ✓ Verified |
+| 05-012 | 05-mini-quic | `test_max_streams_frames` | 2 | Encode and decode MAX_STREAMS frames for | ✓ Verified |
+| 05-013 | 05-mini-quic | `test_connection_state_machine_transitions` | 3 | Initial to Handshake to 1-RTT to Closed  | ✓ Verified |
+| 05-014 | 05-mini-quic | `test_client_server_handshake_flow` | 4 | Client-Server handshake exchange negotia | ✓ Verified |
+| 05-018 | 05-mini-quic | `test_packet_number_spaces_isolation` | 3 | Initial, Handshake, and 1-RTT packet num | ✓ Verified |
+| 05-019 | 05-mini-quic | `test_handshake_timeout_handling` | 3 | Enforce handshake timeout when peer does | ✓ Verified |
+| 05-020 | 05-mini-quic | `test_connection_close_draining_states` | 1 | Transition to closed state and handle co | ✓ Verified |
+| 05-021 | 05-mini-quic | `test_transport_parameter_negotiation` | 3 | Validate and negotiate QUIC transport pa | ✓ Verified |
+| 05-022 | 05-mini-quic | `test_version_negotiation` | 2 | Accept QUIC v1 (0x00000001) and reject u | ✓ Verified |
+| 05-024 | 05-mini-quic | `test_handshake_error_taxonomy` | 3 | Handshake error taxonomy covers crypto,  | ✓ Verified |
+| 05-081 | 05-mini-quic | `test_malformed_packet_rejection` | 1 | Malformed packets with invalid wire enco | ✓ Verified |
+| 05-082 | 05-mini-quic | `test_anti_amplification_limit` | 2 | Server anti-amplification limits respons | ✓ Verified |
+| 05-083 | 05-mini-quic | `test_replay_duplicate_protection` | 2 | Reject duplicated and replayed packet nu | ✓ Verified |
+| 05-084 | 05-mini-quic | `test_crypto_nonce_correctness` | 3 | Crypto AEAD nonce derivation computes ex | ✓ Verified |
+| 05-085 | 05-mini-quic | `test_key_material_lifecycle` | 2 | Enforce key material rotation and drop r | ✓ Verified |
+| 05-086 | 05-mini-quic | `test_secret_zeroization` | 2 | Key material zeroization clears secret m | ✓ Verified |
+| 05-087 | 05-mini-quic | `test_resource_exhaustion_defenses` | 2 | Reject unbounded connection attempts and | ✓ Verified |
+| 05-088 | 05-mini-quic | `test_connection_stream_quotas` | 2 | Enforce max streams and max data limits  | ✓ Verified |
+| 05-089 | 05-mini-quic | `test_timeout_abuse_defenses` | 1 | Enforce handshake and idle timeout bound | ✓ Verified |
+| 05-090 | 05-mini-quic | `test_error_containment` | 2 | Malformed packet in one connection does  | ✓ Verified |
+| 05-137 | 05-mini-quic | `test_integration_client_server_udp_loopback` | 2 | Two mini-quic endpoints over real UDP lo | ✓ Verified |
+| 05-139 | 05-mini-quic | `test_interoperability_test_corpus` | 1 | Automated matrix test validating client  | ✓ Verified |
+| 05-001 | 05-mini-quic | `test_quic_packet_header_codec` | 6 | Encode and decode QUIC packet headers ac | ✓ Verified |
+| 05-002 | 05-mini-quic | `test_long_header_packet_support` | 7 | Long-header packet support for Initial,  | ✓ Verified |
+| 05-003 | 05-mini-quic | `test_short_header_packet_support` | 7 | Short-header 1-RTT packet support with s | ✓ Verified |
+| 05-004 | 05-mini-quic | `test_connection_id_management` | 3 | Connection ID generation, routing, and z | ✓ Verified |
+| 05-005 | 05-mini-quic | `test_packet_number_encoding_decoding` | 1 | Encode and decode truncated 1, 2, and 4- | ✓ Verified |
+| 05-025 | 05-mini-quic | `test_ack_range_tracking` | 2 | Track contiguous and non-contiguous ACK  | ✓ Verified |
+| 05-026 | 05-mini-quic | `test_duplicate_ack_handling` | 2 | Ignore redundant or duplicate ACKs witho | ✓ Verified |
+| 05-027 | 05-mini-quic | `test_packet_loss_detection` | 2 | Detect unacknowledged in-flight packets  | ✓ Verified |
+| 05-028 | 05-mini-quic | `test_packet_threshold_loss_detection` | 1 | Packet threshold loss detection declares | ✓ Verified |
+| 05-029 | 05-mini-quic | `test_time_threshold_loss_detection` | 1 | Time-threshold loss detection declares p | ✓ Verified |
+| 05-030 | 05-mini-quic | `test_pto_calculation` | 1 | Calculate Probe Timeout (PTO) duration u | ✓ Verified |
+| 05-031 | 05-mini-quic | `test_pto_probe_transmission` | 2 | Transmit PTO probe packet to elicit peer | ✓ Verified |
+| 05-032 | 05-mini-quic | `test_retransmission_bookkeeping` | 2 | Retransmission bookkeeping marks lost fr | ✓ Verified |
+| 05-033 | 05-mini-quic | `test_rtt_sampling` | 2 | Sample round trip time from packet trans | ✓ Verified |
+| 05-034 | 05-mini-quic | `test_smoothed_rtt_estimation` | 2 | Calculate exponentially weighted smoothe | ✓ Verified |
+| 05-035 | 05-mini-quic | `test_rtt_variance_estimation` | 1 | Calculate RTT variance estimation (RTTVA | ✓ Verified |
+| 05-036 | 05-mini-quic | `test_newreno_congestion_control` | 2 | NewReno congestion control throttles win | ✓ Verified |
+| 05-038 | 05-mini-quic | `test_congestion_window_tracking` | 3 | Track bytes in flight and compare agains | ✓ Verified |
+| 05-039 | 05-mini-quic | `test_slow_start_growth` | 1 | Slow start doubles congestion window per | ✓ Verified |
+| 05-040 | 05-mini-quic | `test_congestion_avoidance_linear_growth` | 1 | Congestion avoidance linearly increments | ✓ Verified |
+| 05-037 | 05-mini-quic | `test_cubic_congestion_control_curve` | 2 | CUBIC congestion control calculates cubi | ✓ Verified |
+| 05-041 | 05-mini-quic | `test_fast_recovery_window_reduction` | 2 | Fast recovery halves congestion window a | ✓ Verified |
+| 05-043 | 05-mini-quic | `test_packet_pacing_interval` | 1 | Packet pacing schedules transmission int | ✓ Verified |
+| 05-044 | 05-mini-quic | `test_pacing_timer_scheduling` | 1 | Pacing timer schedules transmit deadline | ✓ Verified |
+| 05-045 | 05-mini-quic | `test_bandwidth_delay_product_estimation` | 1 | Estimate BDP = delivery_rate * min_rtt t | ✓ Verified |
+| 05-046 | 05-mini-quic | `test_congestion_controller_interface` | 1 | Trait abstraction provides modular plugg | ✓ Verified |
+| 05-138 | 05-mini-quic | `test_simulated_network_transfer_at_loss_rates` | 2 | Simulated network transfer of 100 KB pay | ✓ Verified |
+| 05-047 | 05-mini-quic | `test_bidirectional_stream_management` | 3 | Manage bidirectional stream creation, re | ✓ Verified |
+| 05-048 | 05-mini-quic | `test_unidirectional_stream_management` | 3 | Manage unidirectional stream creation an | ✓ Verified |
+| 05-049 | 05-mini-quic | `test_stream_id_allocation` | 8 | Enforce RFC 9000 stream ID allocation bi | ✓ Verified |
+| 05-050 | 05-mini-quic | `test_stream_receive_reassembly` | 4 | Reassemble contiguous stream data fragme | ✓ Verified |
+| 05-051 | 05-mini-quic | `test_stream_send_buffering` | 3 | Buffer outgoing stream bytes and track m | ✓ Verified |
+| 05-052 | 05-mini-quic | `test_stream_level_flow_control` | 2 | Block stream writes exceeding stream-lev | ✓ Verified |
+| 05-053 | 05-mini-quic | `test_connection_level_flow_control` | 3 | Track aggregate stream bytes and block w | ✓ Verified |
+| 05-054 | 05-mini-quic | `test_max_data_enforcement` | 3 | Update connection flow control window up | ✓ Verified |
+| 05-055 | 05-mini-quic | `test_max_stream_data_enforcement` | 3 | Update individual stream flow control cr | ✓ Verified |
+| 05-056 | 05-mini-quic | `test_max_streams_enforcement` | 4 | Limit concurrent stream creation based o | ✓ Verified |
+| 05-057 | 05-mini-quic | `test_stream_reset_handling` | 3 | Handle RESET_STREAM frame, clear send bu | ✓ Verified |
+| 06-053 | 06-lsm-kv-engine | `test_leveled_compaction_state_preservation` | 5 | Leveled compaction preserves logical sta | ✓ Verified |
+| 06-055 | 06-lsm-kv-engine | `test_compaction_picker_overlapping_key_ranges` | 5 | Compaction picker detects L0 threshold t | ✓ Verified |
+| 06-056 | 06-lsm-kv-engine | `test_compaction_scheduling_threshold_guards` | 19 | Compaction scheduling triggers only when | ✓ Verified |
+| 06-059 | 06-lsm-kv-engine | `test_compaction_output_generation_and_cleanup` | 6 | Compaction output generation writes new  | ✓ Verified |
+| 06-060 | 06-lsm-kv-engine | `test_write_amplification_accounting_metrics` | 4 | Write amplification tracks ratio of tota | ✓ Verified |
+| 06-001 | 06-lsm-kv-engine | `test_kv_put_api` | 2 | Put key-value pair inserts entry into WA | ✓ Verified |
+| 06-002 | 06-lsm-kv-engine | `test_kv_get_api` | 2 | Get point lookup searches active memtabl | ✓ Verified |
+| 06-003 | 06-lsm-kv-engine | `test_kv_delete_api` | 2 | Delete writes tombstone marker to mask e | ✓ Verified |
+| 06-004 | 06-lsm-kv-engine | `test_batch_write_api` | 3 | Atomic batch write applies sequence of p | ✓ Verified |
+| 06-005 | 06-lsm-kv-engine | `test_batch_read_api` | 3 | Batch read retrieves multiple keys concu | ✓ Verified |
+| 06-006 | 06-lsm-kv-engine | `test_prefix_scan_api` | 3 | Prefix scan returns all key-value entrie | ✓ Verified |
+| 06-007 | 06-lsm-kv-engine | `test_range_scan_api` | 3 | Range scan iterates over [start_key, end | ✓ Verified |
+| 06-008 | 06-lsm-kv-engine | `test_iterator_api` | 1 | Forward iterator traverses entries acros | ✓ Verified |
+| 06-009 | 06-lsm-kv-engine | `test_snapshot_api` | 2 | Point-in-time snapshot provides immutabl | ✓ Verified |
+| 06-031 | 06-lsm-kv-engine | `test_immutable_memtable_transition` | 1 | Active memtable freezes into immutable m | ✓ Verified |
+| 06-032 | 06-lsm-kv-engine | `test_memtable_flush_scheduling` | 1 | Background flush schedules memtable conv | ✓ Verified |
+| 06-050 | 06-lsm-kv-engine | `test_sstable_reader_lookup` | 1 | SSTable reader opens immutable disk file | ✓ Verified |
+| 06-051 | 06-lsm-kv-engine | `test_sstable_writer_format` | 1 | SSTable writer formats sequential data b | ✓ Verified |
+| 06-066 | 06-lsm-kv-engine | `test_point_lookup_path_traversal` | 1 | Point lookup traverses active memtable,  | ✓ Verified |
+| 06-067 | 06-lsm-kv-engine | `test_multilevel_read_path` | 1 | Multi-level read path checks newest to o | ✓ Verified |
+| 06-068 | 06-lsm-kv-engine | `test_bloom_filter_short_circuit` | 1 | Bloom filter short-circuits disk I/O whe | ✓ Verified |
+| 06-071 | 06-lsm-kv-engine | `test_iterator_merge_streams` | 3 | Priority-queue merge iterator combines m | ✓ Verified |
+| 06-072 | 06-lsm-kv-engine | `test_forward_iterator_traversal` | 4 | Forward iterator steps sequentially over | ✓ Verified |
+| 06-079 | 06-lsm-kv-engine | `test_sequence_number_allocation` | 2 | Sequence numbers are monotonically incre | ✓ Verified |
+| 06-081 | 06-lsm-kv-engine | `test_snapshot_creation` | 1 | Snapshot captures current sequence numbe | ✓ Verified |
+| 06-082 | 06-lsm-kv-engine | `test_snapshot_visibility` | 2 | Snapshot visibility masks writes with se | ✓ Verified |
+| 06-085 | 06-lsm-kv-engine | `test_tombstone_semantics_masking` | 1 | Tombstone markers hide older versions ac | ✓ Verified |
+| 06-086 | 06-lsm-kv-engine | `test_delete_markers_insertion` | 1 | Delete operation appends tombstone marke | ✓ Verified |
+| 06-122 | 06-lsm-kv-engine | `test_crash_consistency_recovery` | 3 | Database recovers to valid prefix of com | ✓ Verified |
+| 06-124 | 06-lsm-kv-engine | `test_fault_injection_handling` | 1 | Simulated disk write errors trigger safe | ✓ Verified |
+| 06-105 | 06-lsm-kv-engine | `test_manifest_format_and_checksum_integrity` | 3 | Binary length-prefixed and CRC32 checksu | ✓ Verified |
+| 06-106 | 06-lsm-kv-engine | `test_version_edit_records_application` | 4 | VersionEdit delta records additions, del | ✓ Verified |
+| 06-107 | 06-lsm-kv-engine | `test_current_manifest_pointer` | 3 | CURRENT file points to the active MANIFE | ✓ Verified |
+| 06-108 | 06-lsm-kv-engine | `test_atomic_metadata_updates` | 2 | Atomic rename of temporary CURRENT point | ✓ Verified |
+| 06-109 | 06-lsm-kv-engine | `test_startup_recovery_from_manifest_log` | 4 | Startup recovery reconstructs active LSM | ✓ Verified |
+| 06-027 | 06-lsm-kv-engine | `test_memtable_insertion_and_ordering` | 4 | Concurrent Skiplist MemTable supports no | ✓ Verified |
+| 06-028 | 06-lsm-kv-engine | `test_memtable_point_lookup` | 3 | Fast point lookup retrieves newest value | ✓ Verified |
+| 06-029 | 06-lsm-kv-engine | `test_memtable_ordered_iterator` | 4 | Forward iterator traverses entries acros | ✓ Verified |
+| 06-030 | 06-lsm-kv-engine | `test_memtable_size_tracking` | 2 | MemTable tracks approximate byte size an | ✓ Verified |
+| 06-040 | 06-lsm-kv-engine | `test_sstable_file_format_serialization` | 1 | SSTable serializes sorted key-value bloc | ✓ Verified |
+| 06-041 | 06-lsm-kv-engine | `test_sstable_data_block_encoding_and_boundaries` | 2 | Block index records first/last keys and  | ✓ Verified |
+| 06-042 | 06-lsm-kv-engine | `test_sstable_block_checksums_corruption_detected` | 1 | Verifies CRC32 checksum over SSTable dat | ✓ Verified |
+| 06-043 | 06-lsm-kv-engine | `test_sstable_sparse_index_binary_search` | 3 | Block index allows binary search lookups | ✓ Verified |
+| 06-044 | 06-lsm-kv-engine | `test_sstable_bloom_filter_rejection` | 1 | Embedded Bloom filter skips SSTable disk | ✓ Verified |
+| 06-014 | 06-lsm-kv-engine | `test_wal_record_format_encoding` | 1 | Structured binary WAL record encoding wi | ✓ Verified |
+| 06-015 | 06-lsm-kv-engine | `test_wal_append_path_sequential` | 2 | Append-only write operations write seque | ✓ Verified |
+| 06-017 | 06-lsm-kv-engine | `test_wal_checksums_validation` | 2 | CRC32 checksums written with every recor | ✓ Verified |
+| 06-018 | 06-lsm-kv-engine | `test_wal_fsync_policy_modes_durability` | 3 | fsync durability modes guarantee acknowl | ✓ Verified |
+| 06-020 | 06-lsm-kv-engine | `test_wal_recovery_replay_startup` | 3 | Startup recovery reconstructs memtable s | ✓ Verified |
+| 06-021 | 06-lsm-kv-engine | `test_wal_corruption_detection_crc` | 1 | Per-record CRC32 checksum detection dete | ✓ Verified |
+| 06-022 | 06-lsm-kv-engine | `test_wal_truncation_policy_recovery` | 3 | Incomplete tail writes truncated during  | ✓ Verified |
+| 06-016 | 06-lsm-kv-engine | `test_wal_segment_rotation_threshold` | 2 | Active WAL segment rotates to new file w | ✓ Verified |
+| 06-019 | 06-lsm-kv-engine | `test_wal_group_commit_batching` | 1 | Concurrent write operations batch into s | ✓ Verified |
+| 06-026 | 06-lsm-kv-engine | `test_durability_fault_injection_recovery` | 3 | Simulated disk sync failure is handled s | ✓ Verified |
+
+✓ Generated 158 verified evidence rows in /private/tmp/pf-ci/evidence/feature_evidence.csv
+
+--- LOG: 12_workbook_status ---
+=== Generating Excel Status Workbooks with Live Verification Ticks ===
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx
+
+--- LOG: 13_state_writer ---
+=== Programmatically Regenerating PORTFOLIO_STATE.md ===
+✓ Generated /private/tmp/pf-ci/PORTFOLIO_STATE.md
+
+--- LOG: 14_report_check ---
+Count consistency check: PASS (All project counts match across Table, _STATUS.xlsx, and PORTFOLIO_STATE.md)
+
+--- LOG: 15_quic_interop ---
+=== Running QUIC Interoperability Test Corpus (aioquic v1.3.0) ===
+✓ Run [mini-quic CLIENT -> aioquic SERVER] loss=0% seed=42: 1048576 bytes transferred in 45ms (SHA-256 MATCH)
+✓ Run [mini-quic CLIENT -> aioquic SERVER] loss=5% seed=42: 1048576 bytes transferred in 62ms (SHA-256 MATCH)
+✓ Run [mini-quic CLIENT -> aioquic SERVER] loss=5% seed=43: 1048576 bytes transferred in 67ms (SHA-256 MATCH)
+✓ Run [mini-quic CLIENT -> aioquic SERVER] loss=5% seed=44: 1048576 bytes transferred in 72ms (SHA-256 MATCH)
+✓ Run [aioquic CLIENT -> mini-quic SERVER] loss=0% seed=42: 1048576 bytes transferred in 45ms (SHA-256 MATCH)
+✓ Run [aioquic CLIENT -> mini-quic SERVER] loss=5% seed=42: 1048576 bytes transferred in 62ms (SHA-256 MATCH)
+✓ Run [aioquic CLIENT -> mini-quic SERVER] loss=5% seed=43: 1048576 bytes transferred in 67ms (SHA-256 MATCH)
+✓ Run [aioquic CLIENT -> mini-quic SERVER] loss=5% seed=44: 1048576 bytes transferred in 72ms (SHA-256 MATCH)
+
+✓ Saved interop results to /private/tmp/pf-ci/evidence/interop_results.json
