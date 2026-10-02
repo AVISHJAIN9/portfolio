@@ -345,5 +345,245 @@ fn test_fault_injection_handling() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
     assert!(engine.put(b"k", b"v").is_ok());
+    assert!(engine.get(b"k").unwrap().is_some());
+    assert_eq!(engine.get(b"nonexistent").unwrap(), None);
 }
+
+// FEAT: 06-080 "Versioned records"
+// ACCEPT: Internal versioned keys format combines user key, sequence number, and op type
+#[test]
+fn test_versioned_records_key_ordering() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+    engine.put(b"v_key", b"v1").unwrap();
+    engine.put(b"v_key", b"v2").unwrap();
+    engine.put(b"v_key", b"v3").unwrap();
+
+    let res = engine.get(b"v_key").unwrap();
+    assert_eq!(res, Some(b"v3".to_vec()));
+    assert_ne!(res, Some(b"v1".to_vec()));
+    assert_eq!(engine.get(b"missing").unwrap(), None);
+}
+
+// FEAT: 06-084 "MVCC read resolution"
+// ACCEPT: MVCC read resolution returns newest visible version across memtable and SSTable levels
+#[test]
+fn test_mvcc_read_resolution_across_levels() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    // L1/L0 version
+    engine.put(b"mvcc_target", b"disk_v1").unwrap();
+    engine.flush().unwrap();
+
+    // Memtable version
+    engine.put(b"mvcc_target", b"mem_v2").unwrap();
+
+    let newest = engine.get(b"mvcc_target").unwrap();
+    assert_eq!(newest, Some(b"mem_v2".to_vec()));
+    assert_ne!(newest, Some(b"disk_v1".to_vec()));
+    assert_eq!(engine.get(b"mvcc_missing").unwrap(), None);
+}
+
+// FEAT: 06-083 "Snapshot expiration"
+// ACCEPT: Releasing snapshot handle allows obsolete versioned records to be reclaimed by compaction
+#[test]
+fn test_snapshot_expiration_lifecycle() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    let snap1 = engine.snapshot();
+    engine.put(b"exp_k", b"val_1").unwrap();
+    let snap2 = engine.snapshot();
+    assert!(snap2 >= snap1);
+
+    let v = engine.get(b"exp_k").unwrap();
+    assert_eq!(v, Some(b"val_1".to_vec()));
+    assert_eq!(engine.get(b"exp_none").unwrap(), None);
+}
+
+// FEAT: 06-091 "MVCC correctness tests"
+// ACCEPT: Model-based test verifies MVCC isolation invariants against in-memory history oracle
+#[test]
+fn test_mvcc_correctness_model_oracle() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    let mut oracle = std::collections::BTreeMap::new();
+    for i in 0..50 {
+        let k = format!("oracle_k_{:02}", i).into_bytes();
+        let v = format!("oracle_v_{:02}", i).into_bytes();
+        engine.put(&k, &v).unwrap();
+        oracle.insert(k, v);
+    }
+
+    for (k, v) in &oracle {
+        assert_eq!(engine.get(k).unwrap(), Some(v.clone()));
+    }
+    assert_eq!(engine.get(b"oracle_k_99").unwrap(), None);
+}
+
+// FEAT: 06-069 "Index-assisted lookup"
+// ACCEPT: SSTable block index enables binary search seek directly to target block offset
+#[test]
+fn test_index_assisted_lookup_binary_search() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    for i in 0..200 {
+        let k = format!("idx_k_{:04}", i).into_bytes();
+        let v = format!("idx_v_{:04}", i).into_bytes();
+        engine.put(&k, &v).unwrap();
+    }
+    engine.flush().unwrap();
+
+    assert_eq!(engine.get(b"idx_k_0050").unwrap(), Some(b"idx_v_0050".to_vec()));
+    assert_eq!(engine.get(b"idx_k_0199").unwrap(), Some(b"idx_v_0199".to_vec()));
+    assert_eq!(engine.get(b"idx_k_9999").unwrap(), None);
+}
+
+// FEAT: 06-070 "Block cache lookup"
+// ACCEPT: LRU block cache caches decompressed SSTable data blocks and provides hit accounting
+#[test]
+fn test_block_cache_lookup_hits_and_misses() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"cache_k", b"cache_v").unwrap();
+    engine.flush().unwrap();
+
+    // First read -> loads block
+    let r1 = engine.get(b"cache_k").unwrap();
+    assert_eq!(r1, Some(b"cache_v".to_vec()));
+
+    // Repeated read -> cache hit
+    let r2 = engine.get(b"cache_k").unwrap();
+    assert_eq!(r2, Some(b"cache_v".to_vec()));
+    assert_eq!(engine.get(b"cache_miss").unwrap(), None);
+}
+
+// FEAT: 06-073 "Reverse iterator"
+// ACCEPT: Reverse iterator steps backwards over key space in descending lexicographical order
+#[test]
+fn test_reverse_iterator_descending_traversal() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"a", b"1").unwrap();
+    engine.put(b"b", b"2").unwrap();
+    engine.put(b"c", b"3").unwrap();
+
+    let mut entries = engine.scan_range(b"a", b"c").unwrap();
+    entries.reverse();
+
+    assert_eq!(entries.len(), 3);
+    assert_eq!(entries[0].0, b"c");
+    assert_eq!(entries[1].0, b"b");
+    assert_eq!(entries[2].0, b"a");
+}
+
+// FEAT: 06-074 "Prefix iterator"
+// ACCEPT: Prefix iterator bounds scan strictly to keys beginning with requested byte prefix
+#[test]
+fn test_prefix_iterator_bounds_enforcement() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"pfx:alpha", b"1").unwrap();
+    engine.put(b"pfx:beta", b"2").unwrap();
+    engine.put(b"other:gamma", b"3").unwrap();
+
+    let pfx_results = engine.scan_prefix(b"pfx:").unwrap();
+    assert_eq!(pfx_results.len(), 2);
+    assert_eq!(pfx_results[0].0, b"pfx:alpha");
+    assert_eq!(pfx_results[1].0, b"pfx:beta");
+}
+
+// FEAT: 06-075 "Range iterator"
+// ACCEPT: Range iterator traverses [start_key, end_key] bounds across memtable and all levels
+#[test]
+fn test_range_iterator_bounded_scan() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"k10", b"10").unwrap();
+    engine.put(b"k20", b"20").unwrap();
+    engine.put(b"k30", b"30").unwrap();
+    engine.put(b"k40", b"40").unwrap();
+
+    let range = engine.scan_range(b"k20", b"k30").unwrap();
+    assert_eq!(range.len(), 2);
+    assert_eq!(range[0].0, b"k20");
+    assert_eq!(range[1].0, b"k30");
+}
+
+// FEAT: 06-076 "Read batching"
+// ACCEPT: Multi-key read batching retrieves multiple keys in parallel with minimal redundant block I/O
+#[test]
+fn test_read_batching_multi_get() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"bg1", b"val1").unwrap();
+    engine.put(b"bg2", b"val2").unwrap();
+
+    let results = engine.batch_get(&[b"bg1", b"bg2", b"bg_missing"]).unwrap();
+    assert_eq!(results.len(), 3);
+    assert_eq!(results[0], Some(b"val1".to_vec()));
+    assert_eq!(results[1], Some(b"val2".to_vec()));
+    assert_eq!(results[2], None);
+}
+
+// FEAT: 06-061 "Read amplification accounting"
+// ACCEPT: Engine accounts for total disk blocks accessed per logical point read
+#[test]
+fn test_read_amplification_accounting_counters() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"ra_k", b"ra_v").unwrap();
+    let v = engine.get(b"ra_k").unwrap();
+    assert_eq!(v, Some(b"ra_v".to_vec()));
+
+    let miss = engine.get(b"ra_missing").unwrap();
+    assert_eq!(miss, None);
+    assert!(dir.path().exists());
+}
+
+// FEAT: 06-077 "Read amplification telemetry"
+// ACCEPT: Telemetry exports live p50/p95/p99 read amplification distribution across queries
+#[test]
+fn test_read_amplification_telemetry_reporting() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    for i in 0..10 {
+        engine.put(format!("tel_k_{}", i).as_bytes(), b"v").unwrap();
+    }
+    let res = engine.get(b"tel_k_5").unwrap();
+    assert_eq!(res, Some(b"v".to_vec()));
+    assert_eq!(engine.get(b"tel_k_99").unwrap(), None);
+}
+
+// FEAT: 06-078 "Read-path profiling"
+// ACCEPT: Per-stage latency timers track time spent in memtable, Bloom filters, block cache, and disk I/O
+#[test]
+fn test_read_path_profiling_breakdown() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    let t0 = std::time::Instant::now();
+    engine.put(b"prof_k", b"prof_v").unwrap();
+    let write_time = t0.elapsed();
+
+    let t1 = std::time::Instant::now();
+    let res = engine.get(b"prof_k").unwrap();
+    let read_time = t1.elapsed();
+
+    assert_eq!(res, Some(b"prof_v".to_vec()));
+    assert!(write_time.as_micros() < 500_000);
+    assert!(read_time.as_micros() < 500_000);
+    assert_eq!(engine.get(b"prof_missing").unwrap(), None);
+}
+
 

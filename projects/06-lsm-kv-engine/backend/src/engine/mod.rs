@@ -133,6 +133,10 @@ impl LsmEngine {
         Ok(None)
     }
 
+    pub fn snapshot(&self) -> u64 {
+        self.next_seq_no.load(Ordering::SeqCst)
+    }
+
     pub fn batch_get(&self, keys: &[&[u8]]) -> std::io::Result<Vec<Option<Vec<u8>>>> {
         let mut results = Vec::with_capacity(keys.len());
         for &k in keys {
