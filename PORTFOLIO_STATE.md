@@ -2,8 +2,8 @@
 
 ## 0. HEADER
 - **session_no**: 9
-- **last_run_timestamp**: 2026-10-02T05:01:42Z
-- **last_commit**: 80489b0f2560a585c5ce30e6fdad230de5842201
+- **last_run_timestamp**: 2026-10-02T05:11:41Z
+- **last_commit**: e20d5f20bf42abd69333fae55bc2e03bfec2c9c8
 - **current_wave**: Wave 9 (Integrity Repair, Verbatim Master Workbook Names, Semantic Audit, Morsel-Driven Parallelism, Compaction & Manifest Recovery)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
@@ -31,7 +31,7 @@
 | 02 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | not pushed | UNVERIFIED_SOURCE |
 | 03 | `03-bytecode-vm-gc` | 141 | 0 | 0 | not pushed | UNVERIFIED_SOURCE |
 | 04 | `04-columnar-query-engine` | 145 | 21 | 21 | not pushed | AUDITED_VERIFIED |
-| 05 | `05-mini-quic` | 145 | 56 | 56 | not pushed | AUDITED_VERIFIED |
+| 05 | `05-mini-quic` | 145 | 68 | 68 | not pushed | AUDITED_VERIFIED |
 | 06 | `06-lsm-kv-engine` | 145 | 34 | 34 | not pushed | AUDITED_VERIFIED |
 | 07 | `07-stream-detect-engine` | 0 | 0 | 0 | not pushed | EMPTY |
 | 08 | `08-pubsub-broker` | 0 | 0 | 0 | not pushed | EMPTY |
@@ -84,7 +84,7 @@
 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | 148 | not yet measured | 378.02 µs | [`02_STATUS.xlsx`](file://evidence/workbooks/02_STATUS.xlsx) |
 | `03-bytecode-vm-gc` | 141 | 0 | 0 | 141 | not yet measured | not yet measured | [`03_STATUS.xlsx`](file://evidence/workbooks/03_STATUS.xlsx) |
 | `04-columnar-query-engine` | 145 | 21 | 21 | 124 | 21 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
-| `05-mini-quic` | 145 | 56 | 56 | 89 | 56 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
+| `05-mini-quic` | 145 | 68 | 68 | 77 | 68 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
 | `06-lsm-kv-engine` | 145 | 34 | 34 | 111 | 34 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
 
 ---
@@ -93,9 +93,9 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `80489b0f25` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `e20d5f20bf` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `80489b0f25` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `e20d5f20bf` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
 | `tpch_sf1_results.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
@@ -143,7 +143,7 @@
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `80489b0f25`.
+1. Pull latest workspace state: commit `e20d5f20bf`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.

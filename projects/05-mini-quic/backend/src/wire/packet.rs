@@ -71,6 +71,13 @@ impl Header {
         }
     }
 
+    pub fn scid(&self) -> Option<&ConnectionId> {
+        match self {
+            Header::Long { scid, .. } => Some(scid),
+            Header::Short { .. } => None,
+        }
+    }
+
     pub fn encode(&self, dst: &mut BytesMut) {
         match self {
             Header::Long {

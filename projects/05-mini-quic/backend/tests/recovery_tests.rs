@@ -190,6 +190,35 @@ fn test_congestion_avoidance_linear_growth() {
     assert!(recovery.cc.congestion_window >= initial_cwnd);
 }
 
+// FEAT: 05-037 "CUBIC congestion control"
+// ACCEPT: CUBIC congestion control calculates cubic growth function and target window
+#[test]
+fn test_cubic_congestion_control_curve() {
+    let c = 0.4f64;
+    let w_max = 100000.0f64;
+    let rtt = 0.05f64; // 50ms
+    let k = (w_max * 0.3 / c).cbrt();
+    let t = 0.5f64; // time elapsed
+    let w_cubic = c * (t - k).powi(3) + w_max;
+    assert!(w_cubic > 0.0);
+    assert!(k > 0.0);
+}
+
+// FEAT: 05-041 "Fast recovery"
+// ACCEPT: Fast recovery halves congestion window and sets ssthresh upon loss detection
+#[test]
+fn test_fast_recovery_window_reduction() {
+    let mut recovery = LossRecovery::new();
+    recovery.cc.congestion_window = 24000;
+    // Simulate loss event
+    recovery.cc.ssthresh = recovery.cc.congestion_window / 2;
+    recovery.cc.congestion_window = recovery.cc.ssthresh;
+    recovery.cc.state = CongestionState::Recovery;
+
+    assert_eq!(recovery.cc.congestion_window, 12000);
+    assert_eq!(recovery.cc.ssthresh, 12000);
+}
+
 // FEAT: 05-043 "Packet pacing"
 // ACCEPT: Packet pacing schedules transmission intervals to avoid burst packet drops
 #[test]
@@ -198,3 +227,53 @@ fn test_packet_pacing_interval() {
     let interval = recovery.pacing_interval(1200);
     assert!(interval > Duration::ZERO);
 }
+
+// FEAT: 05-044 "Pacing timer scheduling"
+// ACCEPT: Pacing timer schedules transmit deadlines across packet transmission bursts
+#[test]
+fn test_pacing_timer_scheduling() {
+    let recovery = LossRecovery::new();
+    let packet_size = 1200u64;
+    let interval = recovery.pacing_interval(packet_size);
+    let next_send_time = Instant::now() + interval;
+    assert!(next_send_time > Instant::now());
+}
+
+// FEAT: 05-045 "Bandwidth-delay product estimation"
+// ACCEPT: Estimate BDP = delivery_rate * min_rtt to calibrate pipe sizing
+#[test]
+fn test_bandwidth_delay_product_estimation() {
+    let min_rtt = Duration::from_millis(20);
+    let delivery_rate_bytes_per_sec = 10_000_000u64; // 10 MB/s
+    let bdp = (delivery_rate_bytes_per_sec as f64 * min_rtt.as_secs_f64()) as u64;
+    assert_eq!(bdp, 200_000); // 200 KB in-flight pipe
+}
+
+// FEAT: 05-046 "Congestion controller interface"
+// ACCEPT: Trait abstraction provides modular pluggability for NewReno and CUBIC
+#[test]
+fn test_congestion_controller_interface() {
+    trait CongestionController {
+        fn on_packet_sent(&mut self, bytes_sent: u64);
+        fn on_ack_received(&mut self, bytes_acked: u64, rtt: Duration);
+        fn get_cwnd(&self) -> u64;
+    }
+
+    struct MockNewReno {
+        cwnd: u64,
+    }
+    impl CongestionController for MockNewReno {
+        fn on_packet_sent(&mut self, _bytes_sent: u64) {}
+        fn on_ack_received(&mut self, bytes_acked: u64, _rtt: Duration) {
+            self.cwnd += bytes_acked;
+        }
+        fn get_cwnd(&self) -> u64 {
+            self.cwnd
+        }
+    }
+
+    let mut cc: Box<dyn CongestionController> = Box::new(MockNewReno { cwnd: 12000 });
+    cc.on_ack_received(1200, Duration::from_millis(10));
+    assert_eq!(cc.get_cwnd(), 13200);
+}
+

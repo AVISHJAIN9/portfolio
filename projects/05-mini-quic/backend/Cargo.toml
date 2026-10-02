@@ -14,6 +14,7 @@ thiserror = "1.0"
 rand = "0.8"
 blake3 = "1.5"
 sha2 = "0.10"
+hmac = "0.12"
 zeroize = { version = "1.8", features = ["derive"] }
 
 # Monorepo Platform Crates

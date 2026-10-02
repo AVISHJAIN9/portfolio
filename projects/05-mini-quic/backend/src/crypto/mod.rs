@@ -1,4 +1,5 @@
-//! QUIC Cryptographic Key Management & RFC 9001 Key Derivation
+pub mod tls;
+pub mod handshake;
 
 use pf_crypto::{hkdf_extract, hkdf_expand_label, keyed_mac, verify_mac};
 use std::collections::HashMap;

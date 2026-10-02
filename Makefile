@@ -53,6 +53,11 @@ mutants:
 	@echo "=== Running Mutation Checks with cargo-mutants ==="
 	@$(PYTHON) tools/run_mutants.py
 
+interop:
+	@echo "=== Running QUIC Interoperability Test Suite ==="
+	@$(PYTHON) tests/interop/run_interop.py
+
+
 demo:
 ifdef PROJECT
 	@echo "=== Launching Demo for Project $(PROJECT) ==="

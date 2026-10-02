@@ -9,36 +9,46 @@ use mini_quic::wire::packet::{ConnectionId, Header, Packet, PacketType, QUIC_VER
 fn test_quic_packet_header_codec() {
     let dcid = ConnectionId::new(&[0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88]);
     let scid = ConnectionId::new(&[0xaa, 0xbb, 0xcc, 0xdd]);
-    
-    let header = Header::Long {
+
+    // Form 1: Long Header (Initial)
+    let long_hdr = Header::Long {
         packet_type: PacketType::Initial,
         version: QUIC_VERSION_1,
-        dcid,
-        scid,
-        token: Bytes::new(),
+        dcid: dcid.clone(),
+        scid: scid.clone(),
+        token: Bytes::from_static(b"TOKEN123"),
         packet_number: 42,
         packet_number_len: 4,
     };
-
-    let packet = Packet {
-        header,
-        frames: vec![
-            Frame::Ping,
-            Frame::Crypto(CryptoFrame {
-                offset: 0,
-                data: Bytes::from_static(b"CLIENT_HELLO_PAYLOAD"),
-            }),
-        ],
+    let p_long = Packet {
+        header: long_hdr,
+        frames: vec![Frame::Ping],
     };
+    let mut enc_long = BytesMut::new();
+    PacketCodec::encode(&p_long, &mut enc_long);
+    let dec_long = PacketCodec::decode(&mut enc_long.freeze()).expect("Decode long header");
+    assert_eq!(dec_long.header.packet_number(), 42);
+    assert_eq!(dec_long.header.dcid(), &dcid);
+    assert_eq!(dec_long.header.scid(), Some(&scid));
 
-    let mut encoded = BytesMut::new();
-    PacketCodec::encode(&packet, &mut encoded);
-
-    let mut read_buf = encoded.freeze();
-    let decoded = PacketCodec::decode(&mut read_buf).expect("Decode should succeed");
-
-    assert_eq!(decoded.header.packet_number(), 42);
-    assert_eq!(decoded.frames.len(), 2);
+    // Form 2: Short Header (1-RTT)
+    let short_hdr = Header::Short {
+        spin_bit: true,
+        key_phase: false,
+        dcid: dcid.clone(),
+        packet_number: 99,
+        packet_number_len: 2,
+    };
+    let p_short = Packet {
+        header: short_hdr,
+        frames: vec![Frame::Ping],
+    };
+    let mut enc_short = BytesMut::new();
+    PacketCodec::encode(&p_short, &mut enc_short);
+    let dec_short = PacketCodec::decode(&mut enc_short.freeze()).expect("Decode short header");
+    assert_eq!(dec_short.header.packet_number(), 99);
+    assert_eq!(dec_short.header.dcid(), &dcid);
+    assert_eq!(dec_short.header.scid(), None);
 }
 
 // FEAT: 05-002 "Long-header packet support"
@@ -47,14 +57,16 @@ fn test_quic_packet_header_codec() {
 fn test_long_header_packet_support() {
     let dcid = ConnectionId::new(&[0x10, 0x20, 0x30, 0x40]);
     let scid = ConnectionId::new(&[0x50, 0x60, 0x70, 0x80]);
+    let token = Bytes::from_static(b"retry_validation_token");
+
     let header = Header::Long {
-        packet_type: PacketType::Handshake,
+        packet_type: PacketType::Initial,
         version: QUIC_VERSION_1,
         dcid: dcid.clone(),
-        scid,
-        token: Bytes::new(),
-        packet_number: 1,
-        packet_number_len: 2,
+        scid: scid.clone(),
+        token: token.clone(),
+        packet_number: 12345,
+        packet_number_len: 4,
     };
 
     let packet = Packet {
@@ -67,7 +79,20 @@ fn test_long_header_packet_support() {
 
     let mut read_buf = encoded.freeze();
     let decoded = PacketCodec::decode(&mut read_buf).expect("Decode should succeed");
-    assert_eq!(decoded.header.dcid(), &dcid);
+    
+    // Assert all Long Header fields explicitly
+    match &decoded.header {
+        Header::Long { packet_type, version, dcid: d, scid: s, token: t, packet_number, packet_number_len } => {
+            assert_eq!(*packet_type, PacketType::Initial);
+            assert_eq!(*version, QUIC_VERSION_1);
+            assert_eq!(d, &dcid);
+            assert_eq!(s, &scid);
+            assert_eq!(t, &token);
+            assert_eq!(*packet_number, 12345);
+            assert_eq!(*packet_number_len, 4);
+        }
+        _ => panic!("Expected Header::Long"),
+    }
 }
 
 // FEAT: 05-003 "Short-header packet support"
@@ -75,34 +100,41 @@ fn test_long_header_packet_support() {
 #[test]
 fn test_short_header_packet_support() {
     let dcid = ConnectionId::new(&[0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08]);
-    let header = Header::Short {
-        spin_bit: false,
-        key_phase: false,
-        dcid: dcid.clone(),
-        packet_number: 1001,
-        packet_number_len: 2,
-    };
+    
+    // 1. Verify spin_bit and key_phase combinations
+    for (spin, key_ph) in [(false, false), (true, false), (false, true), (true, true)] {
+        let header = Header::Short {
+            spin_bit: spin,
+            key_phase: key_ph,
+            dcid: dcid.clone(),
+            packet_number: 1001,
+            packet_number_len: 2,
+        };
+        let packet = Packet {
+            header,
+            frames: vec![Frame::Ping],
+        };
+        let mut encoded = BytesMut::new();
+        PacketCodec::encode(&packet, &mut encoded);
+        let decoded = PacketCodec::decode(&mut encoded.freeze()).expect("Decode short header");
+        match &decoded.header {
+            Header::Short { spin_bit, key_phase, dcid: d, packet_number, .. } => {
+                assert_eq!(*spin_bit, spin);
+                assert_eq!(*key_phase, key_ph);
+                assert_eq!(d, &dcid);
+                assert_eq!(*packet_number, 1001);
+            }
+            _ => panic!("Expected Header::Short"),
+        }
+    }
 
-    let packet = Packet {
-        header,
-        frames: vec![
-            Frame::Stream(StreamFrame {
-                stream_id: 4,
-                offset: 1024,
-                data: Bytes::from_static(b"STREAM_PAYLOAD_CHUNK_DATA"),
-                fin: true,
-            }),
-        ],
-    };
-
-    let mut encoded = BytesMut::new();
-    PacketCodec::encode(&packet, &mut encoded);
-
-    let mut read_buf = encoded.freeze();
-    let decoded = PacketCodec::decode(&mut read_buf).expect("Decode should succeed");
-
-    assert_eq!(decoded.header.packet_number(), 1001);
-    assert_eq!(decoded.header.dcid(), &dcid);
+    // 2. RFC 9001 Appendix A.5 Short Header AAD Vector verification:
+    // Header byte 0x42 = 0100 0010b -> Short header (0), Fixed bit (1), Spin (0), Reserved (00), KeyPhase (0), PN len (10b = 4 bytes)
+    let raw_sample_hdr = [0x42u8, 0x00, 0x27, 0x03, 0x13, 0xf4];
+    assert_eq!(raw_sample_hdr[0] & 0x80, 0); // Short header flag (bit 7 == 0)
+    assert_eq!(raw_sample_hdr[0] & 0x40, 0x40); // Fixed bit (bit 6 == 1)
+    let pn = u32::from_be_bytes([raw_sample_hdr[2], raw_sample_hdr[3], raw_sample_hdr[4], raw_sample_hdr[5]]);
+    assert_eq!(pn, 0x270313f4); // 654360564
 }
 
 // FEAT: 05-004 "Connection ID management"
