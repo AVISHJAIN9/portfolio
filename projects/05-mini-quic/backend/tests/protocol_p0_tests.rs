@@ -178,7 +178,10 @@ fn test_deterministic_replay_packet_trace_hash() {
 #[test]
 fn test_rust_formatting_and_linting_gates() {
     let unformatted_code = "fn   bad_formatting (  x:i32,y:i32  )->i32{x+y}";
-    assert!(unformatted_code.contains("   "), "Unformatted scratch snippet contains improper spacing");
+    assert!(
+        unformatted_code.contains("   "),
+        "Unformatted scratch snippet contains improper spacing"
+    );
     assert!(!unformatted_code.contains("fn bad_formatting(x: i32, y: i32) -> i32 {"));
 
     // Proper formatting
@@ -206,7 +209,7 @@ fn test_reproducible_builds_configuration() {
     assert!(cargo_toml.contains("mini-quic"));
     assert!(cargo_toml.contains("edition = \"2021\""));
 
-    let rustflags = "--remap-path-prefix=/tmp/build_a=/build --remap-path-prefix=/tmp/build_b=/build";
+    let rustflags =
+        "--remap-path-prefix=/tmp/build_a=/build --remap-path-prefix=/tmp/build_b=/build";
     assert!(rustflags.contains("--remap-path-prefix"));
 }
-
