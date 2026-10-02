@@ -1,0 +1,151 @@
+feature,name,area,priority,fe,be,db,aiml,est_hours,risk,dependencies,status,evidence,notes
+09-001,GET cache entry,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-002,SET cache entry,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-003,DELETE cache entry,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-004,EXISTS lookup,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-005,MGET batch read,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-006,MSET batch write,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-007,TTL read,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-008,EXPIRE update,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-009,PERSIST key,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-010,Atomic compare-and-set,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-011,Key namespace support,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-012,Value size validation,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-013,Request ID propagation,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-014,API error model,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-015,Health/readiness endpoint,Core Cache API,P0,,✓,,,18,Critical,Cache engine + request lifecycle,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-016,Hash-table key index,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-017,Segmented cache storage,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-018,Entry metadata structure,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-019,In-memory value storage,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-020,Binary-safe values,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-021,LRU eviction,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-022,LFU eviction,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-023,TTL-aware eviction,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-024,Approximate LRU sampling,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-025,Hot-key tracking,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-026,Memory usage accounting,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-027,Per-key metadata overhead tracking,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-028,Maximum cache size enforcement,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-029,Memory fragmentation metrics,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-030,Eviction statistics,Cache Data Structures & Memory,P0,,✓,,,18,Critical,Key index + memory manager,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-031,Per-key TTL,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-032,Default TTL policy,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-033,TTL refresh on access,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-034,Lazy expiration,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-035,Active expiration sweeper,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-036,Expiration wheel/bucket,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-037,Expired-key cleanup,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-038,TTL precision policy,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-039,Expiration race handling,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-040,TTL metrics,TTL & Expiration,P0,,✓,,,18,Critical,Entry metadata + scheduler,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-041,Write-through mode,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-042,Write-back mode,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-043,Write coalescing,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-044,Dirty-entry tracking,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-045,Flush scheduler,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-046,Batch persistence,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-047,Persistence retry,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-048,Write failure handling,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-049,Crash-consistent journal,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-050,Recovery replay,Write Path & Persistence,P0,,✓,,,28,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-051,Persistence lag metrics,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-052,Durability configuration,Write Path & Persistence,P0,,✓,,,18,Critical,Write path + persistence layer,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-053,Read-through cache,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-054,Negative caching,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-055,Read batching,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-056,Request coalescing,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-057,Hot-key fast path,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-058,Lock minimization,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-059,Shard-aware lookup,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-060,Read latency histogram,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-061,Cache-hit latency tracking,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-062,Cache-miss latency tracking,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-063,Tail-latency monitoring,Read Path & Performance,P0,,✓,,,18,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-064,Read-path benchmark suite,Read Path & Performance,P0,,✓,,,28,Critical,Lookup path + metrics,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-065,Cache node membership,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-066,Consistent-hash ring,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-067,Virtual nodes,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-068,Key ownership mapping,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-069,Replica placement,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-070,Primary/replica roles,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-071,Replication stream,Distributed Consistency & Replication,P0,,✓,,,28,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-072,Replica acknowledgements,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-073,Replica lag tracking,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-074,Read-from-replica policy,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-075,Failover handling,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-076,Re-replication,Distributed Consistency & Replication,P0,,✓,,,28,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-077,Membership convergence,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-078,Consistency modes,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-079,Split-brain protection,Distributed Consistency & Replication,P0,,✓,,,18,Critical,Node membership + routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-080,Key hashing,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-081,Rendezvous hashing,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-082,Consistent hashing,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-083,Shard map,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-084,Shard rebalancing,Sharding & Routing,P0,,✓,,,28,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-085,Shard migration,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-086,Hot-shard detection,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-087,Request routing,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-088,Locality-aware routing,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-089,Cross-shard operation policy,Sharding & Routing,P0,,✓,,,18,Critical,Hash/routing map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-090,Per-key locking,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-091,Shard-level locking,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-092,Optimistic concurrency,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-093,Atomic increment,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-094,Atomic delete,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-095,CAS version tokens,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-096,Single-flight request suppression,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-097,Deadlock avoidance,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-098,Race detection,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-099,Concurrent workload tests,Concurrency & Coordination,P0,,✓,,,18,Critical,Shared cache state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-100,Explicit invalidation,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-101,Pattern invalidation,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-102,Namespace invalidation,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-103,Event-driven invalidation,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-104,Dependency-aware invalidation,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-105,Invalidation queue,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-106,Invalidation retries,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-107,Invalidation ordering,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-108,Stale-read detection,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-109,Coherence metrics,Cache Invalidation & Coherence,P1,,✓,,,26,High,Key metadata + invalidation stream,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-110,PostgreSQL cache metadata,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-111,PostgreSQL node metadata,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-112,PostgreSQL policy metadata,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-113,Redis hot metadata,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-114,Key statistics storage,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-115,Eviction history,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-116,Hit/miss history,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-117,Latency history,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-118,Replication history,"Storage, Metadata & Telemetry",P1,,✓,,,36,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-119,Capacity history,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-120,Telemetry aggregation,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-121,Retention policies,"Storage, Metadata & Telemetry",P1,,✓,,,26,High,Runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-122,Next.js application shell,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-123,Authentication UI,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-124,Cache overview dashboard,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-125,Key lookup console,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-126,Set/delete playground,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-127,Hit/miss charts,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-128,Memory utilization dashboard,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-129,Eviction dashboard,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-130,TTL explorer,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-131,Replication topology view,Frontend Dashboard & UX,P1,,✓,,,36,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-132,Shard distribution view,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-133,Node health dashboard,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-134,Live telemetry refresh,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-135,Alert/incident panel,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-136,Configuration console,Frontend Dashboard & UX,P1,,✓,,,26,High,Backend APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-137,Input validation,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-138,Payload size limits,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-139,Authentication hooks,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-140,Authorization hooks,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-141,Tenant isolation,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-142,Rate limiting,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-143,TLS support,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-144,Audit logging,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-145,Secret/config protection,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-146,Abuse protection,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-147,Fault isolation,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-148,Graceful node shutdown,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-149,Crash recovery,Security & Reliability,P0,,✓,,,28,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+09-150,Protocol fuzzing,Security & Reliability,P0,,✓,,,18,Critical,All externally reachable surfaces,Specified,,Status: Specified → Scaffolded → Implemented → Verified.

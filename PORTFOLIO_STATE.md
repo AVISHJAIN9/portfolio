@@ -33,9 +33,9 @@
 | 04 | `04-columnar-query-engine` | 145 | 42 | 56 | not pushed | AUDITED_VERIFIED |
 | 05 | `05-mini-quic` | 145 | 75 | 91 | not pushed | AUDITED_VERIFIED |
 | 06 | `06-lsm-kv-engine` | 145 | 117 | 133 | not pushed | AUDITED_VERIFIED |
-| 07 | `07-stream-detect-engine` | 0 | 0 | 0 | not pushed | EMPTY |
-| 08 | `08-pubsub-broker` | 0 | 0 | 0 | not pushed | EMPTY |
-| 09 | `09-distributed-cache` | 0 | 0 | 0 | not pushed | EMPTY |
+| 07 | `07-stream-detect-engine` | 145 | 106 | 106 | not pushed | AUDITED_VERIFIED |
+| 08 | `08-pubsub-broker` | 145 | 119 | 119 | not pushed | AUDITED_VERIFIED |
+| 09 | `09-distributed-cache` | 150 | 113 | 113 | not pushed | AUDITED_VERIFIED |
 | 10 | `10-crdt-rich-text-editor` | 0 | 0 | 0 | not pushed | EMPTY |
 | 11 | `11-zanzibar-authz` | 0 | 0 | 0 | not pushed | EMPTY |
 | 12 | `12-ll-hls-origin` | 0 | 0 | 0 | not pushed | EMPTY |

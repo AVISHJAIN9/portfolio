@@ -1,0 +1,146 @@
+feature,name,area,priority,fe,be,db,aiml,est_hours,risk,dependencies,status,evidence,notes
+08-001,Publish API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-002,Fetch API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-003,Subscribe API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-004,Unsubscribe API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-005,Topic creation API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-006,Topic deletion API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-007,Partition metadata API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-008,Consumer-group API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-009,Offset commit API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-010,Acknowledgement API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-011,Redelivery API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-012,Health/readiness API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-013,Admin/telemetry API,Client & API Surface,P0,,✓,,,22,Critical,Core broker state + protocol,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-014,Topic metadata model,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-015,Partition creation,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-016,Partition assignment,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-017,Partition routing by key,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-018,Round-robin routing,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-019,Partition count validation,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-020,Partition leader metadata,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-021,Partition replica metadata,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-022,Partition availability state,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-023,Partition-level metrics,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-024,Hot-partition detection,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-025,Partition rebalance planning,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-026,Partition topology validation,Topics & Partitioning,P0,,✓,,,22,Critical,Topic registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-027,Append-only log format,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-028,Segment creation,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-029,Segment rolling,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-030,Segment index,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-031,Sparse index lookup,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-032,Record offsets,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-033,Record timestamps,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-034,Record checksums,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-035,Segment metadata,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-036,Segment recovery,Append-Only Log & Segments,P0,,✓,,,32,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-037,Segment corruption detection,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-038,Segment deletion,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-039,Log append benchmarks,Append-Only Log & Segments,P0,,✓,,,22,Critical,Partition state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-040,WAL record encoding,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-041,WAL append path,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-042,WAL segment rotation,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-043,WAL checksum verification,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-044,Fsync policy,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-045,Group commit,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-046,WAL replay,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-047,Crash recovery,WAL & Durability,P0,,✓,,,32,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-048,Partial-write recovery,WAL & Durability,P0,,✓,,,32,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-049,Durability fault injection,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-050,WAL retention,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-051,WAL metrics,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-052,Durability verification suite,WAL & Durability,P0,,✓,,,22,Critical,Append path,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-053,Replica state machine,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-054,Leader election,Replication & Raft-Lite,P0,,✓,,,32,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-055,Follower replication,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-056,Replication offsets,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-057,Quorum acknowledgement,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-058,Term/epoch tracking,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-059,Heartbeat handling,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-060,Replica lag detection,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-061,Replica catch-up,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-062,Leader failover,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-063,Replication conflict handling,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-064,Replica recovery,Replication & Raft-Lite,P0,,✓,,,32,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-065,Replication benchmark suite,Replication & Raft-Lite,P0,,✓,,,22,Critical,Partition log + WAL,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-066,Producer identity,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-067,Idempotent producer IDs,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-068,Sequence numbers,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-069,Duplicate publish detection,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-070,Producer session state,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-071,Batch publishing,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-072,Publish acknowledgements,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-073,Publish timeout handling,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-074,Retry-safe publishing,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-075,Producer backpressure,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-076,Producer metrics,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-077,Producer error classification,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-078,Producer correctness tests,Producer Semantics,P0,,✓,,,22,Critical,Topic/partition routing,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-079,Consumer group registry,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-080,Consumer membership,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-081,Partition ownership,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-082,Consumer heartbeats,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-083,Session timeout,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-084,Cooperative rebalancing,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-085,Incremental partition assignment,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-086,Assignment generation,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-087,Consumer join/leave handling,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-088,Stale member detection,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-089,Rebalance recovery,Consumer Groups & Rebalancing,P0,,✓,,,32,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-090,Consumer lag tracking,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-091,Rebalancing benchmark suite,Consumer Groups & Rebalancing,P0,,✓,,,22,Critical,Group registry + partition map,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-092,Offset storage,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-093,Offset validation,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-094,Committed offset lookup,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-095,Offset commit batching,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-096,ACK state machine,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-097,ACK timeout,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-098,Redelivery queue,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-099,Retry counters,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-100,Retry backoff,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-101,Dead-letter routing,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-102,At-least-once delivery semantics,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-103,Redelivery metrics,"Offsets, ACK & Redelivery",P0,,✓,,,22,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-104,Delivery-state recovery,"Offsets, ACK & Redelivery",P0,,✓,,,32,Critical,Consumer group state,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-105,Time-based retention,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-106,Size-based retention,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-107,Segment compaction,"Retention, Compaction & Backpressure",P1,,✓,,,40,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-108,Compaction scheduling,"Retention, Compaction & Backpressure",P1,,✓,,,40,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-109,Safe segment deletion,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-110,Retention policy validation,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-111,Ingress rate limiting,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-112,Queue depth limits,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-113,Producer backpressure,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-114,Consumer backpressure,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-115,Load shedding policy,"Retention, Compaction & Backpressure",P1,,✓,,,30,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-116,Backpressure recovery,"Retention, Compaction & Backpressure",P1,,✓,,,40,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-117,Retention/compaction metrics,"Retention, Compaction & Backpressure",P1,,✓,,,40,High,Log segments + runtime queues,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-118,PostgreSQL topic metadata,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-119,PostgreSQL consumer metadata,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-120,PostgreSQL offset metadata,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-121,Redis hot state,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-122,Redis membership cache,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-123,Partition telemetry storage,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-124,Consumer lag history,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-125,Replication lag history,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-126,Publish/consume latency history,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-127,Retention job state,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-128,Benchmark result storage,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-129,Telemetry aggregation,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-130,Data retention policies,"Storage, Database & Telemetry",P1,,✓,,,30,High,Broker telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-131,Next.js application shell,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-132,OAuth authentication,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-133,Broker overview dashboard,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-134,Topic browser,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-135,Partition topology view,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-136,Consumer-group dashboard,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-137,Consumer lag visualization,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-138,Replication health view,"Security, Testing & Deployment",P0,,✓,,,22,Critical,All externally reachable components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-139,Input validation,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-140,Payload size limits,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-141,Authentication hooks,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-142,Authorization hooks,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-143,Tenant isolation,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-144,TLS configuration,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+08-145,Audit logging,AI/ML & Intelligent Operations,P0,,✓,,,38,Medium-High,Telemetry + benchmark corpus,Specified,,Status: Specified → Scaffolded → Implemented → Verified.

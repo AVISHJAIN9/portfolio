@@ -7,5 +7,13 @@ edition = "2021"
 tokio = { version = "1.38", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+bytes = "1.6"
+crc32fast = "1.4"
+parking_lot = "0.12"
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"
 tracing = "0.1"
 tracing-subscriber = "0.3"
+
+[dev-dependencies]
+tempfile = "3.10"

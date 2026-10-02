@@ -1,0 +1,146 @@
+feature,name,area,priority,fe,be,db,aiml,est_hours,risk,dependencies,status,evidence,notes
+07-001,Kafka/Redpanda event ingestion,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-002,Batch event ingestion,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-003,Single-event API ingestion,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-004,Event schema validation,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-005,JSON event decoding,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-006,Typed event normalization,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-007,Zero-copy event buffers,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-008,Event timestamp extraction,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-009,Event ID generation/dedup key,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-010,Source metadata enrichment,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-011,Partition-aware ingestion,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-012,Ingress rate metrics,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-013,Malformed-event quarantine,Ingestion & Event Model,P0,,✓,,,22,Critical,Ingress adapters + event schema,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-014,Sigma YAML rule parser,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-015,Rule schema validation,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-016,AST construction,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-017,Field selector resolution,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-018,Condition expression parser,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-019,AND/OR/NOT evaluation,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-020,String operators,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-021,Numeric comparison operators,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-022,Regex predicate support,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-023,Set/list membership,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-024,Wildcard matching,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-025,Rule compilation cache,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-026,Compiled-rule validation,Sigma DSL & Rule Compiler,P0,,✓,,,22,Critical,Rule schema + parser,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-027,Aho-Corasick multi-pattern matcher,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-028,Pattern automaton construction,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-029,Automaton reuse across rules,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-030,Shared predicate evaluation,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-031,Case normalization,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-032,Unicode-safe matching,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-033,Token extraction,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-034,Exact-match acceleration,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-035,Regex execution guardrails,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-036,Predicate short-circuiting,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-037,Predicate cost metrics,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-038,Pattern hit telemetry,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-039,Matcher benchmark suite,Pattern Matching & Predicate Engine,P0,,✓,,,22,Critical,Compiled AST,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-040,Sliding windows,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-041,Tumbling windows,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-042,Session windows,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-043,Event-time processing,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-044,Processing-time fallback,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-045,Watermark generation,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-046,Partition watermark tracking,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-047,Out-of-order event handling,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-048,Allowed lateness configuration,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-049,Late-event policy,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-050,Window state cleanup,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-051,Window memory accounting,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-052,Window correctness tests,Windows & Event Time,P0,,✓,,,22,Critical,Event timestamps + watermarks,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-053,Keyed state store,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-054,Composite event keys,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-055,TTL-based state eviction,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-056,Idle-key eviction,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-057,State size limits,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-058,State snapshotting,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-059,State restore,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-060,Event deduplication,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-061,Alert deduplication,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-062,Deduplication TTL,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-063,Exactly-once-oriented state transitions,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-064,State metrics,"State, TTL & Deduplication",P0,,✓,,,22,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-065,State recovery tests,"State, TTL & Deduplication",P0,,✓,,,32,Critical,Keyed state + event identity,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-066,Detection match creation,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-067,Alert object normalization,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-068,Alert severity mapping,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-069,Alert enrichment,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-070,Alert suppression,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-071,Alert grouping,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-072,Alert correlation IDs,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-073,Alert acknowledgement state,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-074,Alert lifecycle history,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-075,Alert expiration,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-076,Alert routing,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-077,Alert delivery metrics,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-078,Detection explainability metadata,Alerting & Detection Lifecycle,P0,,✓,,,22,Critical,Rule match events,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-079,Rule versioning,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-080,Rule enable/disable,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-081,Rule hot reload,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-082,Atomic rule-set swap,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-083,Rule rollback,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-084,Rule dependency validation,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-085,Rule conflict detection,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-086,Configuration schema,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-087,Environment configuration,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-088,Dynamic threshold updates,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-089,Rule change audit log,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-090,Configuration cache,Rule Hot Reload & Configuration,P1,,✓,,,28,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-091,Hot-reload failure recovery,Rule Hot Reload & Configuration,P1,,✓,,,38,High,Compiled rule registry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-092,Bounded ingestion queues,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-093,Consumer lag monitoring,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-094,Backpressure propagation,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-095,Rate limiting,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-096,Adaptive batch sizing,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-097,Worker pool management,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-098,Partition worker assignment,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-099,Load shedding policy,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-100,Queue depth metrics,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-101,CPU saturation detection,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-102,Memory pressure response,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-103,Runtime health state,Backpressure & Stream Runtime,P0,,✓,,,22,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-104,Backpressure recovery tests,Backpressure & Stream Runtime,P0,,✓,,,32,Critical,Ingress + worker pool,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-105,PostgreSQL detection schema,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-106,PostgreSQL alert schema,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-107,Rule metadata persistence,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-108,Event metadata persistence,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-109,Redis hot state,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-110,Redis dedup cache,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-111,Partitioned telemetry tables,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-112,Detection metrics aggregation,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-113,Alert history queries,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-114,Rule performance history,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-115,Retention policies,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-116,Telemetry export,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-117,Storage consistency checks,Storage & Telemetry,P1,,✓,,,28,High,Detection runtime telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-118,Next.js application shell,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-119,OAuth authentication,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-120,Detection overview dashboard,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-121,Live event stream view,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-122,Rule management UI,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-123,Rule editor,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-124,Rule validation feedback,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-125,Alert inbox,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-126,Alert detail view,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-127,Detection timeline,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-128,Watermark/lag visualization,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-129,System health dashboard,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-130,Interactive client playground,Frontend Dashboard & UX,P1,,✓,,,28,High,APIs + telemetry,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-131,Input size limits,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-132,Schema attack resistance,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-133,Regex denial-of-service controls,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-134,Rule authorization,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-135,Tenant isolation,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-136,Audit logging,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-137,Secret/config protection,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-138,TLS configuration,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-139,Rate-limit abuse protection,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-140,Failure isolation,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-141,Crash recovery,Security & Reliability,P0,,✓,,,32,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-142,Security fuzzing,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-143,Adversarial rule tests,Security & Reliability,P0,,✓,,,22,Critical,All externally controlled inputs,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-144,Unit test suite,"Testing, Benchmarking & Deployment",P0,,✓,,,22,Critical,All runtime components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
+07-145,DSL parser property tests,"Testing, Benchmarking & Deployment",P0,,✓,,,22,Critical,All runtime components,Specified,,Status: Specified → Scaffolded → Implemented → Verified.
