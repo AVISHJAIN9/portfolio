@@ -33,15 +33,16 @@ ifdef PROJECT
 else
 	@echo "=== Running Workspace-Wide CI ==="
 	@if [ -d "platform/rust" ] && [ -f "platform/rust/Cargo.toml" ]; then \
-		cargo test --manifest-path platform/rust/Cargo.toml; \
+		$(PYTHON) tools/run_timed.py 600 evidence/ci_steps/platform_tests.log -- cargo test --manifest-path platform/rust/Cargo.toml; \
 	fi
 	@for p in projects/*; do \
 		if [ -d "$$p/backend" ] && [ -f "$$p/backend/Cargo.toml" ]; then \
+			pname=$$(basename "$$p"); \
 			echo "Running tests for $$p..."; \
-			cargo test --manifest-path "$$p/backend/Cargo.toml"; \
+			$(PYTHON) tools/run_timed.py 600 "evidence/ci_steps/$${pname}_tests.log" -- cargo test --manifest-path "$$p/backend/Cargo.toml"; \
 		fi \
 	done
-	@$(PYTEST) -v tests/
+	@$(PYTHON) tools/run_timed.py 300 evidence/ci_steps/pytest.log -- $(PYTEST) -v tests/
 	@$(PYTHON) tools/audit_test_annotations.py
 	@$(PYTHON) tools/evidence_gen.py
 	@$(PYTHON) tools/workbook_status.py
@@ -55,7 +56,8 @@ mutants:
 
 interop:
 	@echo "=== Running QUIC Interoperability Test Suite ==="
-	@$(PYTHON) tests/interop/run_interop.py
+	@$(PYTHON) tools/run_timed.py 900 evidence/ci_steps/interop.log -- $(PYTHON) tests/interop/run_interop.py
+
 
 
 demo:
