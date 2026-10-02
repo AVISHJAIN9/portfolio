@@ -26,10 +26,10 @@ def main():
 
     # Step 0: Clone
     clone_dir = Path("/tmp/pf-ci")
-    import shutil
-    shutil.rmtree(clone_dir, ignore_errors=True)
+    subprocess.run(["rm", "-rf", "/tmp/pf-ci"])
     if clone_dir.exists():
-        subprocess.run(["rm", "-rf", str(clone_dir)])
+        time.sleep(1)
+        subprocess.run(["rm", "-rf", "/tmp/pf-ci"])
     
     steps = [
         ("01_clone", 60, ["git", "clone", str(ROOT_DIR), str(clone_dir)]),
