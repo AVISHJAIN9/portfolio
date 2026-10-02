@@ -453,3 +453,211 @@ fn test_benchmark_harness_output_schema() {
     assert!(v["queries"]["Q1"]["median_ms"].as_f64().unwrap() > 0.0);
 }
 
+// FEAT: 04-043 "Cost model"
+// ACCEPT: Cost model produces cardinality estimates from statistics catalog and flips join order when statistics change
+#[test]
+fn test_cost_model_cardinality_and_join_order_flip() {
+    use columnar_query_engine::optimizer::cost_model::{CostModel, TableStats};
+    use std::collections::HashMap;
+
+    let mut model = CostModel::new();
+
+    let mut distinct_small = HashMap::new();
+    distinct_small.insert("cat_id".to_string(), 10);
+    let mut nulls_small = HashMap::new();
+    nulls_small.insert("cat_id".to_string(), 0.0);
+
+    let stats_small = TableStats {
+        table_name: "categories".to_string(),
+        row_count: 50,
+        column_distinct_counts: distinct_small,
+        null_fractions: nulls_small,
+    };
+
+    let mut distinct_large = HashMap::new();
+    distinct_large.insert("cat_id".to_string(), 10);
+    let mut nulls_large = HashMap::new();
+    nulls_large.insert("cat_id".to_string(), 0.1);
+
+    let stats_large = TableStats {
+        table_name: "products".to_string(),
+        row_count: 50_000,
+        column_distinct_counts: distinct_large,
+        null_fractions: nulls_large,
+    };
+
+    model.register_table_stats(stats_small);
+    model.register_table_stats(stats_large);
+
+    // 1. Cardinality estimation within stated factor
+    let est_card = model.estimate_filter_cardinality("products", "cat_id");
+    assert!(est_card >= 4000 && est_card <= 5000, "Estimated cardinality must account for 10% nulls");
+
+    // 2. Initial join order: smaller table (categories, 50 rows) is build side
+    let plan1 = model.choose_join_order("categories", "products");
+    assert_eq!(plan1.build_side, "categories");
+    assert_eq!(plan1.probe_side, "products");
+
+    // 3. Statistics update: categories grows to 100k rows
+    let stats_updated = TableStats {
+        table_name: "categories".to_string(),
+        row_count: 100_000,
+        column_distinct_counts: HashMap::new(),
+        null_fractions: HashMap::new(),
+    };
+    model.register_table_stats(stats_updated);
+
+    // 4. Join order flips: products (50k rows) is now build side
+    let plan2 = model.choose_join_order("categories", "products");
+    assert_eq!(plan2.build_side, "products");
+    assert_eq!(plan2.probe_side, "categories");
+}
+
+// FEAT: 04-056 "Parquet file reader"
+// ACCEPT: Parquet reader evaluates column projection and row-group pruning using min/max statistics
+#[test]
+fn test_parquet_file_reader_row_group_pruning() {
+    use columnar_query_engine::storage::parquet_reader::{ParquetFileMetadata, ParquetFileReader, RowGroupStats};
+    use std::path::PathBuf;
+
+    let rg0 = RowGroupStats {
+        row_group_index: 0,
+        num_rows: 1000,
+        min_values: vec![1, 100],
+        max_values: vec![10, 200],
+    };
+    let rg1 = RowGroupStats {
+        row_group_index: 1,
+        num_rows: 1000,
+        min_values: vec![11, 300],
+        max_values: vec![20, 400],
+    };
+    let rg2 = RowGroupStats {
+        row_group_index: 2,
+        num_rows: 1000,
+        min_values: vec![21, 500],
+        max_values: vec![30, 600],
+    };
+
+    let meta = ParquetFileMetadata {
+        file_path: PathBuf::from("lineitem.parquet"),
+        column_names: vec!["l_orderkey".to_string(), "l_extendedprice".to_string()],
+        row_groups: vec![rg0, rg1, rg2],
+    };
+
+    let reader = ParquetFileReader::new(meta);
+
+    // Query: WHERE l_orderkey BETWEEN 12 AND 15 -> should only match row group 1 (range 11..20)
+    let (scanned_rgs, total_rgs) = reader.filter_and_project_row_groups(0, 12, 15, &[0, 1]);
+    assert_eq!(total_rgs, 3);
+    assert_eq!(scanned_rgs, vec![1], "Only row group 1 overlaps predicate bounds");
+
+    // Out-of-bounds query -> 0 row groups matched
+    let (none_rgs, _) = reader.filter_and_project_row_groups(0, 999, 1000, &[0]);
+    assert!(none_rgs.is_empty());
+}
+
+// FEAT: 04-060 "Zero-copy buffers"
+// ACCEPT: Zero-copy buffers share memory slice allocations verified by pointer equality
+#[test]
+fn test_zero_copy_buffers_pointer_sharing() {
+    use columnar_query_engine::storage::buffer_pool::ZeroCopyBuffer;
+
+    let raw_data = b"0123456789ABCDEF_COLUMNAR_ZERO_COPY_PAYLOAD".to_vec();
+    let parent_buf = ZeroCopyBuffer::new(raw_data);
+
+    // Create sub-slice
+    let sub_buf = parent_buf.slice(10, 26);
+    assert_eq!(sub_buf.as_slice(), b"ABCDEF_COLUMNAR_");
+
+    // Pointer equality: sub_buf points exactly to parent_buf offset 10 in the same backing allocation
+    let parent_ptr = parent_buf.as_ptr();
+    let sub_ptr = sub_buf.as_ptr();
+    unsafe {
+        assert_eq!(parent_ptr.add(10), sub_ptr, "Sub-buffer must share parent allocation memory address without copying");
+    }
+}
+
+// FEAT: 04-061 "Buffer manager"
+// ACCEPT: Buffer manager manages fixed-size page pool with pin/unpin lifecycle, LRU eviction, and hit ratio tracking
+#[test]
+fn test_buffer_manager_pinning_lru_and_hit_ratio() {
+    use columnar_query_engine::storage::buffer_pool::{BufferManager, StorageError};
+
+    let bm = BufferManager::new(2, 4096); // 2 pages capacity
+
+    // 1. Fetch page 1 and page 2 (misses)
+    let p1 = bm.get_or_fetch_page(1).unwrap();
+    let p2 = bm.get_or_fetch_page(2).unwrap();
+    assert_eq!(p1.page_id, 1);
+    assert_eq!(p2.page_id, 2);
+
+    // 2. Both pages are pinned (pin_count = 1). Fetching page 3 must fail with BufferPoolFull
+    let p3_err = bm.get_or_fetch_page(3);
+    assert_eq!(p3_err.unwrap_err(), StorageError::BufferPoolFull);
+
+    // 3. Unpin page 1 and fetch page 3 -> page 1 is evicted, page 3 succeeds
+    bm.unpin_page(1);
+    let p3 = bm.get_or_fetch_page(3).unwrap();
+    assert_eq!(p3.page_id, 3);
+
+    // 4. Hit ratio assertion: repeated fetch of pinned page 2 is a cache hit
+    let p2_hit = bm.get_or_fetch_page(2).unwrap();
+    assert_eq!(p2_hit.page_id, 2);
+    assert!(bm.hit_ratio() > 0.0);
+}
+
+// FEAT: 04-062 "Memory pool"
+// ACCEPT: Budgeted memory pool reserves and releases bytes, returning OutOfMemory when limit is exceeded
+#[test]
+fn test_memory_pool_budget_and_oom_protection() {
+    use columnar_query_engine::storage::buffer_pool::{MemoryPool, StorageError};
+
+    let pool = MemoryPool::new(10 * 1024 * 1024); // 10 MB budget
+
+    // 1. Normal reservation
+    assert!(pool.reserve(6 * 1024 * 1024).is_ok());
+    assert_eq!(pool.allocated(), 6 * 1024 * 1024);
+
+    // 2. Exceeding reservation returns Err(OutOfMemory) without aborting
+    let oom_res = pool.reserve(5 * 1024 * 1024);
+    assert!(matches!(oom_res, Err(StorageError::OutOfMemory { .. })));
+    assert_eq!(pool.allocated(), 6 * 1024 * 1024);
+
+    // 3. Release and re-reserve
+    pool.release(4 * 1024 * 1024);
+    assert_eq!(pool.allocated(), 2 * 1024 * 1024);
+    assert!(pool.reserve(5 * 1024 * 1024).is_ok());
+    assert_eq!(pool.allocated(), 7 * 1024 * 1024);
+}
+
+// FEAT: 04-076 "Local filesystem connector"
+// ACCEPT: Local filesystem connector lists matching glob files, infers CSV schemas, and rejects path traversal attacks
+#[test]
+fn test_local_fs_connector_schema_inference_and_traversal_guard() {
+    use columnar_query_engine::storage::buffer_pool::{LocalFsConnector, StorageError};
+    use tempfile::tempdir;
+
+    let dir = tempdir().unwrap();
+    let csv_file = dir.path().join("users.csv");
+    std::fs::write(&csv_file, "user_id,username,email,created_at\n1,alice,alice@example.com,2026-01-01\n").unwrap();
+
+    let connector = LocalFsConnector::new(dir.path());
+
+    // 1. Glob listing
+    let matches = connector.list_files_matching_glob("*.csv").unwrap();
+    assert_eq!(matches.len(), 1);
+    assert_eq!(matches[0], csv_file);
+
+    // 2. Schema inference
+    let schema = connector.infer_csv_schema(&csv_file).unwrap();
+    assert_eq!(schema.len(), 4);
+    assert_eq!(schema[0].0, "user_id");
+    assert_eq!(schema[1].0, "username");
+
+    // 3. Path traversal attack rejected
+    let traversal_res = connector.list_files_matching_glob("../../../etc/*");
+    assert!(matches!(traversal_res, Err(StorageError::PathTraversalAttempt(_))));
+}
+
+
