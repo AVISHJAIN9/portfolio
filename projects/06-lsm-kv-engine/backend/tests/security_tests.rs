@@ -1,5 +1,6 @@
 use lsm_kv_engine::security::{
-    AccessController, AeadCipher, AuditLogger, AuditRecord, FaultFsFile, RbacController, SecretKey, SecurityError,
+    AccessController, AeadCipher, AuditLogger, AuditRecord, FaultFsFile, RbacController, SecretKey,
+    SecurityError,
 };
 use tempfile::tempdir;
 
@@ -21,11 +22,20 @@ fn test_wal_encryption_aead_record_protection() {
 
     // 1. Encrypt record
     let ciphertext = AeadCipher::encrypt(&key, &nonce, plaintext, ad);
-    assert_ne!(&ciphertext[..plaintext.len()], plaintext, "Plaintext marker must not appear unencrypted in bytes");
-    assert_eq!(ciphertext.len(), plaintext.len() + 16, "Ciphertext includes 16-byte MAC tag");
+    assert_ne!(
+        &ciphertext[..plaintext.len()],
+        plaintext,
+        "Plaintext marker must not appear unencrypted in bytes"
+    );
+    assert_eq!(
+        ciphertext.len(),
+        plaintext.len() + 16,
+        "Ciphertext includes 16-byte MAC tag"
+    );
 
     // 2. Decrypt with correct key
-    let decrypted = AeadCipher::decrypt(&key, &nonce, &ciphertext, ad).expect("Decryption must succeed");
+    let decrypted =
+        AeadCipher::decrypt(&key, &nonce, &ciphertext, ad).expect("Decryption must succeed");
     assert_eq!(decrypted, plaintext);
 
     // 3. Decrypt with wrong key fails authentication
@@ -49,11 +59,19 @@ fn test_at_rest_encryption_sstable_block_protection() {
     let block_header_ad = b"sst_file_000004_block_0";
 
     // 1. Encrypt block
-    let encrypted_block = AeadCipher::encrypt(&block_key, &block_nonce, sstable_block_data, block_header_ad);
-    assert!(!encrypted_block.windows(sstable_block_data.len()).any(|w| w == sstable_block_data));
+    let encrypted_block = AeadCipher::encrypt(
+        &block_key,
+        &block_nonce,
+        sstable_block_data,
+        block_header_ad,
+    );
+    assert!(!encrypted_block
+        .windows(sstable_block_data.len())
+        .any(|w| w == sstable_block_data));
 
     // 2. Decrypt valid block
-    let decrypted_block = AeadCipher::decrypt(&block_key, &block_nonce, &encrypted_block, block_header_ad).unwrap();
+    let decrypted_block =
+        AeadCipher::decrypt(&block_key, &block_nonce, &encrypted_block, block_header_ad).unwrap();
     assert_eq!(decrypted_block, sstable_block_data);
 
     // 3. Tampered header AD fails authentication
@@ -88,19 +106,31 @@ fn test_secrets_zeroization_and_redaction() {
 // ACCEPT: RBAC access controller authorizes read operations and enforces deny paths for unauthorized writes
 #[test]
 fn test_access_control_hooks_rbac_enforcement() {
-    let rbac = RbacController::new(vec!["admin_user".to_string()], vec!["guest_reader".to_string()]);
+    let rbac = RbacController::new(
+        vec!["admin_user".to_string()],
+        vec!["guest_reader".to_string()],
+    );
 
     // 1. Admin authorized for all operations
     assert!(rbac.check_permission("admin_user", "put", b"key1").is_ok());
-    assert!(rbac.check_permission("admin_user", "delete", b"key1").is_ok());
+    assert!(rbac
+        .check_permission("admin_user", "delete", b"key1")
+        .is_ok());
 
     // 2. Reader authorized for reads
-    assert!(rbac.check_permission("guest_reader", "get", b"key1").is_ok());
-    assert!(rbac.check_permission("guest_reader", "scan", b"key1").is_ok());
+    assert!(rbac
+        .check_permission("guest_reader", "get", b"key1")
+        .is_ok());
+    assert!(rbac
+        .check_permission("guest_reader", "scan", b"key1")
+        .is_ok());
 
     // 3. Reader denied for writes
     let write_deny = rbac.check_permission("guest_reader", "put", b"key1");
-    assert!(matches!(write_deny, Err(SecurityError::PermissionDenied(_))));
+    assert!(matches!(
+        write_deny,
+        Err(SecurityError::PermissionDenied(_))
+    ));
 
     // 4. Unknown user denied completely
     let anon_deny = rbac.check_permission("anonymous", "get", b"key1");
@@ -155,7 +185,10 @@ fn test_security_regression_suite_comprehensive() {
 
     // 2. Short cipher text rejection
     let short_ct = vec![0u8; 10];
-    assert_eq!(AeadCipher::decrypt(&key, &nonce, &short_ct, ad), Err(SecurityError::CorruptedRecord));
+    assert_eq!(
+        AeadCipher::decrypt(&key, &nonce, &short_ct, ad),
+        Err(SecurityError::CorruptedRecord)
+    );
 
     // 3. RBAC checks
     let rbac = RbacController::new(vec!["root".to_string()], vec!["reader".to_string()]);
@@ -185,6 +218,12 @@ fn test_power_loss_simulation_fault_fs() {
     let on_disk_bytes = std::fs::read(&file_path).unwrap();
     let content = String::from_utf8_lossy(&on_disk_bytes);
     assert!(content.contains("RECORD_1_COMMITTED_AND_FSYNCED"));
-    assert!(!content.contains("RECORD_2_IN_FLIGHT_NOT_FSYNCED"), "Un-fsynced write must be lost on power loss crash");
-    assert_eq!(fault_file.read_synced_bytes(), b"RECORD_1_COMMITTED_AND_FSYNCED\n");
+    assert!(
+        !content.contains("RECORD_2_IN_FLIGHT_NOT_FSYNCED"),
+        "Un-fsynced write must be lost on power loss crash"
+    );
+    assert_eq!(
+        fault_file.read_synced_bytes(),
+        b"RECORD_1_COMMITTED_AND_FSYNCED\n"
+    );
 }

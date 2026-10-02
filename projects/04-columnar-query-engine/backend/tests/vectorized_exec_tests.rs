@@ -11,7 +11,13 @@ fn test_vectorized_sum_filter_aggregation() {
     let ids: Vec<i64> = (1..=10_000).collect();
     let amounts: Vec<i64> = (1..=10_000).map(|i| i * 10).collect();
     let categories: Vec<String> = (1..=10_000)
-        .map(|i| if i % 2 == 0 { "Electronics".into() } else { "Books".into() })
+        .map(|i| {
+            if i % 2 == 0 {
+                "Electronics".into()
+            } else {
+                "Books".into()
+            }
+        })
         .collect();
 
     let c_id = ColumnChunk::new_int64("id", ids);

@@ -1,0 +1,9 @@
+{
+  "c2s_total": 1010,
+  "c2s_dropped": 26,
+  "c2s_forwarded": 984,
+  "s2c_total": 1010,
+  "s2c_dropped": 24,
+  "s2c_forwarded": 986,
+  "measured_drop_ratio": 0.0248
+}

@@ -30,7 +30,10 @@ fn test_kv_delete_api() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
     engine.put(b"del_target", b"temporary").unwrap();
-    assert_eq!(engine.get(b"del_target").unwrap(), Some(b"temporary".to_vec()));
+    assert_eq!(
+        engine.get(b"del_target").unwrap(),
+        Some(b"temporary".to_vec())
+    );
 
     engine.delete(b"del_target").unwrap();
     assert_eq!(engine.get(b"del_target").unwrap(), None);
@@ -109,7 +112,12 @@ fn test_iterator_api() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
     for i in 1..=5 {
-        engine.put(format!("key_{}", i).as_bytes(), format!("val_{}", i).as_bytes()).unwrap();
+        engine
+            .put(
+                format!("key_{}", i).as_bytes(),
+                format!("val_{}", i).as_bytes(),
+            )
+            .unwrap();
     }
 
     let all = engine.scan_range(b"key_1", b"key_5").unwrap();
@@ -197,7 +205,10 @@ fn test_point_lookup_path_traversal() {
     engine.flush().unwrap();
     // 2. Overwrite in active memtable
     engine.put(b"target_key", b"mem_val").unwrap();
-    assert_eq!(engine.get(b"target_key").unwrap(), Some(b"mem_val".to_vec()));
+    assert_eq!(
+        engine.get(b"target_key").unwrap(),
+        Some(b"mem_val".to_vec())
+    );
 }
 
 // FEAT: 06-067 "Multi-level read path"
@@ -333,9 +344,18 @@ fn test_crash_consistency_recovery() {
     }
     // Reopen after drop (simulating restart)
     let recovered = LsmEngine::open(dir.path()).unwrap();
-    assert_eq!(recovered.get(b"durable_1").unwrap(), Some(b"val_1".to_vec()));
-    assert_eq!(recovered.get(b"durable_2").unwrap(), Some(b"val_2".to_vec()));
-    assert_eq!(recovered.get(b"durable_3").unwrap(), Some(b"val_3".to_vec()));
+    assert_eq!(
+        recovered.get(b"durable_1").unwrap(),
+        Some(b"val_1".to_vec())
+    );
+    assert_eq!(
+        recovered.get(b"durable_2").unwrap(),
+        Some(b"val_2".to_vec())
+    );
+    assert_eq!(
+        recovered.get(b"durable_3").unwrap(),
+        Some(b"val_3".to_vec())
+    );
 }
 
 // FEAT: 06-124 "Fault injection"
@@ -437,8 +457,14 @@ fn test_index_assisted_lookup_binary_search() {
     }
     engine.flush().unwrap();
 
-    assert_eq!(engine.get(b"idx_k_0050").unwrap(), Some(b"idx_v_0050".to_vec()));
-    assert_eq!(engine.get(b"idx_k_0199").unwrap(), Some(b"idx_v_0199".to_vec()));
+    assert_eq!(
+        engine.get(b"idx_k_0050").unwrap(),
+        Some(b"idx_v_0050".to_vec())
+    );
+    assert_eq!(
+        engine.get(b"idx_k_0199").unwrap(),
+        Some(b"idx_v_0199".to_vec())
+    );
     assert_eq!(engine.get(b"idx_k_9999").unwrap(), None);
 }
 
@@ -682,7 +708,10 @@ fn test_transaction_recovery_atomic_replay() {
 
     // Reopen engine to simulate crash recovery
     let recovered_engine = LsmEngine::open(dir.path()).unwrap();
-    assert_eq!(recovered_engine.get(b"rec_committed").unwrap(), Some(b"true".to_vec()));
+    assert_eq!(
+        recovered_engine.get(b"rec_committed").unwrap(),
+        Some(b"true".to_vec())
+    );
     assert_eq!(recovered_engine.get(b"rec_uncommitted").unwrap(), None);
     assert_eq!(recovered_engine.get(b"non_existent").unwrap(), None);
 }
@@ -694,7 +723,9 @@ fn test_ttl_expiration_api_query_resolution() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
 
-    assert!(engine.put_with_ttl(b"session:101", b"active_token", 3600).is_ok());
+    assert!(engine
+        .put_with_ttl(b"session:101", b"active_token", 3600)
+        .is_ok());
     let val = engine.get(b"session:101").unwrap();
     assert_eq!(val, Some(b"active_token".to_vec()));
     assert_eq!(engine.get(b"session:missing").unwrap(), None);
@@ -714,7 +745,7 @@ fn test_admin_health_api_reporting() {
 
     assert_eq!(health.status, HealthStatus::Ok);
     assert!(health.memtable_bytes > 0);
-    assert_eq!(health.is_stalled, false);
+    assert!(!health.is_stalled);
 }
 
 // FEAT: 06-013 "Client metrics API"
@@ -754,7 +785,10 @@ fn test_input_validation_empty_and_corrupt_keys() {
 
     // Valid non-empty key succeeds
     assert!(engine.put(b"valid_key", b"valid_value").is_ok());
-    assert_eq!(engine.get(b"valid_key").unwrap(), Some(b"valid_value".to_vec()));
+    assert_eq!(
+        engine.get(b"valid_key").unwrap(),
+        Some(b"valid_value".to_vec())
+    );
 }
 
 // FEAT: 06-119 "Key/value size limits"
@@ -778,6 +812,3 @@ fn test_key_value_size_limits_enforcement() {
     let res_val = engine.put(b"key", &oversized_val);
     assert!(res_val.is_err(), "Oversized value must return error");
 }
-
-
-

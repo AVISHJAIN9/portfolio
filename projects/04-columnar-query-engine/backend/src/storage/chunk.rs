@@ -77,13 +77,25 @@ impl ColumnChunk {
         let mut min_val = i64::MAX;
         let mut max_val = i64::MIN;
         for &v in &values {
-            if v < min_val { min_val = v; }
-            if v > max_val { max_val = v; }
+            if v < min_val {
+                min_val = v;
+            }
+            if v > max_val {
+                max_val = v;
+            }
         }
 
         let zone_map = ZoneMap {
-            min_int64: if values.is_empty() { None } else { Some(min_val) },
-            max_int64: if values.is_empty() { None } else { Some(max_val) },
+            min_int64: if values.is_empty() {
+                None
+            } else {
+                Some(min_val)
+            },
+            max_int64: if values.is_empty() {
+                None
+            } else {
+                Some(max_val)
+            },
             min_float64: None,
             max_float64: None,
             null_count: 0,
@@ -103,15 +115,27 @@ impl ColumnChunk {
         let mut min_val = f64::INFINITY;
         let mut max_val = f64::NEG_INFINITY;
         for &v in &values {
-            if v < min_val { min_val = v; }
-            if v > max_val { max_val = v; }
+            if v < min_val {
+                min_val = v;
+            }
+            if v > max_val {
+                max_val = v;
+            }
         }
 
         let zone_map = ZoneMap {
             min_int64: None,
             max_int64: None,
-            min_float64: if values.is_empty() { None } else { Some(min_val) },
-            max_float64: if values.is_empty() { None } else { Some(max_val) },
+            min_float64: if values.is_empty() {
+                None
+            } else {
+                Some(min_val)
+            },
+            max_float64: if values.is_empty() {
+                None
+            } else {
+                Some(max_val)
+            },
             null_count: 0,
             row_count: values.len(),
         };

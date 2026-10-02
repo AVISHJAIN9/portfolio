@@ -1,8 +1,8 @@
-use std::sync::Arc;
 use columnar_query_engine::execution::morsel::{
     Morsel, MorselScheduler, MorselThreadPool, ParallelAggregation, ParallelHashJoin, ParallelScan,
     DEFAULT_MORSEL_SIZE,
 };
+use std::sync::Arc;
 
 const NUM_ROWS: usize = 10_000;
 
@@ -34,20 +34,44 @@ fn test_morsel_selection_vectors() {
 fn test_morsel_driven_scheduling() {
     let scheduler = MorselScheduler::new(25_000, 10_000);
     let m1 = scheduler.next_morsel().unwrap();
-    assert_eq!(m1, Morsel { start: 0, end: 10_000 });
+    assert_eq!(
+        m1,
+        Morsel {
+            start: 0,
+            end: 10_000
+        }
+    );
 
     let m2 = scheduler.next_morsel().unwrap();
-    assert_eq!(m2, Morsel { start: 10_000, end: 20_000 });
+    assert_eq!(
+        m2,
+        Morsel {
+            start: 10_000,
+            end: 20_000
+        }
+    );
 
     let m3 = scheduler.next_morsel().unwrap();
-    assert_eq!(m3, Morsel { start: 20_000, end: 25_000 });
+    assert_eq!(
+        m3,
+        Morsel {
+            start: 20_000,
+            end: 25_000
+        }
+    );
 
     assert_eq!(scheduler.next_morsel(), None);
 
     // Test reset
     scheduler.reset();
     let m1_again = scheduler.next_morsel().unwrap();
-    assert_eq!(m1_again, Morsel { start: 0, end: 10_000 });
+    assert_eq!(
+        m1_again,
+        Morsel {
+            start: 0,
+            end: 10_000
+        }
+    );
 }
 
 // FEAT: 04-081 "Parallel scans"
@@ -131,9 +155,12 @@ fn test_parallel_aggregation_across_threads() {
     let sched2 = Arc::new(MorselScheduler::new(NUM_ROWS, DEFAULT_MORSEL_SIZE));
     let sched8 = Arc::new(MorselScheduler::new(NUM_ROWS, DEFAULT_MORSEL_SIZE));
 
-    let agg1 = ParallelAggregation::sum_grouped_i64(&sched1, &pool1, |r| r % 4, |r| (r % 100) as i64);
-    let agg2 = ParallelAggregation::sum_grouped_i64(&sched2, &pool2, |r| r % 4, |r| (r % 100) as i64);
-    let agg8 = ParallelAggregation::sum_grouped_i64(&sched8, &pool8, |r| r % 4, |r| (r % 100) as i64);
+    let agg1 =
+        ParallelAggregation::sum_grouped_i64(&sched1, &pool1, |r| r % 4, |r| (r % 100) as i64);
+    let agg2 =
+        ParallelAggregation::sum_grouped_i64(&sched2, &pool2, |r| r % 4, |r| (r % 100) as i64);
+    let agg8 =
+        ParallelAggregation::sum_grouped_i64(&sched8, &pool8, |r| r % 4, |r| (r % 100) as i64);
 
     assert_eq!(agg1.len(), 4);
     assert_eq!(agg1, agg2);
@@ -170,7 +197,7 @@ fn test_thread_pool_sizing() {
     for threads in [1, 2, 4, 8] {
         let pool = MorselThreadPool::new(threads);
         assert_eq!(pool.thread_count, threads);
-        let val = pool.execute(|| rayon::current_num_threads());
+        let val = pool.execute(rayon::current_num_threads);
         assert_eq!(val, threads);
     }
 }

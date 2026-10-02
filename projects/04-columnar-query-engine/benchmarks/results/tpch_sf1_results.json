@@ -1,34 +1,45 @@
 {
   "benchmark": "TPC-H",
-  "scale_factor": 0.1,
+  "scale_factor": 1.0,
+  "lineitem_rows": 6001215,
   "runs": 5,
-  "commit": "c955892c883fb0da3e5bd231d011e719b9cf910f",
+  "commit": "105e947537c1a25a90eb3f6372ad52d6d97ef68b",
   "queries": {
     "Q1": {
-      "median_ms": 5.805,
+      "median_ms": 32.543,
       "all_runs_ms": [
-        6.575,
-        5.506,
-        5.805,
-        5.385,
-        5.933
+        63.0,
+        35.142,
+        32.543,
+        30.71,
+        31.019
       ],
-      "rows": 4
+      "rows": 4,
+      "status": "PASS"
     },
     "Q6": {
-      "median_ms": 0.744,
+      "median_ms": 3.488,
       "all_runs_ms": [
-        0.87,
-        0.757,
-        0.72,
-        0.744,
-        0.678
+        3.488,
+        4.094,
+        3.466,
+        3.624,
+        3.406
       ],
-      "revenue": 11803420.2534
+      "revenue": 123141078.2283,
+      "status": "PASS"
     },
     "Q3": {
-      "status": "NOT DONE",
-      "missing_operator": "3-way multi-table hash join pipeline with composite GROUP BY"
+      "median_ms": 14.828,
+      "all_runs_ms": [
+        27.834,
+        11.993,
+        15.216,
+        13.245,
+        14.828
+      ],
+      "rows": 10,
+      "status": "PASS"
     }
   }
 }

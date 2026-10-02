@@ -109,7 +109,10 @@ fn test_write_batching_pipeline() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
 
-    let puts = [(b"batch_k1".as_slice(), b"batch_v1".as_slice()), (b"batch_k2".as_slice(), b"batch_v2".as_slice())];
+    let puts = [
+        (b"batch_k1".as_slice(), b"batch_v1".as_slice()),
+        (b"batch_k2".as_slice(), b"batch_v2".as_slice()),
+    ];
     let deletes = [b"batch_k3".as_slice()];
     engine.write_batch(&puts, &deletes).unwrap();
 
@@ -125,7 +128,10 @@ fn test_atomic_batch_semantics_all_or_nothing() {
     let dir = tempdir().unwrap();
     let engine = LsmEngine::open(dir.path()).unwrap();
 
-    let puts = [(b"atomic_a".as_slice(), b"1".as_slice()), (b"atomic_b".as_slice(), b"2".as_slice())];
+    let puts = [
+        (b"atomic_a".as_slice(), b"1".as_slice()),
+        (b"atomic_b".as_slice(), b"2".as_slice()),
+    ];
     assert!(engine.write_batch(&puts, &[]).is_ok());
 
     assert_eq!(engine.get(b"atomic_a").unwrap(), Some(b"1".to_vec()));
@@ -188,7 +194,10 @@ fn test_memtable_recovery_from_wal_replay() {
     // Reopen without flush -> reconstructed from WAL
     let engine_reopened = LsmEngine::open(dir.path()).unwrap();
     assert_eq!(engine_reopened.get(b"rec_k1").unwrap(), None); // tombstone applied
-    assert_eq!(engine_reopened.get(b"rec_k2").unwrap(), Some(b"rec_v2".to_vec()));
+    assert_eq!(
+        engine_reopened.get(b"rec_k2").unwrap(),
+        Some(b"rec_v2".to_vec())
+    );
     assert_eq!(engine_reopened.get(b"rec_k3").unwrap(), None);
 }
 

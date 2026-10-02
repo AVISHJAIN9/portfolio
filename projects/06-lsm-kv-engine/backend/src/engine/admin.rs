@@ -1,5 +1,4 @@
 use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::Arc;
 
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum HealthStatus {
@@ -29,7 +28,8 @@ pub struct EngineMetrics {
 
 impl EngineMetrics {
     pub fn record_op(&self, latency_nanos: u64) {
-        self.total_latency_nanos.fetch_add(latency_nanos, Ordering::Relaxed);
+        self.total_latency_nanos
+            .fetch_add(latency_nanos, Ordering::Relaxed);
     }
 
     pub fn snapshot_counters(&self) -> (u64, u64, u64, u64, u64) {
@@ -54,7 +54,7 @@ pub struct EngineLimits {
 impl Default for EngineLimits {
     fn default() -> Self {
         Self {
-            max_key_size_bytes: 64 * 1024,      // 64 KB max key
+            max_key_size_bytes: 64 * 1024,          // 64 KB max key
             max_value_size_bytes: 16 * 1024 * 1024, // 16 MB max value
             allow_empty_keys: false,
         }

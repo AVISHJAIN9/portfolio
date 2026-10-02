@@ -1,9 +1,7 @@
 use std::fmt;
-use std::fs::{File, OpenOptions};
-use std::io::{Read, Seek, SeekFrom, Write};
-use std::path::{Path, PathBuf};
-use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::Arc;
+use std::fs::OpenOptions;
+use std::io::Write;
+use std::path::PathBuf;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum SecurityError {
@@ -17,7 +15,9 @@ pub enum SecurityError {
 impl fmt::Display for SecurityError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            SecurityError::AuthenticationFailed => write!(f, "AEAD authentication tag verification failed"),
+            SecurityError::AuthenticationFailed => {
+                write!(f, "AEAD authentication tag verification failed")
+            }
             SecurityError::PermissionDenied(msg) => write!(f, "Permission denied: {}", msg),
             SecurityError::InvalidKeyLength => write!(f, "Invalid cryptographic key length"),
             SecurityError::CorruptedRecord => write!(f, "Corrupted encrypted record"),
@@ -39,8 +39,8 @@ impl SecretKey {
 
     pub fn generate_32() -> Self {
         let mut key = vec![0u8; 32];
-        for i in 0..32 {
-            key[i] = ((i * 37 + 101) % 256) as u8;
+        for (i, byte) in key.iter_mut().enumerate() {
+            *byte = ((i * 37 + 101) % 256) as u8;
         }
         Self(key)
     }
@@ -76,8 +76,15 @@ impl AeadCipher {
         let mut keystream = Vec::with_capacity(plaintext.len());
         for i in 0..plaintext.len() {
             let k_byte = k_bytes[i % k_bytes.len()];
-            let n_byte = if !nonce.is_empty() { nonce[i % nonce.len()] } else { 0 };
-            let stream_byte = k_byte.wrapping_mul(31).wrapping_add(n_byte).wrapping_add(i as u8);
+            let n_byte = if !nonce.is_empty() {
+                nonce[i % nonce.len()]
+            } else {
+                0
+            };
+            let stream_byte = k_byte
+                .wrapping_mul(31)
+                .wrapping_add(n_byte)
+                .wrapping_add(i as u8);
             keystream.push(stream_byte);
         }
 
@@ -123,8 +130,15 @@ impl AeadCipher {
         let mut plaintext = Vec::with_capacity(cipher_len);
         for i in 0..cipher_len {
             let k_byte = k_bytes[i % k_bytes.len()];
-            let n_byte = if !nonce.is_empty() { nonce[i % nonce.len()] } else { 0 };
-            let stream_byte = k_byte.wrapping_mul(31).wrapping_add(n_byte).wrapping_add(i as u8);
+            let n_byte = if !nonce.is_empty() {
+                nonce[i % nonce.len()]
+            } else {
+                0
+            };
+            let stream_byte = k_byte
+                .wrapping_mul(31)
+                .wrapping_add(n_byte)
+                .wrapping_add(i as u8);
             plaintext.push(ciphertext[i] ^ stream_byte);
         }
 
@@ -156,7 +170,12 @@ impl AeadCipher {
 
 /// Access Control Hook Trait (06-128)
 pub trait AccessController: Send + Sync {
-    fn check_permission(&self, principal: &str, operation: &str, key: &[u8]) -> Result<(), SecurityError>;
+    fn check_permission(
+        &self,
+        principal: &str,
+        operation: &str,
+        key: &[u8],
+    ) -> Result<(), SecurityError>;
 }
 
 /// Role-Based Access Controller implementation
@@ -175,7 +194,12 @@ impl RbacController {
 }
 
 impl AccessController for RbacController {
-    fn check_permission(&self, principal: &str, operation: &str, _key: &[u8]) -> Result<(), SecurityError> {
+    fn check_permission(
+        &self,
+        principal: &str,
+        operation: &str,
+        _key: &[u8],
+    ) -> Result<(), SecurityError> {
         if self.admin_principals.iter().any(|a| a == principal) {
             return Ok(());
         }
@@ -218,8 +242,11 @@ impl AuditLogger {
     }
 
     pub fn log(&self, record: &AuditRecord) -> std::io::Result<()> {
-        let mut file = OpenOptions::new().create(true).append(true).open(&self.log_path)?;
-        let json_line = serde_json::to_string(record).map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+        let mut file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&self.log_path)?;
+        let json_line = serde_json::to_string(record).map_err(std::io::Error::other)?;
         writeln!(file, "{}", json_line)?;
         file.flush()?;
         Ok(())

@@ -11,14 +11,10 @@ fn test_zonemap_rowgroup_skipping() {
     let mut table = ColumnarTable::new("metrics");
 
     // RowGroup 1: values 1..1000
-    let rg1 = RowGroup::new(vec![
-        ColumnChunk::new_int64("val", (1..=1000).collect()),
-    ]);
+    let rg1 = RowGroup::new(vec![ColumnChunk::new_int64("val", (1..=1000).collect())]);
 
     // RowGroup 2: values 5000..6000
-    let rg2 = RowGroup::new(vec![
-        ColumnChunk::new_int64("val", (5000..=6000).collect()),
-    ]);
+    let rg2 = RowGroup::new(vec![ColumnChunk::new_int64("val", (5000..=6000).collect())]);
 
     table.add_row_group(rg1);
     table.add_row_group(rg2);

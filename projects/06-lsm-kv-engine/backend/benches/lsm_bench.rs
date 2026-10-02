@@ -91,6 +91,11 @@ fn bench_overwrite(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, bench_fillseq, bench_fillrandom, bench_readrandom, bench_overwrite);
+criterion_group!(
+    benches,
+    bench_fillseq,
+    bench_fillrandom,
+    bench_readrandom,
+    bench_overwrite
+);
 criterion_main!(benches);
-

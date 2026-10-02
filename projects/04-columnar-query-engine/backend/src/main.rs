@@ -1,8 +1,8 @@
-use columnar_query_engine::storage::chunk::ColumnChunk;
-use columnar_query_engine::storage::table::{ColumnarTable, RowGroup};
 use columnar_query_engine::execution::aggregate::{AggOp, AggValue};
 use columnar_query_engine::execution::vector::Predicate;
 use columnar_query_engine::optimizer::plan::{PhysicalEngine, QueryPlan, QueryResult};
+use columnar_query_engine::storage::chunk::ColumnChunk;
+use columnar_query_engine::storage::table::{ColumnarTable, RowGroup};
 
 fn main() {
     tracing_subscriber::fmt::init();
@@ -11,8 +11,16 @@ fn main() {
     let ids = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let amounts = vec![100, 250, 40, 500, 300, 120, 800, 50, 950, 200];
     let regions = vec![
-        "US-East".into(), "US-West".into(), "EU-Central".into(), "US-East".into(), "APAC".into(),
-        "US-East".into(), "EU-Central".into(), "APAC".into(), "US-East".into(), "US-West".into()
+        "US-East".into(),
+        "US-West".into(),
+        "EU-Central".into(),
+        "US-East".into(),
+        "APAC".into(),
+        "US-East".into(),
+        "EU-Central".into(),
+        "APAC".into(),
+        "US-East".into(),
+        "US-West".into(),
     ];
 
     let c_id = ColumnChunk::new_int64("id", ids);

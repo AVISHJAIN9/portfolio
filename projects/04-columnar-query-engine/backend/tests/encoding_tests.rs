@@ -1,4 +1,6 @@
-use columnar_query_engine::storage::encoding::{DictionaryEncodedColumn, NullBitmap, RleEncodedColumn, RowGroup};
+use columnar_query_engine::storage::encoding::{
+    DictionaryEncodedColumn, NullBitmap, RleEncodedColumn, RowGroup,
+};
 
 // FEAT: 04-046 "Columnar table format"
 // ACCEPT: Columnar table format with vertical column partition arrays and row groups

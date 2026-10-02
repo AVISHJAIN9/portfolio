@@ -1,12 +1,12 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use columnar_query_engine::execution::vector::{Predicate, SelectionVector, VectorizedExecutor};
 use columnar_query_engine::storage::chunk::ColumnChunk;
-use columnar_query_engine::execution::vector::{SelectionVector, VectorizedExecutor, Predicate};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_chunk_filter(c: &mut Criterion) {
     let values: Vec<i64> = (0..100_000).collect();
     let chunk = ColumnChunk::new_int64("id", values);
     let pred = Predicate::Gt("id".to_string(), 50_000);
-    
+
     c.bench_function("columnar_filter_scan_100k_rows", |b| {
         let selection = SelectionVector::all(100_000);
         b.iter(|| {
@@ -35,7 +35,7 @@ fn bench_tpch_q6_filtered_agg(c: &mut Criterion) {
                 black_box(&selection),
             );
             let sum: i64 = match &chunk.data {
-                columnar_query_engine::storage::chunk::ColumnData::Int64(v) => {
+                columnar_query_engine::storage::chunk::ColumnVector::Int64(v) => {
                     filtered_sel.indices.iter().map(|&idx| v[idx]).sum()
                 }
                 _ => 0,
@@ -64,5 +64,10 @@ fn bench_tpch_q1_grouped_agg(c: &mut Criterion) {
     });
 }
 
-criterion_group!(benches, bench_chunk_filter, bench_tpch_q6_filtered_agg, bench_tpch_q1_grouped_agg);
+criterion_group!(
+    benches,
+    bench_chunk_filter,
+    bench_tpch_q6_filtered_agg,
+    bench_tpch_q1_grouped_agg
+);
 criterion_main!(benches);

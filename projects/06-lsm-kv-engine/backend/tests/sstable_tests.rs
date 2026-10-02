@@ -49,7 +49,11 @@ fn test_sstable_block_checksums_corruption_detected() {
     let _ = builder.finish().unwrap();
 
     // Corrupt block payload byte at offset 10
-    let mut file = OpenOptions::new().read(true).write(true).open(&sst_path).unwrap();
+    let mut file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open(&sst_path)
+        .unwrap();
     file.seek(SeekFrom::Start(10)).unwrap();
     file.write_all(b"\xff\xff\xff").unwrap();
     drop(file);
@@ -111,10 +115,14 @@ fn test_sstable_prefix_compression_restart_points() {
     }
     let reader = builder.finish().unwrap();
 
-    assert!(reader.index.len() >= 1);
-    let first_lookup = reader.get(b"sensor_telemetry_cluster_east_rack_42_node_0000").unwrap();
+    assert!(!reader.index.is_empty());
+    let first_lookup = reader
+        .get(b"sensor_telemetry_cluster_east_rack_42_node_0000")
+        .unwrap();
     assert!(first_lookup.is_some());
-    let missing_lookup = reader.get(b"sensor_telemetry_cluster_east_rack_42_node_9999").unwrap();
+    let missing_lookup = reader
+        .get(b"sensor_telemetry_cluster_east_rack_42_node_9999")
+        .unwrap();
     assert_eq!(missing_lookup, None);
 }
 
@@ -190,7 +198,10 @@ fn test_sstable_validation_scanner() {
     builder.add(b"val_k03", Some(b"3"));
     let reader = builder.finish().unwrap();
 
-    let all_valid = reader.index.windows(2).all(|w| w[0].last_key <= w[1].first_key);
+    let all_valid = reader
+        .index
+        .windows(2)
+        .all(|w| w[0].last_key <= w[1].first_key);
     assert!(all_valid);
     assert_eq!(reader.get(b"val_k02").unwrap(), Some(Some(b"2".to_vec())));
     assert_eq!(reader.get(b"val_k99").unwrap(), None);
@@ -250,6 +261,9 @@ fn test_sstable_checksum_verification_strict() {
     let reader = builder.finish().unwrap();
 
     assert!(reader.get(b"chk_strict_k").unwrap().is_some());
-    assert_eq!(reader.get(b"chk_strict_k").unwrap().unwrap(), Some(b"chk_strict_v".to_vec()));
+    assert_eq!(
+        reader.get(b"chk_strict_k").unwrap().unwrap(),
+        Some(b"chk_strict_v".to_vec())
+    );
     assert_eq!(reader.get(b"non_existent").unwrap(), None);
 }

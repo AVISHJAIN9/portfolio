@@ -63,7 +63,11 @@ impl PhysicalEngine {
             let mut sel = SelectionVector::all(rg.num_rows);
             for pred in &plan.predicates {
                 let target_col = match pred {
-                    Predicate::Gt(c, _) | Predicate::Lt(c, _) | Predicate::Eq(c, _) | Predicate::Between(c, _, _) | Predicate::StrEq(c, _) => c,
+                    Predicate::Gt(c, _)
+                    | Predicate::Lt(c, _)
+                    | Predicate::Eq(c, _)
+                    | Predicate::Between(c, _, _)
+                    | Predicate::StrEq(c, _) => c,
                 };
                 if let Some(col) = rg.get_column(target_col) {
                     sel = VectorizedExecutor::evaluate_filter(col, pred, &sel);
@@ -84,7 +88,9 @@ impl PhysicalEngine {
                         AggOp::Sum(c) | AggOp::Min(c) | AggOp::Max(c) | AggOp::Avg(c) => c,
                         AggOp::Count => grp_col,
                     };
-                    let v_chunk = rg.get_column(val_col_name).ok_or("Aggregate column not found")?;
+                    let v_chunk = rg
+                        .get_column(val_col_name)
+                        .ok_or("Aggregate column not found")?;
                     let batch_res = VectorAggregator::group_by(g_chunk, v_chunk, agg_op, &sel);
 
                     for (k, v) in batch_res {
@@ -110,7 +116,9 @@ impl PhysicalEngine {
                         AggOp::Count => "",
                     };
                     if !val_col_name.is_empty() {
-                        let v_chunk = rg.get_column(val_col_name).ok_or("Aggregate column not found")?;
+                        let v_chunk = rg
+                            .get_column(val_col_name)
+                            .ok_or("Aggregate column not found")?;
                         let agg = VectorAggregator::aggregate_column(v_chunk, agg_op, &sel);
                         if let AggValue::Int(n) = agg {
                             scalar_total_sum += n;

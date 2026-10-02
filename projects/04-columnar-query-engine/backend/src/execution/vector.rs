@@ -34,7 +34,11 @@ impl SelectionVector {
 pub struct VectorizedExecutor;
 
 impl VectorizedExecutor {
-    pub fn evaluate_filter(chunk: &ColumnChunk, predicate: &Predicate, sel: &SelectionVector) -> SelectionVector {
+    pub fn evaluate_filter(
+        chunk: &ColumnChunk,
+        predicate: &Predicate,
+        sel: &SelectionVector,
+    ) -> SelectionVector {
         let mut matched = Vec::with_capacity(sel.len());
 
         match (&chunk.data, predicate) {

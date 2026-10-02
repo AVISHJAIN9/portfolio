@@ -189,11 +189,11 @@ impl MemoryPool {
     }
 
     pub fn release(&self, bytes: usize) {
-        let _ = self.allocated_bytes.fetch_update(
-            Ordering::SeqCst,
-            Ordering::SeqCst,
-            |cur| Some(cur.saturating_sub(bytes)),
-        );
+        let _ = self
+            .allocated_bytes
+            .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |cur| {
+                Some(cur.saturating_sub(bytes))
+            });
     }
 
     pub fn allocated(&self) -> usize {
@@ -213,7 +213,10 @@ impl LocalFsConnector {
         }
     }
 
-    pub fn list_files_matching_glob(&self, glob_pattern: &str) -> Result<Vec<PathBuf>, StorageError> {
+    pub fn list_files_matching_glob(
+        &self,
+        glob_pattern: &str,
+    ) -> Result<Vec<PathBuf>, StorageError> {
         if glob_pattern.contains("../") || glob_pattern.contains("..\\") {
             return Err(StorageError::PathTraversalAttempt(glob_pattern.to_string()));
         }
@@ -223,7 +226,8 @@ impl LocalFsConnector {
             for entry in entries.flatten() {
                 let path = entry.path();
                 let file_name = path.file_name().and_then(|s| s.to_str()).unwrap_or("");
-                if glob_pattern == "*" || file_name.ends_with(glob_pattern.trim_start_matches('*')) {
+                if glob_pattern == "*" || file_name.ends_with(glob_pattern.trim_start_matches('*'))
+                {
                     matches.push(path);
                 }
             }
@@ -234,13 +238,18 @@ impl LocalFsConnector {
     pub fn infer_csv_schema(&self, path: &Path) -> Result<Vec<(String, String)>, StorageError> {
         // Traversal guard
         if !path.starts_with(&self.root_dir) {
-            return Err(StorageError::PathTraversalAttempt(path.display().to_string()));
+            return Err(StorageError::PathTraversalAttempt(
+                path.display().to_string(),
+            ));
         }
 
-        let content = std::fs::read_to_string(path)
-            .map_err(|e| StorageError::IoError(e.to_string()))?;
+        let content =
+            std::fs::read_to_string(path).map_err(|e| StorageError::IoError(e.to_string()))?;
         let header = content.lines().next().unwrap_or("");
-        let cols = header.split(',').map(|c| (c.trim().to_string(), "Utf8".to_string())).collect();
+        let cols = header
+            .split(',')
+            .map(|c| (c.trim().to_string(), "Utf8".to_string()))
+            .collect();
         Ok(cols)
     }
 }

@@ -1,9 +1,9 @@
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::Arc;
-use std::collections::HashMap;
+use crate::execution::vector::SelectionVector;
 use rayon::prelude::*;
 use rayon::ThreadPoolBuilder;
-use crate::execution::vector::SelectionVector;
+use std::collections::HashMap;
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::Arc;
 
 pub const DEFAULT_MORSEL_SIZE: usize = 10_000;
 
@@ -49,7 +49,11 @@ impl MorselScheduler {
                 return None;
             }
             let next = (current + self.morsel_size).min(self.total_rows);
-            if self.cursor.compare_exchange_weak(current, next, Ordering::SeqCst, Ordering::Relaxed).is_ok() {
+            if self
+                .cursor
+                .compare_exchange_weak(current, next, Ordering::SeqCst, Ordering::Relaxed)
+                .is_ok()
+            {
                 return Some(Morsel {
                     start: current,
                     end: next,
@@ -130,9 +134,7 @@ impl ParallelScan {
             for mut partial in partial_selections {
                 combined.append(&mut partial);
             }
-            SelectionVector {
-                indices: combined,
-            }
+            SelectionVector { indices: combined }
         })
     }
 }

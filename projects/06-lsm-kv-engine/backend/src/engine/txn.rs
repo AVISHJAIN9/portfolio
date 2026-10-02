@@ -1,6 +1,5 @@
 use crate::engine::LsmEngine;
 use std::collections::{BTreeMap, HashSet};
-use std::sync::atomic::Ordering;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum TxnError {
@@ -41,7 +40,9 @@ impl<'a> Transaction<'a> {
             return Ok(val_opt.clone());
         }
 
-        self.engine.get(key).map_err(|e| TxnError::IoError(e.to_string()))
+        self.engine
+            .get(key)
+            .map_err(|e| TxnError::IoError(e.to_string()))
     }
 
     pub fn put(&mut self, key: &[u8], value: &[u8]) -> Result<(), TxnError> {
@@ -96,7 +97,13 @@ impl<'a> Transaction<'a> {
         let deletes: Vec<&[u8]> = self
             .write_set
             .iter()
-            .filter_map(|(k, v)| if v.is_none() { Some(k.as_slice()) } else { None })
+            .filter_map(|(k, v)| {
+                if v.is_none() {
+                    Some(k.as_slice())
+                } else {
+                    None
+                }
+            })
             .collect();
 
         self.engine

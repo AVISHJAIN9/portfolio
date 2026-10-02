@@ -31,14 +31,17 @@ impl MemTable {
 
     pub fn put(&self, key: &[u8], value: &[u8]) {
         let entry_size = key.len() + value.len() + 16;
-        self.map.insert(key.to_vec(), ValueEntry::Value(value.to_vec()));
-        self.approx_size_bytes.fetch_add(entry_size, Ordering::Relaxed);
+        self.map
+            .insert(key.to_vec(), ValueEntry::Value(value.to_vec()));
+        self.approx_size_bytes
+            .fetch_add(entry_size, Ordering::Relaxed);
     }
 
     pub fn delete(&self, key: &[u8]) {
         let entry_size = key.len() + 16;
         self.map.insert(key.to_vec(), ValueEntry::Tombstone);
-        self.approx_size_bytes.fetch_add(entry_size, Ordering::Relaxed);
+        self.approx_size_bytes
+            .fetch_add(entry_size, Ordering::Relaxed);
     }
 
     pub fn get(&self, key: &[u8]) -> Option<ValueEntry> {

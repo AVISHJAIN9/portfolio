@@ -1,9 +1,9 @@
 //! Write-Ahead Log (WAL) with CRC32 Verification & Crash Recovery (06-014..022)
 
-use bytes::{Buf, BufMut, Bytes, BytesMut};
+use bytes::{Buf, BufMut, BytesMut};
 use pf_checksum::crc32;
 use std::fs::{File, OpenOptions};
-use std::io::{Read, Seek, SeekFrom, Write};
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -30,6 +30,7 @@ pub struct WalRecord {
 
 pub struct WalWriter {
     file: File,
+    #[allow(dead_code)]
     path: PathBuf,
     current_seq_no: u64,
     fsync_policy: FsyncPolicy,
@@ -70,7 +71,8 @@ impl WalWriter {
         let key_len = record.key.len() as u32;
         let val_len = record.value.as_ref().map(|v| v.len()).unwrap_or(0) as u32;
 
-        let mut payload = BytesMut::with_capacity(8 + 1 + 4 + key_len as usize + 4 + val_len as usize);
+        let mut payload =
+            BytesMut::with_capacity(8 + 1 + 4 + key_len as usize + 4 + val_len as usize);
         payload.put_u64(record.seq_no);
         payload.put_u8(record.op_type as u8);
         payload.put_u32(key_len);
@@ -89,11 +91,12 @@ impl WalWriter {
         self.file.write_all(&frame)?;
         self.unflushed_appends += 1;
 
-        let should_sync = sync || match self.fsync_policy {
-            FsyncPolicy::Always => true,
-            FsyncPolicy::Interval(n) if n > 0 => self.unflushed_appends >= n,
-            _ => false,
-        };
+        let should_sync = sync
+            || match self.fsync_policy {
+                FsyncPolicy::Always => true,
+                FsyncPolicy::Interval(n) if n > 0 => self.unflushed_appends >= n,
+                _ => false,
+            };
 
         if should_sync {
             self.sync_count += 1;
@@ -130,7 +133,8 @@ impl WalWriter {
 
         while cursor + 8 <= buffer.len() {
             let checksum = u32::from_be_bytes(buffer[cursor..cursor + 4].try_into().unwrap());
-            let payload_len = u32::from_be_bytes(buffer[cursor + 4..cursor + 8].try_into().unwrap()) as usize;
+            let payload_len =
+                u32::from_be_bytes(buffer[cursor + 4..cursor + 8].try_into().unwrap()) as usize;
             cursor += 8;
 
             if cursor + payload_len > buffer.len() {
@@ -148,7 +152,7 @@ impl WalWriter {
             cursor += payload_len;
 
             // Decode payload
-            let mut buf = &payload_bytes[..];
+            let mut buf = payload_bytes;
             let seq_no = buf.get_u64();
             let op_code = buf.get_u8();
             let op_type = match op_code {

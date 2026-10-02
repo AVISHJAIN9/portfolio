@@ -1,9 +1,9 @@
+use crate::sstable::{SsTableBuilder, SsTableReader};
 use std::collections::{BTreeMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
-use crate::sstable::{SsTableBuilder, SsTableReader};
 
 #[derive(Debug, Clone)]
 pub struct FileMetadata {
@@ -65,7 +65,8 @@ impl LeveledCompactionController {
             files.len() as f64 / self.l0_compaction_threshold.max(1) as f64
         } else {
             let total_bytes: u64 = files.iter().map(|f| f.size_bytes).sum();
-            let target_bytes = self.max_bytes_for_level_base * (self.level_size_multiplier.pow(level as u32 - 1) as u64);
+            let target_bytes = self.max_bytes_for_level_base
+                * (self.level_size_multiplier.pow(level as u32 - 1) as u64);
             total_bytes as f64 / target_bytes as f64
         }
     }
@@ -166,7 +167,9 @@ impl LeveledCompactionController {
             }
         }
 
-        self.stats.bytes_read.fetch_add(total_bytes_read, Ordering::Relaxed);
+        self.stats
+            .bytes_read
+            .fetch_add(total_bytes_read, Ordering::Relaxed);
 
         // Write new SSTable at target level
         let out_path = out_dir.join(format!("{:06}.sst", next_file_num));
@@ -176,11 +179,15 @@ impl LeveledCompactionController {
             builder.add(k, v.as_deref());
         }
 
-        let reader = builder.finish()?;
+        let _reader = builder.finish()?;
         let meta = fs::metadata(&out_path)?;
         let bytes_written = meta.len();
-        self.stats.bytes_written.fetch_add(bytes_written, Ordering::Relaxed);
-        self.stats.compactions_completed.fetch_add(1, Ordering::Relaxed);
+        self.stats
+            .bytes_written
+            .fetch_add(bytes_written, Ordering::Relaxed);
+        self.stats
+            .compactions_completed
+            .fetch_add(1, Ordering::Relaxed);
 
         // Delete obsolete files
         for p in &obsolete_paths {
@@ -188,7 +195,11 @@ impl LeveledCompactionController {
         }
 
         let first_key = merged_entries.keys().next().cloned().unwrap_or_default();
-        let last_key = merged_entries.keys().next_back().cloned().unwrap_or_default();
+        let last_key = merged_entries
+            .keys()
+            .next_back()
+            .cloned()
+            .unwrap_or_default();
 
         let new_file_meta = FileMetadata {
             file_number: next_file_num,

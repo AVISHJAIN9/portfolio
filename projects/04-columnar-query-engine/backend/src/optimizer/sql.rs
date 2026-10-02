@@ -50,14 +50,38 @@ impl<'a> SqlLexer<'a> {
             }
 
             match c {
-                b',' => { tokens.push(Token::Comma); self.pos += 1; }
-                b'*' => { tokens.push(Token::Star); self.pos += 1; }
-                b'.' => { tokens.push(Token::Dot); self.pos += 1; }
-                b'(' => { tokens.push(Token::OpenParen); self.pos += 1; }
-                b')' => { tokens.push(Token::CloseParen); self.pos += 1; }
-                b'=' => { tokens.push(Token::Eq); self.pos += 1; }
-                b'>' => { tokens.push(Token::Gt); self.pos += 1; }
-                b'<' => { tokens.push(Token::Lt); self.pos += 1; }
+                b',' => {
+                    tokens.push(Token::Comma);
+                    self.pos += 1;
+                }
+                b'*' => {
+                    tokens.push(Token::Star);
+                    self.pos += 1;
+                }
+                b'.' => {
+                    tokens.push(Token::Dot);
+                    self.pos += 1;
+                }
+                b'(' => {
+                    tokens.push(Token::OpenParen);
+                    self.pos += 1;
+                }
+                b')' => {
+                    tokens.push(Token::CloseParen);
+                    self.pos += 1;
+                }
+                b'=' => {
+                    tokens.push(Token::Eq);
+                    self.pos += 1;
+                }
+                b'>' => {
+                    tokens.push(Token::Gt);
+                    self.pos += 1;
+                }
+                b'<' => {
+                    tokens.push(Token::Lt);
+                    self.pos += 1;
+                }
                 b'\'' => {
                     self.pos += 1;
                     let start = self.pos;
@@ -71,18 +95,30 @@ impl<'a> SqlLexer<'a> {
                     self.pos += 1;
                     tokens.push(Token::StringLit(s.to_string()));
                 }
-                _ if c.is_ascii_digit() || (c == b'-' && self.pos + 1 < bytes.len() && bytes[self.pos + 1].is_ascii_digit()) => {
+                _ if c.is_ascii_digit()
+                    || (c == b'-'
+                        && self.pos + 1 < bytes.len()
+                        && bytes[self.pos + 1].is_ascii_digit()) =>
+                {
                     let start = self.pos;
-                    if c == b'-' { self.pos += 1; }
+                    if c == b'-' {
+                        self.pos += 1;
+                    }
                     while self.pos < bytes.len() && bytes[self.pos].is_ascii_digit() {
                         self.pos += 1;
                     }
-                    let num: i64 = self.src[start..self.pos].parse().map_err(|_| "Invalid number")?;
+                    let num: i64 = self.src[start..self.pos]
+                        .parse()
+                        .map_err(|_| "Invalid number")?;
                     tokens.push(Token::Number(num));
                 }
                 _ if c.is_ascii_alphabetic() || c == b'_' => {
                     let start = self.pos;
-                    while self.pos < bytes.len() && (bytes[self.pos].is_ascii_alphanumeric() || bytes[self.pos] == b'_' || bytes[self.pos] == b'.') {
+                    while self.pos < bytes.len()
+                        && (bytes[self.pos].is_ascii_alphanumeric()
+                            || bytes[self.pos] == b'_'
+                            || bytes[self.pos] == b'.')
+                    {
                         self.pos += 1;
                     }
                     let word = &self.src[start..self.pos];
@@ -145,19 +181,29 @@ impl SqlParser {
                 }
                 Token::Sum => {
                     idx += 1;
-                    if idx < tokens.len() && tokens[idx] == Token::OpenParen { idx += 1; }
+                    if idx < tokens.len() && tokens[idx] == Token::OpenParen {
+                        idx += 1;
+                    }
                     if let Token::Ident(col) = &tokens[idx] {
                         aggregate = Some(AggOp::Sum(col.clone()));
                         select_items.push(format!("SUM({})", col));
                         idx += 1;
                     }
-                    if idx < tokens.len() && tokens[idx] == Token::CloseParen { idx += 1; }
+                    if idx < tokens.len() && tokens[idx] == Token::CloseParen {
+                        idx += 1;
+                    }
                 }
                 Token::Count => {
                     idx += 1;
-                    if idx < tokens.len() && tokens[idx] == Token::OpenParen { idx += 1; }
-                    if idx < tokens.len() && tokens[idx] == Token::Star { idx += 1; }
-                    if idx < tokens.len() && tokens[idx] == Token::CloseParen { idx += 1; }
+                    if idx < tokens.len() && tokens[idx] == Token::OpenParen {
+                        idx += 1;
+                    }
+                    if idx < tokens.len() && tokens[idx] == Token::Star {
+                        idx += 1;
+                    }
+                    if idx < tokens.len() && tokens[idx] == Token::CloseParen {
+                        idx += 1;
+                    }
                     aggregate = Some(AggOp::Count);
                     select_items.push("COUNT(*)".to_string());
                 }
@@ -165,7 +211,9 @@ impl SqlParser {
                     select_items.push(col.clone());
                     idx += 1;
                 }
-                Token::Comma => { idx += 1; }
+                Token::Comma => {
+                    idx += 1;
+                }
                 _ => break,
             }
         }
@@ -191,10 +239,18 @@ impl SqlParser {
             idx += 1;
             if idx < tokens.len() && tokens[idx] == Token::On {
                 idx += 1;
-                let left_col = match &tokens[idx] { Token::Ident(c) => c.clone(), _ => return Err("Expected left ON column") };
+                let left_col = match &tokens[idx] {
+                    Token::Ident(c) => c.clone(),
+                    _ => return Err("Expected left ON column"),
+                };
                 idx += 1;
-                if idx < tokens.len() && tokens[idx] == Token::Eq { idx += 1; }
-                let right_col = match &tokens[idx] { Token::Ident(c) => c.clone(), _ => return Err("Expected right ON column") };
+                if idx < tokens.len() && tokens[idx] == Token::Eq {
+                    idx += 1;
+                }
+                let right_col = match &tokens[idx] {
+                    Token::Ident(c) => c.clone(),
+                    _ => return Err("Expected right ON column"),
+                };
                 idx += 1;
                 join_table = Some((j_tbl, left_col, right_col));
             }

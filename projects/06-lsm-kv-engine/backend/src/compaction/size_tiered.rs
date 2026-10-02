@@ -34,7 +34,8 @@ impl SizeTieredCompactionController {
         for file in sorted {
             let mut added = false;
             for tier in &mut tiers {
-                let avg_size: u64 = tier.iter().map(|f| f.size_bytes).sum::<u64>() / tier.len() as u64;
+                let avg_size: u64 =
+                    tier.iter().map(|f| f.size_bytes).sum::<u64>() / tier.len() as u64;
                 let min_bound = (avg_size as f64 / self.size_ratio) as u64;
                 let max_bound = (avg_size as f64 * self.size_ratio) as u64;
                 if file.size_bytes >= min_bound && file.size_bytes <= max_bound {
@@ -55,7 +56,11 @@ impl SizeTieredCompactionController {
         let tiers = self.group_into_tiers(files);
         for tier in tiers {
             if tier.len() >= self.min_threshold {
-                let to_pick = tier.into_iter().take(self.max_threshold).cloned().collect::<Vec<_>>();
+                let to_pick = tier
+                    .into_iter()
+                    .take(self.max_threshold)
+                    .cloned()
+                    .collect::<Vec<_>>();
                 return Some(to_pick);
             }
         }
@@ -90,7 +95,12 @@ pub struct CompactionDebtTracker {
 }
 
 impl CompactionDebtTracker {
-    pub fn new(base_level_bytes: u64, level_multiplier: u64, l0_trigger: usize, avg_l0_file_size: u64) -> Self {
+    pub fn new(
+        base_level_bytes: u64,
+        level_multiplier: u64,
+        l0_trigger: usize,
+        avg_l0_file_size: u64,
+    ) -> Self {
         Self {
             base_level_bytes,
             level_multiplier,
@@ -111,7 +121,8 @@ impl CompactionDebtTracker {
         }
 
         for (lvl_idx, files) in levels.iter().enumerate().skip(1) {
-            let target_capacity = self.base_level_bytes * self.level_multiplier.pow((lvl_idx - 1) as u32);
+            let target_capacity =
+                self.base_level_bytes * self.level_multiplier.pow((lvl_idx - 1) as u32);
             let current_bytes: u64 = files.iter().map(|f| f.size_bytes).sum();
             if current_bytes > target_capacity {
                 total_debt += current_bytes - target_capacity;
@@ -176,7 +187,8 @@ impl CompactionThrottler {
         let elapsed_micros = now.saturating_sub(last);
 
         // Refill tokens
-        let new_tokens = (elapsed_micros as u128 * self.rate_bytes_per_sec as u128 / 1_000_000) as u64;
+        let new_tokens =
+            (elapsed_micros as u128 * self.rate_bytes_per_sec as u128 / 1_000_000) as u64;
         let current = self.tokens.load(Ordering::SeqCst);
         let updated = (current + new_tokens).min(self.rate_bytes_per_sec);
         self.tokens.store(updated, Ordering::SeqCst);
@@ -184,7 +196,8 @@ impl CompactionThrottler {
 
         let cur_tokens = self.tokens.load(Ordering::SeqCst);
         if cur_tokens >= requested_bytes {
-            self.tokens.store(cur_tokens - requested_bytes, Ordering::SeqCst);
+            self.tokens
+                .store(cur_tokens - requested_bytes, Ordering::SeqCst);
             0
         } else {
             let deficit = requested_bytes - cur_tokens;

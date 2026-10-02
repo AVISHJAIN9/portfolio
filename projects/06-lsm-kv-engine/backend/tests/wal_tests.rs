@@ -78,12 +78,17 @@ fn test_wal_fsync_policy_modes_durability() {
     let mut writer1 = WalWriter::open(&wal1).unwrap();
     writer1.set_fsync_policy(FsyncPolicy::Always);
     for i in 1..=5 {
-        writer1.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("k{}", i).into_bytes(),
-            value: Some(b"v".to_vec()),
-        }, false).unwrap();
+        writer1
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("k{}", i).into_bytes(),
+                    value: Some(b"v".to_vec()),
+                },
+                false,
+            )
+            .unwrap();
     }
     assert_eq!(writer1.sync_count(), 5);
 
@@ -92,12 +97,17 @@ fn test_wal_fsync_policy_modes_durability() {
     let mut writer2 = WalWriter::open(&wal2).unwrap();
     writer2.set_fsync_policy(FsyncPolicy::Never);
     for i in 1..=5 {
-        writer2.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("k{}", i).into_bytes(),
-            value: Some(b"v".to_vec()),
-        }, false).unwrap();
+        writer2
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("k{}", i).into_bytes(),
+                    value: Some(b"v".to_vec()),
+                },
+                false,
+            )
+            .unwrap();
     }
     assert_eq!(writer2.sync_count(), 0);
 
@@ -106,24 +116,34 @@ fn test_wal_fsync_policy_modes_durability() {
     let mut writer3 = WalWriter::open(&wal3).unwrap();
     writer3.set_fsync_policy(FsyncPolicy::Interval(3));
     for i in 1..=7 {
-        writer3.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("k{}", i).into_bytes(),
-            value: Some(b"v".to_vec()),
-        }, false).unwrap();
+        writer3
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("k{}", i).into_bytes(),
+                    value: Some(b"v".to_vec()),
+                },
+                false,
+            )
+            .unwrap();
     }
     // 4. FsyncPolicy::Interval(0) -> No sync (n must be > 0)
     let wal4 = dir.path().join("interval0.wal");
     let mut writer4 = WalWriter::open(&wal4).unwrap();
     writer4.set_fsync_policy(FsyncPolicy::Interval(0));
     for i in 1..=5 {
-        writer4.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("k{}", i).into_bytes(),
-            value: Some(b"v".to_vec()),
-        }, false).unwrap();
+        writer4
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("k{}", i).into_bytes(),
+                    value: Some(b"v".to_vec()),
+                },
+                false,
+            )
+            .unwrap();
     }
     assert_eq!(writer4.sync_count(), 0);
 }
@@ -136,19 +156,29 @@ fn test_wal_recovery_replay_startup() {
     let wal_path = dir.path().join("test.wal");
     let mut writer = WalWriter::open(&wal_path).unwrap();
 
-    writer.append(&WalRecord {
-        seq_no: 1,
-        op_type: WalOpType::Put,
-        key: b"k1".to_vec(),
-        value: Some(b"v1".to_vec()),
-    }, true).unwrap();
+    writer
+        .append(
+            &WalRecord {
+                seq_no: 1,
+                op_type: WalOpType::Put,
+                key: b"k1".to_vec(),
+                value: Some(b"v1".to_vec()),
+            },
+            true,
+        )
+        .unwrap();
 
-    writer.append(&WalRecord {
-        seq_no: 2,
-        op_type: WalOpType::Delete,
-        key: b"k1".to_vec(),
-        value: None,
-    }, true).unwrap();
+    writer
+        .append(
+            &WalRecord {
+                seq_no: 2,
+                op_type: WalOpType::Delete,
+                key: b"k1".to_vec(),
+                value: None,
+            },
+            true,
+        )
+        .unwrap();
 
     let (records, max_seq) = WalWriter::recover(&wal_path).unwrap();
     assert_eq!(records.len(), 2);
@@ -174,7 +204,11 @@ fn test_wal_corruption_detection_crc() {
     drop(writer);
 
     // Corrupt one byte in the payload
-    let mut file = OpenOptions::new().read(true).write(true).open(&wal_path).unwrap();
+    let mut file = OpenOptions::new()
+        .read(true)
+        .write(true)
+        .open(&wal_path)
+        .unwrap();
     file.write_all(b"CORRUPTED_BYTE_HEADER").unwrap();
 
     let (records, _) = WalWriter::recover(&wal_path).unwrap();
@@ -190,12 +224,17 @@ fn test_wal_truncation_policy_recovery() {
     let wal_path = dir.path().join("test.wal");
     let mut writer = WalWriter::open(&wal_path).unwrap();
 
-    writer.append(&WalRecord {
-        seq_no: 1,
-        op_type: WalOpType::Put,
-        key: b"complete".to_vec(),
-        value: Some(b"payload".to_vec()),
-    }, true).unwrap();
+    writer
+        .append(
+            &WalRecord {
+                seq_no: 1,
+                op_type: WalOpType::Put,
+                key: b"complete".to_vec(),
+                value: Some(b"payload".to_vec()),
+            },
+            true,
+        )
+        .unwrap();
     drop(writer);
 
     // Append partial truncated tail bytes
@@ -219,12 +258,17 @@ fn test_wal_segment_rotation_threshold() {
 
     let mut current_writer = WalWriter::open(make_seg_path(seg_id)).unwrap();
     for i in 1..=50 {
-        current_writer.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("key_{}", i).into_bytes(),
-            value: Some(vec![0xaa; 100]),
-        }, false).unwrap();
+        current_writer
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("key_{}", i).into_bytes(),
+                    value: Some(vec![0xaa; 100]),
+                },
+                false,
+            )
+            .unwrap();
     }
     drop(current_writer);
 
@@ -232,12 +276,17 @@ fn test_wal_segment_rotation_threshold() {
     seg_id += 1;
     let mut next_writer = WalWriter::open(make_seg_path(seg_id)).unwrap();
     for i in 51..=100 {
-        next_writer.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("key_{}", i).into_bytes(),
-            value: Some(vec![0xbb; 100]),
-        }, false).unwrap();
+        next_writer
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("key_{}", i).into_bytes(),
+                    value: Some(vec![0xbb; 100]),
+                },
+                false,
+            )
+            .unwrap();
     }
     drop(next_writer);
 
@@ -291,17 +340,23 @@ fn test_durability_fault_injection_recovery() {
     let mut writer = WalWriter::open(&wal_path).unwrap();
 
     // Acknowledged committed writes
-    writer.append(&WalRecord {
-        seq_no: 1,
-        op_type: WalOpType::Put,
-        key: b"ack_write".to_vec(),
-        value: Some(b"durable".to_vec()),
-    }, true).unwrap();
+    writer
+        .append(
+            &WalRecord {
+                seq_no: 1,
+                op_type: WalOpType::Put,
+                key: b"ack_write".to_vec(),
+                value: Some(b"durable".to_vec()),
+            },
+            true,
+        )
+        .unwrap();
 
     // Simulated partial write failure during power outage
     drop(writer);
     let mut file = OpenOptions::new().append(true).open(&wal_path).unwrap();
-    file.write_all(b"\x00\x00\x00\x10INCOMPLETE_WRITE_").unwrap();
+    file.write_all(b"\x00\x00\x00\x10INCOMPLETE_WRITE_")
+        .unwrap();
 
     // Recovery must recover acknowledged write and discard torn write
     let (recs, max_seq) = WalWriter::recover(&wal_path).unwrap();
@@ -322,12 +377,17 @@ fn test_wal_archival_and_archive_replay() {
 
     let seg1_path = wal_dir.join("000001.wal");
     let mut writer = WalWriter::open(&seg1_path).unwrap();
-    writer.append(&WalRecord {
-        seq_no: 1,
-        op_type: WalOpType::Put,
-        key: b"arch_k1".to_vec(),
-        value: Some(b"arch_v1".to_vec()),
-    }, true).unwrap();
+    writer
+        .append(
+            &WalRecord {
+                seq_no: 1,
+                op_type: WalOpType::Put,
+                key: b"arch_k1".to_vec(),
+                value: Some(b"arch_v1".to_vec()),
+            },
+            true,
+        )
+        .unwrap();
     drop(writer);
 
     // Archive segment 1
@@ -356,17 +416,20 @@ fn test_wal_metrics_telemetry() {
     assert_eq!(initial_syncs, 0);
 
     for i in 1..=5 {
-        writer.append(&WalRecord {
-            seq_no: i,
-            op_type: WalOpType::Put,
-            key: format!("met_k{}", i).into_bytes(),
-            value: Some(b"val".to_vec()),
-        }, true).unwrap();
+        writer
+            .append(
+                &WalRecord {
+                    seq_no: i,
+                    op_type: WalOpType::Put,
+                    key: format!("met_k{}", i).into_bytes(),
+                    value: Some(b"val".to_vec()),
+                },
+                true,
+            )
+            .unwrap();
     }
 
     assert_eq!(writer.sync_count(), 5);
     let meta = std::fs::metadata(&wal_path).unwrap();
     assert!(meta.len() > 50);
 }
-
-

@@ -14,7 +14,10 @@ fn main() {
     let engine = LsmEngine::open(dir.path()).expect("Open LSM engine");
 
     let num_ops = 20_000;
-    println!("Workload 1: fillseq ({} entries, 16B key, 100B val)...", num_ops);
+    println!(
+        "Workload 1: fillseq ({} entries, 16B key, 100B val)...",
+        num_ops
+    );
     let val_100b = vec![0x42u8; 100];
     let t0 = Instant::now();
     for i in 0..num_ops {
@@ -26,7 +29,11 @@ fn main() {
     }
     let seq_dur = t0.elapsed();
     let seq_ops = (num_ops as f64 / seq_dur.as_secs_f64()) as u64;
-    println!("✓ fillseq completed in {:.2}s ({} ops/sec)", seq_dur.as_secs_f64(), seq_ops);
+    println!(
+        "✓ fillseq completed in {:.2}s ({} ops/sec)",
+        seq_dur.as_secs_f64(),
+        seq_ops
+    );
 
     println!("Workload 2: fillrandom ({} entries)...", num_ops);
     let mut rng = StdRng::seed_from_u64(42);
@@ -41,7 +48,11 @@ fn main() {
     }
     let rnd_dur = t0.elapsed();
     let rnd_ops = (num_ops as f64 / rnd_dur.as_secs_f64()) as u64;
-    println!("✓ fillrandom completed in {:.2}s ({} ops/sec)", rnd_dur.as_secs_f64(), rnd_ops);
+    println!(
+        "✓ fillrandom completed in {:.2}s ({} ops/sec)",
+        rnd_dur.as_secs_f64(),
+        rnd_ops
+    );
 
     println!("Workload 3: readrandom ({} lookups)...", num_ops);
     let t0 = Instant::now();
@@ -55,7 +66,13 @@ fn main() {
     }
     let read_dur = t0.elapsed();
     let read_ops = (num_ops as f64 / read_dur.as_secs_f64()) as u64;
-    println!("✓ readrandom completed in {:.2}s ({} ops/sec, found {}/{})", read_dur.as_secs_f64(), read_ops, found, num_ops);
+    println!(
+        "✓ readrandom completed in {:.2}s ({} ops/sec, found {}/{})",
+        read_dur.as_secs_f64(),
+        read_ops,
+        found,
+        num_ops
+    );
 
     println!("Workload 4: overwrite ({} entries)...", num_ops);
     let t0 = Instant::now();
@@ -66,7 +83,11 @@ fn main() {
     }
     let ow_dur = t0.elapsed();
     let ow_ops = (num_ops as f64 / ow_dur.as_secs_f64()) as u64;
-    println!("✓ overwrite completed in {:.2}s ({} ops/sec)", ow_dur.as_secs_f64(), ow_ops);
+    println!(
+        "✓ overwrite completed in {:.2}s ({} ops/sec)",
+        ow_dur.as_secs_f64(),
+        ow_ops
+    );
 
     println!("Workload 5: fsync=Always (10,000 ops)...",);
     let fsync_ops = 10_000;
@@ -77,7 +98,11 @@ fn main() {
     }
     let fsync_dur = t0.elapsed();
     let fsync_rate = (fsync_ops as f64 / fsync_dur.as_secs_f64()) as u64;
-    println!("✓ fsync=Always completed in {:.2}s ({} ops/sec)", fsync_dur.as_secs_f64(), fsync_rate);
+    println!(
+        "✓ fsync=Always completed in {:.2}s ({} ops/sec)",
+        fsync_dur.as_secs_f64(),
+        fsync_rate
+    );
 
     // Accounting metrics
     let user_bytes = (num_ops * 4 + fsync_ops) * 116; // key (16B) + val (100B) = 116B
@@ -157,12 +182,16 @@ fn main() {
         .join("benchmarks")
         .join("results")
         .join("lsm_kv_engine_benchmarks.json");
-    
+
     std::fs::create_dir_all(out_path.parent().unwrap()).unwrap();
     let mut f = File::create(&out_path).unwrap();
-    f.write_all(serde_json::to_string_pretty(&results).unwrap().as_bytes()).unwrap();
+    f.write_all(serde_json::to_string_pretty(&results).unwrap().as_bytes())
+        .unwrap();
 
-    println!("✓ Saved measured multi-level LSM benchmark results to {:?}", out_path);
+    println!(
+        "✓ Saved measured multi-level LSM benchmark results to {:?}",
+        out_path
+    );
 }
 
 fn get_git_sha() -> String {

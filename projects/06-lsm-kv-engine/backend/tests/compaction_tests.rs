@@ -1,8 +1,8 @@
+use lsm_kv_engine::compaction::{FileMetadata, LeveledCompactionController};
+use lsm_kv_engine::sstable::{SsTableBuilder, SsTableReader};
 use std::fs;
 use std::path::Path;
 use tempfile::tempdir;
-use lsm_kv_engine::compaction::{FileMetadata, LeveledCompactionController};
-use lsm_kv_engine::sstable::{SsTableBuilder, SsTableReader};
 
 // FEAT: 06-053 "Leveled compaction"
 // ACCEPT: Leveled compaction preserves logical state before == after across multi-level SSTable merges
@@ -48,9 +48,18 @@ fn test_leveled_compaction_state_preservation() {
     assert_eq!(obsolete.len(), 2);
 
     let reader = SsTableReader::open(&new_files[0].path).unwrap();
-    assert_eq!(reader.get(b"key_a").unwrap(), Some(Some(b"val_a1".to_vec())));
-    assert_eq!(reader.get(b"key_b").unwrap(), Some(Some(b"val_b1".to_vec())));
-    assert_eq!(reader.get(b"key_c").unwrap(), Some(Some(b"val_c2_newer".to_vec()))); // Newer L0 entry overrides older
+    assert_eq!(
+        reader.get(b"key_a").unwrap(),
+        Some(Some(b"val_a1".to_vec()))
+    );
+    assert_eq!(
+        reader.get(b"key_b").unwrap(),
+        Some(Some(b"val_b1".to_vec()))
+    );
+    assert_eq!(
+        reader.get(b"key_c").unwrap(),
+        Some(Some(b"val_c2_newer".to_vec()))
+    ); // Newer L0 entry overrides older
 }
 
 // FEAT: 06-055 "Compaction picker"
@@ -94,7 +103,9 @@ fn test_compaction_picker_overlapping_key_ranges() {
         last_key: b"zzz_max".to_vec(),
     };
 
-    let task = controller.pick_compaction(&[l0_file1, l0_file2], &[l1_overlap.clone(), l1_non_overlap]).unwrap();
+    let task = controller
+        .pick_compaction(&[l0_file1, l0_file2], &[l1_overlap.clone(), l1_non_overlap])
+        .unwrap();
     assert_eq!(task.from_level, 0);
     assert_eq!(task.to_level, 1);
     assert_eq!(task.input_level_files.len(), 2);
@@ -123,7 +134,13 @@ fn test_compaction_scheduling_threshold_guards() {
     assert_eq!(controller.compute_compaction_score(0, &l0_under), 0.75);
     assert!(controller.pick_compaction(&l0_under, &[]).is_none());
 
-    let l0_over = vec![l0_file.clone(), l0_file.clone(), l0_file.clone(), l0_file.clone(), l0_file.clone()]; // 5 files >= 4
+    let l0_over = vec![
+        l0_file.clone(),
+        l0_file.clone(),
+        l0_file.clone(),
+        l0_file.clone(),
+        l0_file.clone(),
+    ]; // 5 files >= 4
     assert_eq!(controller.compute_compaction_score(0, &l0_over), 1.25);
     assert!(controller.pick_compaction(&l0_over, &[]).is_some());
 
@@ -160,7 +177,10 @@ fn test_compaction_scheduling_threshold_guards() {
     assert_eq!(controller.compute_compaction_score(1, &l1_under), 0.9);
     let levels_under = vec![vec![], l1_under];
     let busy_empty = HashSet::new();
-    assert_eq!(controller.pick_best_level_to_compact(&levels_under, &busy_empty), None);
+    assert_eq!(
+        controller.pick_best_level_to_compact(&levels_under, &busy_empty),
+        None
+    );
 
     // Score = 1.0 threshold trigger
     let l1_exact = vec![FileMetadata {
@@ -173,18 +193,30 @@ fn test_compaction_scheduling_threshold_guards() {
     }];
     assert_eq!(controller.compute_compaction_score(1, &l1_exact), 1.0);
     let levels_exact = vec![vec![], l1_exact];
-    assert_eq!(controller.pick_best_level_to_compact(&levels_exact, &busy_empty), Some(1));
+    assert_eq!(
+        controller.pick_best_level_to_compact(&levels_exact, &busy_empty),
+        Some(1)
+    );
 
     // 3. Highest-score-first pick (L2 score 2.0 > L1 score 1.5 > L0 score 1.25 -> picks L2)
     let levels = vec![l0_over.clone(), l1_files.clone(), l2_files.clone()];
-    assert_eq!(controller.pick_best_level_to_compact(&levels, &busy_empty), Some(2));
+    assert_eq!(
+        controller.pick_best_level_to_compact(&levels, &busy_empty),
+        Some(2)
+    );
 
     // 4. No two concurrent compactions on the same level (guard against busy level 2)
     let mut busy = HashSet::new();
     busy.insert(2);
-    assert_eq!(controller.pick_best_level_to_compact(&levels, &busy), Some(1)); // Falls back to L1
+    assert_eq!(
+        controller.pick_best_level_to_compact(&levels, &busy),
+        Some(1)
+    ); // Falls back to L1
     busy.insert(1);
-    assert_eq!(controller.pick_best_level_to_compact(&levels, &busy), Some(0)); // Falls back to L0
+    assert_eq!(
+        controller.pick_best_level_to_compact(&levels, &busy),
+        Some(0)
+    ); // Falls back to L0
 
     // Test pick_compaction boundary conditions with >= threshold L0 files
     let l0_f1 = FileMetadata {
@@ -290,19 +322,31 @@ fn test_compaction_output_generation_and_cleanup() {
         last_key: b"alpha".to_vec(),
     };
 
-    let initial_read = controller.stats.bytes_read.load(std::sync::atomic::Ordering::Relaxed);
-    let initial_written = controller.stats.bytes_written.load(std::sync::atomic::Ordering::Relaxed);
+    let initial_read = controller
+        .stats
+        .bytes_read
+        .load(std::sync::atomic::Ordering::Relaxed);
+    let initial_written = controller
+        .stats
+        .bytes_written
+        .load(std::sync::atomic::Ordering::Relaxed);
 
     let task = controller.pick_compaction(&[f1], &[]).unwrap();
-    let (outputs, obsolete) = controller.execute_compaction(&task, dir.path(), 2).unwrap();
+    let (outputs, _obsolete) = controller.execute_compaction(&task, dir.path(), 2).unwrap();
 
     assert_eq!(outputs.len(), 1);
     assert_eq!(outputs[0].file_number, 2);
     assert!(!sst_path.exists()); // Obsolete file removed
     assert!(outputs[0].path.exists()); // Output file created
 
-    let final_read = controller.stats.bytes_read.load(std::sync::atomic::Ordering::Relaxed);
-    let final_written = controller.stats.bytes_written.load(std::sync::atomic::Ordering::Relaxed);
+    let final_read = controller
+        .stats
+        .bytes_read
+        .load(std::sync::atomic::Ordering::Relaxed);
+    let final_written = controller
+        .stats
+        .bytes_written
+        .load(std::sync::atomic::Ordering::Relaxed);
     assert!(final_read > initial_read);
     assert!(final_written > initial_written);
 }
@@ -318,8 +362,14 @@ fn test_write_amplification_accounting_metrics() {
     assert_eq!(controller.stats.write_amplification(), 1.0);
 
     // Direct arithmetic check with non-trivial values (e.g. 350 / 100 = 3.5 != 350 * 100)
-    controller.stats.bytes_read.store(100, std::sync::atomic::Ordering::Relaxed);
-    controller.stats.bytes_written.store(350, std::sync::atomic::Ordering::Relaxed);
+    controller
+        .stats
+        .bytes_read
+        .store(100, std::sync::atomic::Ordering::Relaxed);
+    controller
+        .stats
+        .bytes_written
+        .store(350, std::sync::atomic::Ordering::Relaxed);
     assert_eq!(controller.stats.write_amplification(), 3.5);
 
     let sst_path = dir.path().join("000001.sst");
@@ -342,7 +392,13 @@ fn test_write_amplification_accounting_metrics() {
 
     let write_amp = controller.stats.write_amplification();
     assert!(write_amp > 0.0);
-    assert_eq!(controller.stats.compactions_completed.load(std::sync::atomic::Ordering::Relaxed), 1);
+    assert_eq!(
+        controller
+            .stats
+            .compactions_completed
+            .load(std::sync::atomic::Ordering::Relaxed),
+        1
+    );
 }
 
 // FEAT: 06-054 "Size-tiered compaction"
@@ -382,10 +438,15 @@ fn test_size_tiered_compaction_strategy_oracle() {
     }
 
     // Oracle expectation: tier with 4 files (10MB tier) is picked
-    let candidates = controller.pick_candidate_files(&files).expect("expected small tier picked");
+    let candidates = controller
+        .pick_candidate_files(&files)
+        .expect("expected small tier picked");
     assert_eq!(candidates.len(), 4);
     for cand in &candidates {
-        assert!(cand.size_bytes < 20 * 1024 * 1024, "Picked candidate must be in 10MB tier");
+        assert!(
+            cand.size_bytes < 20 * 1024 * 1024,
+            "Picked candidate must be in 10MB tier"
+        );
     }
 
     let task = controller.pick_compaction(&[files]).unwrap();
@@ -411,8 +472,14 @@ fn test_compaction_concurrency_non_overlapping() {
     assert!(l2_ok, "Level 2 non-overlapping lock must succeed");
 
     // 2. Conflicting lock attempts must fail
-    assert!(!mgr.try_lock_compaction(1, b"b", b"c"), "Same level lock must fail");
-    assert!(!mgr.try_lock_compaction(3, b"e", b"p"), "Overlapping key range lock must fail");
+    assert!(
+        !mgr.try_lock_compaction(1, b"b", b"c"),
+        "Same level lock must fail"
+    );
+    assert!(
+        !mgr.try_lock_compaction(3, b"e", b"p"),
+        "Overlapping key range lock must fail"
+    );
 
     // 3. Multithreaded validation
     let mgr_clone1 = Arc::clone(&mgr);
@@ -470,9 +537,18 @@ fn test_compaction_input_selection_min_overlap() {
     let l1_files = vec![l1_heavy, l1_light];
 
     let picked = select_l0_file_with_min_overlap(&l0_files, &l1_files).expect("expected best file");
-    assert_eq!(picked.file_number, 2, "Min-overlap must select file 2 with smaller L1 overlap bytes");
-    assert_ne!(picked.file_number, 1, "Must not select file 1 with 50KB overlap");
-    assert!(select_l0_file_with_min_overlap(&[], &l1_files).is_none(), "Empty L0 returns None");
+    assert_eq!(
+        picked.file_number, 2,
+        "Min-overlap must select file 2 with smaller L1 overlap bytes"
+    );
+    assert_ne!(
+        picked.file_number, 1,
+        "Must not select file 1 with 50KB overlap"
+    );
+    assert!(
+        select_l0_file_with_min_overlap(&[], &l1_files).is_none(),
+        "Empty L0 returns None"
+    );
 }
 
 // FEAT: 06-062 "Compaction debt tracking"
@@ -544,8 +620,14 @@ fn test_compaction_throttling_mock_clock() {
 
     // 2. Next 1 MB request exceeds the remaining 512 KB tokens
     let delay2 = throttler.request_tokens(1024 * 1024);
-    assert!(delay2 > 0, "Delay must be positive when tokens are depleted");
-    assert_eq!(delay2, 500_000, "Must calculate exact 500ms delay needed for 512KB deficit");
+    assert!(
+        delay2 > 0,
+        "Delay must be positive when tokens are depleted"
+    );
+    assert_eq!(
+        delay2, 500_000,
+        "Must calculate exact 500ms delay needed for 512KB deficit"
+    );
 
     // 3. Advance fake clock by 1 second (1,000,000 micros)
     clock.advance_micros(1_000_000);
@@ -588,8 +670,14 @@ fn test_compaction_cancellation_and_recovery() {
         fs::remove_file(&partial_tmp_path).unwrap();
     }
 
-    assert!(!partial_tmp_path.exists(), "Partial tmp file must be deleted on cancellation");
-    assert!(sst_in.exists(), "Input file must remain intact after cancellation");
+    assert!(
+        !partial_tmp_path.exists(),
+        "Partial tmp file must be deleted on cancellation"
+    );
+    assert!(
+        sst_in.exists(),
+        "Input file must remain intact after cancellation"
+    );
 
     // Recovery path: controller can still compact original valid file
     let task = controller.pick_compaction(&[f1.clone(), f1], &[]).unwrap();
@@ -618,9 +706,9 @@ fn test_compaction_benchmark_suite_json() {
     assert!(serialized.contains("write_amplification"));
     assert!(serialized.contains("throughput_mb_s"));
 
-    let deserialized: CompactionBenchReport = serde_json::from_str(&serialized).expect("Deserialization must succeed");
+    let deserialized: CompactionBenchReport =
+        serde_json::from_str(&serialized).expect("Deserialization must succeed");
     assert_eq!(deserialized, report);
     assert_eq!(deserialized.duration_ms, 125);
     assert_eq!(deserialized.throughput_mb_s, 80.0);
 }
-

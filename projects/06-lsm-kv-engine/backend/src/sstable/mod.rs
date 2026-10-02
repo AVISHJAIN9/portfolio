@@ -1,6 +1,6 @@
 //! SSTable File Format, Block Index, Bloom Filter & Block Cache Integration (06-040..048, 06-066..074)
 
-use bytes::{Buf, BufMut, BytesMut};
+use bytes::{BufMut, BytesMut};
 use pf_checksum::crc32;
 use pf_collections::BloomFilter;
 use std::collections::BTreeMap;
@@ -20,6 +20,7 @@ pub struct SsTableBuilder {
     path: PathBuf,
     entries: BTreeMap<Vec<u8>, Option<Vec<u8>>>,
     bloom: BloomFilter,
+    #[allow(dead_code)]
     estimated_entries: usize,
 }
 
@@ -142,7 +143,10 @@ impl SsTableReader {
         let file_len = file.metadata()?.len();
 
         if file_len < 12 {
-            return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable too small"));
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "SSTable too small",
+            ));
         }
 
         // Read footer
@@ -153,7 +157,10 @@ impl SsTableReader {
         let index_offset = u64::from_be_bytes(footer[..8].try_into().unwrap());
         let magic = u32::from_be_bytes(footer[8..12].try_into().unwrap());
         if magic != 0x4C534D31 {
-            return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "Invalid SSTable magic"));
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "Invalid SSTable magic",
+            ));
         }
 
         // Read index
@@ -208,9 +215,10 @@ impl SsTableReader {
         }
 
         // Locate block in index
-        let candidate_block = self.index.iter().find(|entry| {
-            key >= entry.first_key.as_slice() && key <= entry.last_key.as_slice()
-        });
+        let candidate_block = self
+            .index
+            .iter()
+            .find(|entry| key >= entry.first_key.as_slice() && key <= entry.last_key.as_slice());
 
         if let Some(entry) = candidate_block {
             let mut file = File::open(&self.path)?;
@@ -225,18 +233,23 @@ impl SsTableReader {
             file.read_exact(&mut block_data)?;
 
             if crc32(&block_data) != expected_crc {
-                return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable block CRC mismatch"));
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "SSTable block CRC mismatch",
+                ));
             }
 
             let mut cursor = 0;
             while cursor + 9 <= block_data.len() {
-                let k_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
+                let k_len =
+                    u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
                 let k = &block_data[cursor..cursor + k_len];
                 cursor += k_len;
                 let is_tombstone = block_data[cursor] == 1;
                 cursor += 1;
-                let v_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
+                let v_len =
+                    u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
                 let val = if is_tombstone {
                     None
@@ -254,6 +267,7 @@ impl SsTableReader {
         Ok(None)
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn scan_all(&self) -> std::io::Result<Vec<(Vec<u8>, Option<Vec<u8>>)>> {
         let mut file = File::open(&self.path)?;
         let mut entries = Vec::new();
@@ -269,24 +283,35 @@ impl SsTableReader {
             file.read_exact(&mut block_data)?;
 
             if crc32(&block_data) != expected_crc {
-                return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable block CRC mismatch"));
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "SSTable block CRC mismatch",
+                ));
             }
 
             let mut cursor = 0;
             while cursor + 9 <= block_data.len() {
-                let k_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
+                let k_len =
+                    u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
                 if cursor + k_len + 5 > block_data.len() {
-                    return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable corrupt block key length"));
+                    return Err(std::io::Error::new(
+                        std::io::ErrorKind::InvalidData,
+                        "SSTable corrupt block key length",
+                    ));
                 }
                 let k = block_data[cursor..cursor + k_len].to_vec();
                 cursor += k_len;
                 let is_tombstone = block_data[cursor] == 1;
                 cursor += 1;
-                let v_len = u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
+                let v_len =
+                    u32::from_be_bytes(block_data[cursor..cursor + 4].try_into().unwrap()) as usize;
                 cursor += 4;
                 if !is_tombstone && cursor + v_len > block_data.len() {
-                    return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "SSTable corrupt block value length"));
+                    return Err(std::io::Error::new(
+                        std::io::ErrorKind::InvalidData,
+                        "SSTable corrupt block value length",
+                    ));
                 }
                 let val = if is_tombstone {
                     None

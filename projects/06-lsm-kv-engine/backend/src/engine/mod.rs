@@ -86,7 +86,7 @@ impl LsmEngine {
         })
     }
 
-    pub fn begin_transaction(&self) -> Transaction {
+    pub fn begin_transaction(&self) -> Transaction<'_> {
         Transaction::new(self)
     }
 
@@ -241,7 +241,11 @@ impl LsmEngine {
         Ok(())
     }
 
-    pub fn scan_range(&self, start_key: &[u8], end_key: &[u8]) -> std::io::Result<Vec<(Vec<u8>, Vec<u8>)>> {
+    pub fn scan_range(
+        &self,
+        start_key: &[u8],
+        end_key: &[u8],
+    ) -> std::io::Result<Vec<(Vec<u8>, Vec<u8>)>> {
         let mut merged: BTreeMap<Vec<u8>, Option<Vec<u8>>> = BTreeMap::new();
 
         // 1. SSTables
@@ -335,7 +339,9 @@ impl LsmEngine {
     pub fn health(&self) -> EngineHealthReport {
         let mem_bytes = self.memtable.read().size_bytes();
         let sst_count = self.sstables.read().len();
-        let wal_size = fs::metadata(self.data_dir.join("current.wal")).map(|m| m.len()).unwrap_or(0);
+        let wal_size = fs::metadata(self.data_dir.join("current.wal"))
+            .map(|m| m.len())
+            .unwrap_or(0);
 
         let status = if mem_bytes > 128 * 1024 * 1024 {
             HealthStatus::Degraded("Memtable backpressure stall".to_string())

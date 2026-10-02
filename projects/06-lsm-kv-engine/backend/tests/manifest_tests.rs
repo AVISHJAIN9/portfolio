@@ -1,6 +1,6 @@
+use lsm_kv_engine::manifest::{EditRecord, ManifestManager, VersionEdit};
 use std::fs;
 use tempfile::tempdir;
-use lsm_kv_engine::manifest::{EditRecord, ManifestManager, VersionEdit};
 
 // FEAT: 06-105 "Manifest format"
 // ACCEPT: Binary length-prefixed and CRC32 checksummed log format for VersionEdit records
@@ -10,10 +10,7 @@ fn test_manifest_format_and_checksum_integrity() {
     let manager = ManifestManager::open(dir.path()).unwrap();
 
     let edit = VersionEdit {
-        records: vec![
-            EditRecord::NextFileNumber(42),
-            EditRecord::LogNumber(100),
-        ],
+        records: vec![EditRecord::NextFileNumber(42), EditRecord::LogNumber(100)],
     };
     assert!(manager.log_edit(&edit).is_ok());
     assert!(manager.manifest_path.exists());
@@ -89,15 +86,13 @@ fn test_startup_recovery_from_manifest_log() {
     {
         let manager = ManifestManager::open(dir.path()).unwrap();
         let edit1 = VersionEdit {
-            records: vec![
-                EditRecord::AddFile {
-                    level: 0,
-                    file_number: 1,
-                    size_bytes: 500,
-                    first_key: b"k1".to_vec(),
-                    last_key: b"k2".to_vec(),
-                },
-            ],
+            records: vec![EditRecord::AddFile {
+                level: 0,
+                file_number: 1,
+                size_bytes: 500,
+                first_key: b"k1".to_vec(),
+                last_key: b"k2".to_vec(),
+            }],
         };
         manager.log_edit(&edit1).unwrap();
 
@@ -138,9 +133,27 @@ fn test_sstable_inventory_tracking() {
 
     let edit = VersionEdit {
         records: vec![
-            EditRecord::AddFile { level: 0, file_number: 10, size_bytes: 1024, first_key: b"a".to_vec(), last_key: b"m".to_vec() },
-            EditRecord::AddFile { level: 0, file_number: 11, size_bytes: 1024, first_key: b"n".to_vec(), last_key: b"z".to_vec() },
-            EditRecord::AddFile { level: 1, file_number: 12, size_bytes: 2048, first_key: b"a".to_vec(), last_key: b"z".to_vec() },
+            EditRecord::AddFile {
+                level: 0,
+                file_number: 10,
+                size_bytes: 1024,
+                first_key: b"a".to_vec(),
+                last_key: b"m".to_vec(),
+            },
+            EditRecord::AddFile {
+                level: 0,
+                file_number: 11,
+                size_bytes: 1024,
+                first_key: b"n".to_vec(),
+                last_key: b"z".to_vec(),
+            },
+            EditRecord::AddFile {
+                level: 1,
+                file_number: 12,
+                size_bytes: 2048,
+                first_key: b"a".to_vec(),
+                last_key: b"z".to_vec(),
+            },
         ],
     };
     manager.log_edit(&edit).unwrap();
@@ -163,7 +176,11 @@ fn test_orphan_file_detection_and_reporting() {
     let manager = ManifestManager::open(dir.path()).unwrap();
     let version = manager.recover().unwrap();
 
-    let live_files: Vec<u64> = version.levels.iter().flat_map(|l| l.iter().map(|f| f.file_number)).collect();
+    let live_files: Vec<u64> = version
+        .levels
+        .iter()
+        .flat_map(|l| l.iter().map(|f| f.file_number))
+        .collect();
     assert!(!live_files.contains(&999999));
     assert!(sst_orphan.exists());
     assert_eq!(live_files.len(), 0);
@@ -193,7 +210,10 @@ fn test_metadata_checksums_validation() {
     let dir = tempdir().unwrap();
     let manager = ManifestManager::open(dir.path()).unwrap();
     let edit = VersionEdit {
-        records: vec![EditRecord::LogNumber(500), EditRecord::LastSequenceNumber(1234)],
+        records: vec![
+            EditRecord::LogNumber(500),
+            EditRecord::LastSequenceNumber(1234),
+        ],
     };
     assert!(manager.log_edit(&edit).is_ok());
     let v = manager.recover().unwrap();
@@ -246,7 +266,13 @@ fn test_recovery_diagnostics_summary() {
     let manager = ManifestManager::open(dir.path()).unwrap();
     let edit = VersionEdit {
         records: vec![
-            EditRecord::AddFile { level: 0, file_number: 1, size_bytes: 4096, first_key: b"k1".to_vec(), last_key: b"k2".to_vec() },
+            EditRecord::AddFile {
+                level: 0,
+                file_number: 1,
+                size_bytes: 4096,
+                first_key: b"k1".to_vec(),
+                last_key: b"k2".to_vec(),
+            },
             EditRecord::LastSequenceNumber(4242),
         ],
     };

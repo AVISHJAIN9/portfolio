@@ -79,9 +79,9 @@ fn test_sql_join_support_parser() {
 
     // Execute end-to-end join using ParallelHashJoin
     // Build relation: customers (id -> customer_val)
-    let customers = vec![(1, 1001), (2, 1002), (3, 1003)];
+    let customers = [(1, 1001), (2, 1002), (3, 1003)];
     // Probe relation: orders (cust_id -> order_amount)
-    let orders = vec![(1, 50), (2, 75), (1, 25), (4, 999)]; // cust_id 4 has no match
+    let orders = [(1, 50), (2, 75), (1, 25), (4, 999)]; // cust_id 4 has no match
 
     let pool = columnar_query_engine::execution::morsel::MorselThreadPool::new(2);
     let matched = columnar_query_engine::execution::morsel::ParallelHashJoin::inner_join_int(
@@ -121,7 +121,14 @@ fn test_group_by_aggregation_optimizer() {
     // Build table with 2 RowGroups
     let mut table = ColumnarTable::new("sales");
     let rg1 = RowGroup::new(vec![
-        ColumnChunk::new_utf8("region", vec!["North".to_string(), "South".to_string(), "North".to_string()]),
+        ColumnChunk::new_utf8(
+            "region",
+            vec![
+                "North".to_string(),
+                "South".to_string(),
+                "North".to_string(),
+            ],
+        ),
         ColumnChunk::new_int64("amount", vec![100, 200, 50]),
     ]);
     let rg2 = RowGroup::new(vec![
@@ -176,7 +183,12 @@ fn test_predicate_pushdown_optimization() {
 
     let res = PhysicalEngine::execute(&plan, &table).expect("Execution failed");
     // Only server-1 in rg2 matches (1 row total)
-    assert!(matches!(res, columnar_query_engine::optimizer::plan::QueryResult::Scalar(columnar_query_engine::execution::aggregate::AggValue::Count(1))));
+    assert!(matches!(
+        res,
+        columnar_query_engine::optimizer::plan::QueryResult::Scalar(
+            columnar_query_engine::execution::aggregate::AggValue::Count(1)
+        )
+    ));
 }
 
 // FEAT: 04-041 "Projection pruning"
@@ -225,7 +237,8 @@ fn test_having_filter_aggregation() {
     groups.insert("DeptC", 22000);
 
     // Filter HAVING SUM > 10000
-    let filtered: std::collections::HashMap<_, _> = groups.into_iter().filter(|(_, sum)| *sum > 10000).collect();
+    let filtered: std::collections::HashMap<_, _> =
+        groups.into_iter().filter(|(_, sum)| *sum > 10000).collect();
     assert_eq!(filtered.len(), 2);
     assert!(filtered.contains_key("DeptA"));
     assert!(filtered.contains_key("DeptC"));
@@ -299,7 +312,11 @@ fn test_logical_optimizer_pipeline() {
 #[test]
 fn test_join_reordering_cardinality() {
     // 3-table join: (customers [1000], orders [100000], lineitem [1000000])
-    let sizes = vec![("lineitem", 1000000), ("customers", 1000), ("orders", 100000)];
+    let sizes = vec![
+        ("lineitem", 1000000),
+        ("customers", 1000),
+        ("orders", 100000),
+    ];
     let mut reordered = sizes;
     reordered.sort_by_key(|t| t.1);
     // Smallest relation chosen as initial build table
@@ -354,8 +371,14 @@ fn test_query_timeout_deadline() {
 #[test]
 fn test_metadata_catalog_registration() {
     let mut catalog = std::collections::HashMap::new();
-    catalog.insert("users", vec![("id", "INT64"), ("name", "UTF8"), ("email", "UTF8")]);
-    catalog.insert("orders", vec![("id", "INT64"), ("user_id", "INT64"), ("total", "INT64")]);
+    catalog.insert(
+        "users",
+        vec![("id", "INT64"), ("name", "UTF8"), ("email", "UTF8")],
+    );
+    catalog.insert(
+        "orders",
+        vec![("id", "INT64"), ("user_id", "INT64"), ("total", "INT64")],
+    );
 
     assert!(catalog.contains_key("users"));
     assert_eq!(catalog.get("orders").unwrap().len(), 3);
@@ -491,7 +514,10 @@ fn test_cost_model_cardinality_and_join_order_flip() {
 
     // 1. Cardinality estimation within stated factor
     let est_card = model.estimate_filter_cardinality("products", "cat_id");
-    assert!(est_card >= 4000 && est_card <= 5000, "Estimated cardinality must account for 10% nulls");
+    assert!(
+        (4000..=5000).contains(&est_card),
+        "Estimated cardinality must account for 10% nulls"
+    );
 
     // 2. Initial join order: smaller table (categories, 50 rows) is build side
     let plan1 = model.choose_join_order("categories", "products");
@@ -513,11 +539,13 @@ fn test_cost_model_cardinality_and_join_order_flip() {
     assert_eq!(plan2.probe_side, "categories");
 }
 
-// FEAT: 04-056 "Parquet file reader"
+// FEAT: 04-056 "Parquet reader"
 // ACCEPT: Parquet reader evaluates column projection and row-group pruning using min/max statistics
 #[test]
 fn test_parquet_file_reader_row_group_pruning() {
-    use columnar_query_engine::storage::parquet_reader::{ParquetFileMetadata, ParquetFileReader, RowGroupStats};
+    use columnar_query_engine::storage::parquet_reader::{
+        ParquetFileMetadata, ParquetFileReader, RowGroupStats,
+    };
     use std::path::PathBuf;
 
     let rg0 = RowGroupStats {
@@ -550,7 +578,11 @@ fn test_parquet_file_reader_row_group_pruning() {
     // Query: WHERE l_orderkey BETWEEN 12 AND 15 -> should only match row group 1 (range 11..20)
     let (scanned_rgs, total_rgs) = reader.filter_and_project_row_groups(0, 12, 15, &[0, 1]);
     assert_eq!(total_rgs, 3);
-    assert_eq!(scanned_rgs, vec![1], "Only row group 1 overlaps predicate bounds");
+    assert_eq!(
+        scanned_rgs,
+        vec![1],
+        "Only row group 1 overlaps predicate bounds"
+    );
 
     // Out-of-bounds query -> 0 row groups matched
     let (none_rgs, _) = reader.filter_and_project_row_groups(0, 999, 1000, &[0]);
@@ -574,7 +606,11 @@ fn test_zero_copy_buffers_pointer_sharing() {
     let parent_ptr = parent_buf.as_ptr();
     let sub_ptr = sub_buf.as_ptr();
     unsafe {
-        assert_eq!(parent_ptr.add(10), sub_ptr, "Sub-buffer must share parent allocation memory address without copying");
+        assert_eq!(
+            parent_ptr.add(10),
+            sub_ptr,
+            "Sub-buffer must share parent allocation memory address without copying"
+        );
     }
 }
 
@@ -640,7 +676,11 @@ fn test_local_fs_connector_schema_inference_and_traversal_guard() {
 
     let dir = tempdir().unwrap();
     let csv_file = dir.path().join("users.csv");
-    std::fs::write(&csv_file, "user_id,username,email,created_at\n1,alice,alice@example.com,2026-01-01\n").unwrap();
+    std::fs::write(
+        &csv_file,
+        "user_id,username,email,created_at\n1,alice,alice@example.com,2026-01-01\n",
+    )
+    .unwrap();
 
     let connector = LocalFsConnector::new(dir.path());
 
@@ -657,7 +697,8 @@ fn test_local_fs_connector_schema_inference_and_traversal_guard() {
 
     // 3. Path traversal attack rejected
     let traversal_res = connector.list_files_matching_glob("../../../etc/*");
-    assert!(matches!(traversal_res, Err(StorageError::PathTraversalAttempt(_))));
+    assert!(matches!(
+        traversal_res,
+        Err(StorageError::PathTraversalAttempt(_))
+    ));
 }
-
-
