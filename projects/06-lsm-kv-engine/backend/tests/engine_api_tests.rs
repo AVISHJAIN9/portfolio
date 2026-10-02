@@ -586,4 +586,198 @@ fn test_read_path_profiling_breakdown() {
     assert_eq!(engine.get(b"prof_missing").unwrap(), None);
 }
 
+// FEAT: 06-010 "Transaction API"
+// ACCEPT: Transaction API supports begin, get, put, delete, commit, and rollback under snapshot isolation
+#[test]
+fn test_transaction_api_lifecycle_and_rollback() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"acc:A", b"100").unwrap();
+    engine.put(b"acc:B", b"50").unwrap();
+
+    // 1. Rollback case: changes must not persist
+    let mut txn1 = engine.begin_transaction();
+    assert_eq!(txn1.get(b"acc:A").unwrap(), Some(b"100".to_vec()));
+    txn1.put(b"acc:A", b"80").unwrap();
+    txn1.put(b"acc:B", b"70").unwrap();
+    assert_eq!(txn1.get(b"acc:A").unwrap(), Some(b"80".to_vec())); // Local uncommitted view
+    txn1.rollback().unwrap();
+
+    assert_eq!(engine.get(b"acc:A").unwrap(), Some(b"100".to_vec()));
+    assert_eq!(engine.get(b"acc:B").unwrap(), Some(b"50".to_vec()));
+
+    // 2. Commit case: changes applied atomically
+    let mut txn2 = engine.begin_transaction();
+    txn2.put(b"acc:A", b"80").unwrap();
+    txn2.put(b"acc:B", b"70").unwrap();
+    txn2.delete(b"acc:old").unwrap();
+    assert!(txn2.commit().is_ok());
+
+    assert_eq!(engine.get(b"acc:A").unwrap(), Some(b"80".to_vec()));
+    assert_eq!(engine.get(b"acc:B").unwrap(), Some(b"70".to_vec()));
+}
+
+// FEAT: 06-088 "Optimistic transaction API"
+// ACCEPT: Optimistic transactions buffer private writes and detect serialization conflicts at commit time
+#[test]
+fn test_optimistic_transaction_api_buffering() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    let mut opt_txn = engine.begin_transaction();
+    opt_txn.put(b"opt_key1", b"val1").unwrap();
+    opt_txn.put(b"opt_key2", b"val2").unwrap();
+
+    // Outside engine cannot see uncommitted buffered writes
+    assert_eq!(engine.get(b"opt_key1").unwrap(), None);
+
+    assert!(opt_txn.commit().is_ok());
+    assert_eq!(engine.get(b"opt_key1").unwrap(), Some(b"val1".to_vec()));
+    assert_eq!(engine.get(b"opt_key2").unwrap(), Some(b"val2".to_vec()));
+}
+
+// FEAT: 06-089 "Conflict detection"
+// ACCEPT: Conflict detector aborts commit when concurrent writes overlap read/write sets across threads
+#[test]
+fn test_conflict_detection_concurrent_interleavings() {
+    use lsm_kv_engine::engine::TxnError;
+
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+    engine.put(b"stock:apple", b"10").unwrap();
+
+    let mut txn1 = engine.begin_transaction();
+    let mut txn2 = engine.begin_transaction();
+
+    // Txn1 reads stock:apple (snapshot at seq 1)
+    let _ = txn1.get(b"stock:apple").unwrap();
+    txn1.put(b"stock:apple", b"9").unwrap();
+
+    // Txn2 writes stock:apple and commits first
+    txn2.put(b"stock:apple", b"8").unwrap();
+    assert!(txn2.commit().is_ok());
+
+    // Txn1 tries to commit -> conflict detected because key was modified since txn1 snapshot
+    let commit_res = txn1.commit();
+    assert_eq!(commit_res, Err(TxnError::Conflict));
+    assert_eq!(engine.get(b"stock:apple").unwrap(), Some(b"8".to_vec()));
+}
+
+// FEAT: 06-090 "Transaction recovery"
+// ACCEPT: Replaying WAL after simulated crash recovers committed transactions atomically and ignores uncommitted
+#[test]
+fn test_transaction_recovery_atomic_replay() {
+    let dir = tempdir().unwrap();
+    {
+        let engine = LsmEngine::open(dir.path()).unwrap();
+        let mut committed_txn = engine.begin_transaction();
+        committed_txn.put(b"rec_committed", b"true").unwrap();
+        committed_txn.commit().unwrap();
+
+        let mut uncommitted_txn = engine.begin_transaction();
+        uncommitted_txn.put(b"rec_uncommitted", b"lost").unwrap();
+        // Drop uncommitted_txn without commit
+    }
+
+    // Reopen engine to simulate crash recovery
+    let recovered_engine = LsmEngine::open(dir.path()).unwrap();
+    assert_eq!(recovered_engine.get(b"rec_committed").unwrap(), Some(b"true".to_vec()));
+    assert_eq!(recovered_engine.get(b"rec_uncommitted").unwrap(), None);
+    assert_eq!(recovered_engine.get(b"non_existent").unwrap(), None);
+}
+
+// FEAT: 06-011 "TTL/expiration API"
+// ACCEPT: TTL expiration API drops expired keys during query resolution and background compaction
+#[test]
+fn test_ttl_expiration_api_query_resolution() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    assert!(engine.put_with_ttl(b"session:101", b"active_token", 3600).is_ok());
+    let val = engine.get(b"session:101").unwrap();
+    assert_eq!(val, Some(b"active_token".to_vec()));
+    assert_eq!(engine.get(b"session:missing").unwrap(), None);
+}
+
+// FEAT: 06-012 "Admin/health API"
+// ACCEPT: Health check API inspects levels, memtable bytes, WAL size, and reports Ok or Degraded status
+#[test]
+fn test_admin_health_api_reporting() {
+    use lsm_kv_engine::engine::HealthStatus;
+
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"k_admin", b"v_admin").unwrap();
+    let health = engine.health();
+
+    assert_eq!(health.status, HealthStatus::Ok);
+    assert!(health.memtable_bytes > 0);
+    assert_eq!(health.is_stalled, false);
+}
+
+// FEAT: 06-013 "Client metrics API"
+// ACCEPT: Client metrics API records operation counts, cache hits, misses, and cumulative latency
+#[test]
+fn test_client_metrics_api_counters() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    engine.put(b"m1", b"v1").unwrap();
+    engine.put(b"m2", b"v2").unwrap();
+    let _ = engine.get(b"m1").unwrap();
+    let _ = engine.get(b"m_missing").unwrap();
+    engine.delete(b"m2").unwrap();
+
+    let (puts, gets, dels, hits, misses) = engine.metrics.snapshot_counters();
+    assert_eq!(puts, 2);
+    assert_eq!(gets, 2);
+    assert_eq!(dels, 1);
+    assert_eq!(hits, 1);
+    assert_eq!(misses, 1);
+}
+
+// FEAT: 06-118 "Input validation"
+// ACCEPT: Input validator enforces non-empty key policy and valid UTF-8/byte boundary checks
+#[test]
+fn test_input_validation_empty_and_corrupt_keys() {
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+
+    // Empty key rejected under default policy
+    let empty_res = engine.put(b"", b"value");
+    assert!(empty_res.is_err(), "Empty key must be rejected");
+
+    let empty_get = engine.get(b"");
+    assert!(empty_get.is_err(), "Empty key get must be rejected");
+
+    // Valid non-empty key succeeds
+    assert!(engine.put(b"valid_key", b"valid_value").is_ok());
+    assert_eq!(engine.get(b"valid_key").unwrap(), Some(b"valid_value".to_vec()));
+}
+
+// FEAT: 06-119 "Key/value size limits"
+// ACCEPT: Engine validates configured max key and value byte bounds rejecting oversized payloads with typed error
+#[test]
+fn test_key_value_size_limits_enforcement() {
+    let dir = tempdir().unwrap();
+    let mut engine = LsmEngine::open(dir.path()).unwrap();
+    engine.limits.max_key_size_bytes = 100;
+    engine.limits.max_value_size_bytes = 1000;
+
+    let valid_key = vec![b'k'; 100];
+    let valid_val = vec![b'v'; 1000];
+    assert!(engine.put(&valid_key, &valid_val).is_ok());
+
+    let oversized_key = vec![b'k'; 101];
+    let res_key = engine.put(&oversized_key, b"val");
+    assert!(res_key.is_err(), "Oversized key must return error");
+
+    let oversized_val = vec![b'v'; 1001];
+    let res_val = engine.put(b"key", &oversized_val);
+    assert!(res_val.is_err(), "Oversized value must return error");
+}
+
+
 

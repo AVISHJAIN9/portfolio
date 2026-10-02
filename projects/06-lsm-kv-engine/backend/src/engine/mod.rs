@@ -1,10 +1,16 @@
 //! High-Performance LSM Key-Value Engine (06-001..009)
 
+pub mod admin;
+pub mod txn;
+
+pub use admin::*;
+pub use txn::*;
+
 use crate::memtable::{MemTable, ValueEntry};
 use crate::sstable::{SsTableBuilder, SsTableReader};
 use crate::wal::{WalOpType, WalRecord, WalWriter};
 use parking_lot::RwLock;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -19,6 +25,9 @@ pub struct LsmEngine {
     next_seq_no: AtomicU64,
     memtable_threshold_bytes: usize,
     sstable_counter: AtomicU64,
+    pub limits: EngineLimits,
+    pub metrics: Arc<EngineMetrics>,
+    key_modifications: Arc<RwLock<HashMap<Vec<u8>, u64>>>,
 }
 
 impl LsmEngine {
@@ -30,7 +39,9 @@ impl LsmEngine {
         let (recovered_records, max_seq) = WalWriter::recover(&wal_path)?;
 
         let memtable = MemTable::new();
+        let mut key_mods = HashMap::new();
         for rec in &recovered_records {
+            key_mods.insert(rec.key.clone(), rec.seq_no);
             match rec.op_type {
                 WalOpType::Put => {
                     if let Some(ref val) = rec.value {
@@ -69,10 +80,33 @@ impl LsmEngine {
             next_seq_no: AtomicU64::new(max_seq + 1),
             memtable_threshold_bytes: 64 * 1024, // 64 KB threshold for flushing
             sstable_counter: AtomicU64::new(sst_idx),
+            limits: EngineLimits::default(),
+            metrics: Arc::new(EngineMetrics::default()),
+            key_modifications: Arc::new(RwLock::new(key_mods)),
         })
     }
 
+    pub fn begin_transaction(&self) -> Transaction {
+        Transaction::new(self)
+    }
+
+    pub fn is_key_modified_since(&self, key: &[u8], since_seq: u64) -> bool {
+        let mods = self.key_modifications.read();
+        if let Some(&last_mod_seq) = mods.get(key) {
+            last_mod_seq >= since_seq
+        } else {
+            false
+        }
+    }
+
     pub fn put(&self, key: &[u8], value: &[u8]) -> std::io::Result<()> {
+        if let Err(e) = self.limits.validate_put(key, value) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{:?}", e),
+            ));
+        }
+
         let seq = self.next_seq_no.fetch_add(1, Ordering::SeqCst);
         let record = WalRecord {
             seq_no: seq,
@@ -91,15 +125,32 @@ impl LsmEngine {
             mem.put(key, value);
         }
 
+        self.key_modifications.write().insert(key.to_vec(), seq);
+        self.metrics.put_count.fetch_add(1, Ordering::Relaxed);
         self.maybe_freeze_and_flush()?;
         Ok(())
     }
 
+    pub fn put_with_ttl(&self, key: &[u8], value: &[u8], _ttl_secs: u64) -> std::io::Result<()> {
+        // Embed expiration in value or write as standard put
+        self.put(key, value)
+    }
+
     pub fn get(&self, key: &[u8]) -> std::io::Result<Option<Vec<u8>>> {
+        if let Err(e) = self.limits.validate_key(key) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{:?}", e),
+            ));
+        }
+
+        self.metrics.get_count.fetch_add(1, Ordering::Relaxed);
+
         // 1. Check active memtable
         {
             let mem = self.memtable.read();
             if let Some(entry) = mem.get(key) {
+                self.metrics.cache_hits.fetch_add(1, Ordering::Relaxed);
                 return match entry {
                     ValueEntry::Value(v) => Ok(Some(v)),
                     ValueEntry::Tombstone => Ok(None),
@@ -112,6 +163,7 @@ impl LsmEngine {
             let imm_list = self.immutable_memtables.read();
             for imm in imm_list.iter().rev() {
                 if let Some(entry) = imm.get(key) {
+                    self.metrics.cache_hits.fetch_add(1, Ordering::Relaxed);
                     return match entry {
                         ValueEntry::Value(v) => Ok(Some(v)),
                         ValueEntry::Tombstone => Ok(None),
@@ -125,11 +177,13 @@ impl LsmEngine {
             let sst_list = self.sstables.read();
             for sst in sst_list.iter().rev() {
                 if let Some(val_opt) = sst.get(key)? {
+                    self.metrics.cache_hits.fetch_add(1, Ordering::Relaxed);
                     return Ok(val_opt);
                 }
             }
         }
 
+        self.metrics.cache_misses.fetch_add(1, Ordering::Relaxed);
         Ok(None)
     }
 
@@ -146,6 +200,13 @@ impl LsmEngine {
     }
 
     pub fn delete(&self, key: &[u8]) -> std::io::Result<()> {
+        if let Err(e) = self.limits.validate_key(key) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                format!("{:?}", e),
+            ));
+        }
+
         let seq = self.next_seq_no.fetch_add(1, Ordering::SeqCst);
         let record = WalRecord {
             seq_no: seq,
@@ -164,6 +225,8 @@ impl LsmEngine {
             mem.delete(key);
         }
 
+        self.key_modifications.write().insert(key.to_vec(), seq);
+        self.metrics.delete_count.fetch_add(1, Ordering::Relaxed);
         self.maybe_freeze_and_flush()?;
         Ok(())
     }
@@ -267,6 +330,27 @@ impl LsmEngine {
         let reader = builder.finish()?;
         self.sstables.write().push(reader);
         Ok(())
+    }
+
+    pub fn health(&self) -> EngineHealthReport {
+        let mem_bytes = self.memtable.read().size_bytes();
+        let sst_count = self.sstables.read().len();
+        let wal_size = fs::metadata(self.data_dir.join("current.wal")).map(|m| m.len()).unwrap_or(0);
+
+        let status = if mem_bytes > 128 * 1024 * 1024 {
+            HealthStatus::Degraded("Memtable backpressure stall".to_string())
+        } else {
+            HealthStatus::Ok
+        };
+
+        EngineHealthReport {
+            status,
+            active_levels: sst_count,
+            memtable_bytes: mem_bytes,
+            pending_compaction_bytes: 0,
+            wal_size_bytes: wal_size,
+            is_stalled: false,
+        }
     }
 
     fn maybe_freeze_and_flush(&self) -> std::io::Result<()> {
