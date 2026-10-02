@@ -31,3 +31,8 @@ venv/
 *.log
 scratch/
 exports/
+mutants.out/
+mutants_*.out/
+**/fuzz/corpus/
+**/fuzz/artifacts/
+

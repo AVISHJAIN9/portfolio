@@ -46,7 +46,12 @@ else
 	@$(PYTHON) tools/evidence_gen.py
 	@$(PYTHON) tools/workbook_status.py
 	@$(PYTHON) tools/state_writer.py
+	@$(PYTHON) tools/report_generator.py --check
 endif
+
+mutants:
+	@echo "=== Running Mutation Checks with cargo-mutants ==="
+	@$(PYTHON) tools/run_mutants.py
 
 demo:
 ifdef PROJECT

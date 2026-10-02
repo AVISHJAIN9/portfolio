@@ -2,8 +2,8 @@
 
 ## 0. HEADER
 - **session_no**: 9
-- **last_run_timestamp**: 2026-10-01T17:30:26Z
-- **last_commit**: e04913e847c7408555677b263533c20ef1364fe3
+- **last_run_timestamp**: 2026-10-02T05:01:42Z
+- **last_commit**: 80489b0f2560a585c5ce30e6fdad230de5842201
 - **current_wave**: Wave 9 (Integrity Repair, Verbatim Master Workbook Names, Semantic Audit, Morsel-Driven Parallelism, Compaction & Manifest Recovery)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
@@ -13,9 +13,9 @@
 ## 1. ENVIRONMENT & GOVERNANCE RULES
 - **rustc**: rustc 1.98.1 (48a229cea 2026-09-01)
 - **cargo**: cargo 1.98.1 (797e8a9bc 2026-08-05)
-- **python**: Python 3.9.6
-- **node**: not installed
-- **gh**: not installed
+- **python**: Python 3.13.9
+- **node**: v22.23.2
+- **gh**: gh version 2.101.0 (2026-09-15)
 - **R1 (Evidence Integrity)**: Zero hand-typed numbers. All counts derived via `tools/evidence_gen.py`, `tools/bench_collector.py`, and `tools/workbook_status.py`.
 - **R2 (Honesty Gate)**: Features without passing annotated tests in `make ci` are marked Implemented or Scaffolded. Verified is strictly reserved for generated evidence.
 - **R3 (Zero Drift)**: Unified shared platform crates under `platform/rust/crates`.
@@ -93,9 +93,9 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `e04913e847` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `80489b0f25` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `e04913e847` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `80489b0f25` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
 | `tpch_sf1_results.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
@@ -143,7 +143,7 @@
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `e04913e847`.
+1. Pull latest workspace state: commit `80489b0f25`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.
