@@ -33,21 +33,9 @@ def main():
     
     steps = [
         ("01_clone", 60, ["git", "clone", str(ROOT_DIR), str(clone_dir)]),
-        ("02_lint", 300, ["make", "lint"]),
-        ("03_platform_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "platform" / "rust" / "Cargo.toml")]),
-        ("04_p01_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "01-rollback-netcode-server" / "backend" / "Cargo.toml")]),
-        ("05_p02_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "02-hnsw-filtered-vector-index" / "backend" / "Cargo.toml")]),
-        ("06_p03_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "03-bytecode-vm-gc" / "backend" / "Cargo.toml")]),
-        ("07_p04_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "04-columnar-query-engine" / "backend" / "Cargo.toml")]),
-        ("08_p05_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "05-mini-quic" / "backend" / "Cargo.toml")]),
-        ("09_p06_tests", 600, ["cargo", "test", "--manifest-path", str(clone_dir / "projects" / "06-lsm-kv-engine" / "backend" / "Cargo.toml")]),
-        ("10_pytest", 300, [PYTEST, "-v", str(clone_dir / "tests")]),
-        ("11_audit_annotations", 60, [PYTHON, str(clone_dir / "tools" / "audit_test_annotations.py")]),
-        ("12_evidence_gen", 60, [PYTHON, str(clone_dir / "tools" / "evidence_gen.py")]),
-        ("13_workbook_status", 60, [PYTHON, str(clone_dir / "tools" / "workbook_status.py")]),
-        ("14_state_writer", 60, [PYTHON, str(clone_dir / "tools" / "state_writer.py")]),
-        ("15_report_check", 60, [PYTHON, str(clone_dir / "tools" / "report_generator.py"), "--check"]),
-        ("16_quic_interop", 300, [PYTHON, str(clone_dir / "tests" / "interop" / "run_interop.py")]),
+        ("02_clean_clone_ci", 1500, ["make", "-C", str(clone_dir), "ci"]),
+        ("03_clean_clone_interop", 900, ["make", "-C", str(clone_dir), "interop"]),
+        ("04_report_generator_check", 60, [PYTHON, str(clone_dir / "tools" / "report_generator.py"), "--check"]),
     ]
 
     summary_records = []
@@ -57,7 +45,7 @@ def main():
         log_file = step_log_dir / f"{step_name}.log"
         wrapper_cmd = [PYTHON, str(ROOT_DIR / "tools" / "run_timed.py"), str(timeout_s), str(log_file), "--"] + cmd
         
-        proc = subprocess.run(wrapper_cmd, capture_output=True, text=True, cwd=clone_dir if step_name != "01_clone" else ROOT_DIR)
+        proc = subprocess.run(wrapper_cmd, capture_output=True, text=True, cwd=ROOT_DIR)
         line = proc.stdout.strip()
         print(f"[{step_name}] {line}")
         
