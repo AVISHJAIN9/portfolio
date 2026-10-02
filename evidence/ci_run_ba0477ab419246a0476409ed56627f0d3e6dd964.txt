@@ -1,12 +1,13 @@
 === CLEAN CLONE CI RUN SUMMARY (SHA: ba0477ab419246a0476409ed56627f0d3e6dd964) ===
 
-| Step | Exit Code | Timed Out | Elapsed | Status | Log File |
-|:---|:---:|:---:|:---:|:---:|:---|n| `01_clone` | **0** | no | 1.57s | ✓ PASS | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
-| `02_clean_clone_ci` | **0** | no | 115.48s | ✓ PASS | [`02_clean_clone_ci.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_clean_clone_ci.log) |
-| `03_clean_clone_interop` | **0** | no | 2.01s | ✓ PASS | [`03_clean_clone_interop.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/03_clean_clone_interop.log) |
-| `04_report_generator_check` | **0** | no | 0.55s | ✓ PASS | [`04_report_generator_check.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/04_report_generator_check.log) |
+| Step | Exit Code | Timed Out | Elapsed (s) | Log File |
+|:---|:---:|:---:|:---:|:---|
+| `01_clone` | **0** | no | 1.44s | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+| `02_clean_clone_ci` | **0** | no | 308.76s | [`02_clean_clone_ci.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_clean_clone_ci.log) |
+| `03_clean_clone_interop` | **0** | no | 1.44s | [`03_clean_clone_interop.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/03_clean_clone_interop.log) |
+| `04_report_generator_check` | **0** | no | 0.25s | [`04_report_generator_check.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/04_report_generator_check.log) |
 
-Overall Result: ✓ PASS (100% of Clean Clone CI Steps Passed)
+Overall Result: ✓ PASS
 
 
 --- LOG: 01_clone ---
@@ -15,7 +16,282 @@ done.
 
 --- LOG: 02_clean_clone_ci ---
 === Running Workspace-Wide CI ===
+EXIT=0 TIMEOUT=no ELAPSED=40.72 LOG=/private/tmp/pf-ci/evidence/ci_steps/lint.log
+EXIT=0 TIMEOUT=no ELAPSED=37.49 LOG=/private/tmp/pf-ci/evidence/ci_steps/platform_tests.log
+Running tests for projects/01-rollback-netcode-server...
+EXIT=0 TIMEOUT=no ELAPSED=33.78 LOG=/private/tmp/pf-ci/evidence/ci_steps/01-rollback-netcode-server_tests.log
+Running tests for projects/02-hnsw-filtered-vector-index...
+EXIT=0 TIMEOUT=no ELAPSED=35.44 LOG=/private/tmp/pf-ci/evidence/ci_steps/02-hnsw-filtered-vector-index_tests.log
+Running tests for projects/03-bytecode-vm-gc...
+EXIT=0 TIMEOUT=no ELAPSED=10.80 LOG=/private/tmp/pf-ci/evidence/ci_steps/03-bytecode-vm-gc_tests.log
+Running tests for projects/04-columnar-query-engine...
+EXIT=0 TIMEOUT=no ELAPSED=23.43 LOG=/private/tmp/pf-ci/evidence/ci_steps/04-columnar-query-engine_tests.log
+Running tests for projects/05-mini-quic...
+EXIT=0 TIMEOUT=no ELAPSED=26.59 LOG=/private/tmp/pf-ci/evidence/ci_steps/05-mini-quic_tests.log
+Running tests for projects/06-lsm-kv-engine...
+EXIT=0 TIMEOUT=no ELAPSED=29.55 LOG=/private/tmp/pf-ci/evidence/ci_steps/06-lsm-kv-engine_tests.log
+Running tests for projects/07-stream-detect-engine...
+EXIT=0 TIMEOUT=no ELAPSED=9.87 LOG=/private/tmp/pf-ci/evidence/ci_steps/07-stream-detect-engine_tests.log
+Running tests for projects/08-pubsub-broker...
+EXIT=0 TIMEOUT=no ELAPSED=9.66 LOG=/private/tmp/pf-ci/evidence/ci_steps/08-pubsub-broker_tests.log
+Running tests for projects/10-crdt-rich-text-editor...
+EXIT=0 TIMEOUT=no ELAPSED=11.81 LOG=/private/tmp/pf-ci/evidence/ci_steps/10-crdt-rich-text-editor_tests.log
+Running tests for projects/13-ledger-engine...
+EXIT=0 TIMEOUT=no ELAPSED=9.08 LOG=/private/tmp/pf-ci/evidence/ci_steps/13-ledger-engine_tests.log
+Running tests for projects/15-llm-inference-scheduler...
+EXIT=0 TIMEOUT=no ELAPSED=10.07 LOG=/private/tmp/pf-ci/evidence/ci_steps/15-llm-inference-scheduler_tests.log
+Running tests for projects/17-cdn-caching-proxy...
+EXIT=0 TIMEOUT=no ELAPSED=8.40 LOG=/private/tmp/pf-ci/evidence/ci_steps/17-cdn-caching-proxy_tests.log
+EXIT=0 TIMEOUT=no ELAPSED=0.55 LOG=/private/tmp/pf-ci/evidence/ci_steps/pytest.log
+=== Auditing Test Annotations Against Master Workbooks ===
+✓ All test annotations strictly match master workbook names, IDs, priorities, and keyword signatures.
+=== Running Autonomous Evidence Generation Pipeline ===
+
+| Feature ID | Project | Test Function | Assertions | Acceptance Summary | Status |
+|---|---|---|---|---|---|
+| 04-046 | 04-columnar-query-engine | `test_columnar_table_format` | 2 | Columnar table format with vertical colu | ✓ Verified |
+| 04-047 | 04-columnar-query-engine | `test_row_group_partitioning` | 1 | Row group partitioning allows independen | ✓ Verified |
+| 04-048 | 04-columnar-query-engine | `test_validity_null_bitmap` | 7 | Validity null bitmask compactly tracks n | ✓ Verified |
+| 04-049 | 04-columnar-query-engine | `test_dictionary_encoding_roundtrip` | 4 | Dictionary encoding maps low-cardinality | ✓ Verified |
+| 04-050 | 04-columnar-query-engine | `test_rle_encoding_roundtrip` | 3 | Run-length encoding compresses repeated  | ✓ Verified |
+| 04-055 | 04-columnar-query-engine | `test_file_statistics` | 2 | File statistics catalog tracks min/max b | ✓ Verified |
+| 04-079 | 04-columnar-query-engine | `test_morsel_selection_vectors` | 8 | Selection vectors represent row index fi | ✓ Verified |
+| 04-080 | 04-columnar-query-engine | `test_morsel_driven_scheduling` | 5 | Morsel-driven scheduling dynamically ass | ✓ Verified |
+| 04-081 | 04-columnar-query-engine | `test_parallel_scans_across_threads` | 3 | Parallel scans execute across 1, 2, and  | ✓ Verified |
+| 04-082 | 04-columnar-query-engine | `test_parallel_hash_join_execution` | 5 | Parallel hash join builds shared hash ta | ✓ Verified |
+| 04-083 | 04-columnar-query-engine | `test_parallel_aggregation_across_threads` | 7 | Parallel grouped aggregation combines th | ✓ Verified |
+| 04-084 | 04-columnar-query-engine | `test_task_scheduler_morsel_exhaustion` | 2 | Dynamic task scheduler assigns morsels a | ✓ Verified |
+| 04-085 | 04-columnar-query-engine | `test_thread_pool_sizing` | 2 | Thread pool configures worker thread cou | ✓ Verified |
+| 04-021 | 04-columnar-query-engine | `test_sql_lexer_tokenization` | 10 | Lexical tokenizer converts SQL text stre | ✓ Verified |
+| 04-022 | 04-columnar-query-engine | `test_sql_parser_select_where_join` | 4 | Recursive descent parser transforms toke | ✓ Verified |
+| 04-023 | 04-columnar-query-engine | `test_sql_ast_model_nodes` | 2 | Strongly-typed AST nodes model SELECT, F | ✓ Verified |
+| 04-024 | 04-columnar-query-engine | `test_semantic_analyzer_validation` | 2 | Semantic analyzer validates table refere | ✓ Verified |
+| 04-025 | 04-columnar-query-engine | `test_expression_evaluator_zonemap_bounds` | 4 | Vectorized expression evaluator processe | ✓ Verified |
+| 04-027 | 04-columnar-query-engine | `test_sql_join_support_parser` | 5 | Hash-join algorithm builds in-memory has | ✓ Verified |
+| 04-028 | 04-columnar-query-engine | `test_group_by_aggregation_optimizer` | 4 | Grouped hash aggregation computes SUM an | ✓ Verified |
+| 04-040 | 04-columnar-query-engine | `test_predicate_pushdown_optimization` | 3 | Rule-based optimizer pushes filtering pr | ✓ Verified |
+| 04-041 | 04-columnar-query-engine | `test_projection_pruning_optimization` | 3 | Projection pruning removes unused column | ✓ Verified |
+| 04-032 | 04-columnar-query-engine | `test_order_by_limit_sorting` | 1 | ORDER BY sorts result rows and LIMIT tru | ✓ Verified |
+| 04-033 | 04-columnar-query-engine | `test_distinct_deduplication` | 2 | Deduplicate projection vectors using has | ✓ Verified |
+| 04-034 | 04-columnar-query-engine | `test_having_filter_aggregation` | 4 | Post-aggregation filter evaluates predic | ✓ Verified |
+| 04-035 | 04-columnar-query-engine | `test_null_semantics_three_valued_logic` | 6 | Enforce ANSI SQL three-valued logic (TRU | ✓ Verified |
+| 04-037 | 04-columnar-query-engine | `test_query_cancellation_token` | 2 | Atomic cancellation token aborts query e | ✓ Verified |
+| 04-039 | 04-columnar-query-engine | `test_logical_optimizer_pipeline` | 3 | Rule-based logical optimizer applies pre | ✓ Verified |
+| 04-042 | 04-columnar-query-engine | `test_join_reordering_cardinality` | 3 | Cost-based join graph reorders tables to | ✓ Verified |
+| 04-043 | 04-columnar-query-engine | `test_cost_model_estimation` | 3 | Cost model estimates CPU, memory, and I/ | ✓ Verified |
+| 04-067 | 04-columnar-query-engine | `test_file_pruning_zonemap` | 1 | ZoneMap file pruning skips non-overlappi | ✓ Verified |
+| 04-100 | 04-columnar-query-engine | `test_query_timeout_deadline` | 1 | Query timeout timer triggers execution c | ✓ Verified |
+| 04-104 | 04-columnar-query-engine | `test_metadata_catalog_registration` | 2 | Schema catalog registers tables, columns | ✓ Verified |
+| 04-105 | 04-columnar-query-engine | `test_statistics_catalog_tracking` | 3 | Catalog records column cardinality, null | ✓ Verified |
+| 04-127 | 04-columnar-query-engine | `test_sql_injection_defense_corpus` | 2 | Reject stacked queries, enforce paramete | ✓ Verified |
+| 04-134 | 04-columnar-query-engine | `test_benchmark_harness_output_schema` | 2 | Benchmark runner executes TPC-H query su | ✓ Verified |
+| 04-043 | 04-columnar-query-engine | `test_cost_model_cardinality_and_join_order_flip` | 5 | Cost model produces cardinality estimate | ✓ Verified |
+| 04-056 | 04-columnar-query-engine | `test_parquet_file_reader_row_group_pruning` | 3 | Parquet reader evaluates column projecti | ✓ Verified |
+| 04-060 | 04-columnar-query-engine | `test_zero_copy_buffers_pointer_sharing` | 2 | Zero-copy buffers share memory slice all | ✓ Verified |
+| 04-061 | 04-columnar-query-engine | `test_buffer_manager_pinning_lru_and_hit_ratio` | 6 | Buffer manager manages fixed-size page p | ✓ Verified |
+| 04-062 | 04-columnar-query-engine | `test_memory_pool_budget_and_oom_protection` | 7 | Budgeted memory pool reserves and releas | ✓ Verified |
+| 04-076 | 04-columnar-query-engine | `test_local_fs_connector_schema_inference_and_traversal_guard` | 6 | Local filesystem connector lists matchin | ✓ Verified |
+| 05-015 | 05-mini-quic | `test_x25519_key_agreement_rfc7748` | 1 | RFC 7748 X25519 Diffie-Hellman key agree | ✓ Verified |
+| 05-016 | 05-mini-quic | `test_chacha20_poly1305_packet_protection` | 5 | ChaCha20-Poly1305 packet protection vali | ✓ Verified |
+| 05-017 | 05-mini-quic | `test_key_derivation_and_key_phase_rfc9001` | 6 | Initial secrets, keys, IV, HP derivation | ✓ Verified |
+| 05-006 | 05-mini-quic | `test_frame_type_registry` | 1 | Registry and serialization for core QUIC | ✓ Verified |
+| 05-007 | 05-mini-quic | `test_stream_frame_codec` | 4 | Encode and decode STREAM frames with str | ✓ Verified |
+| 05-008 | 05-mini-quic | `test_ack_frame_codec` | 4 | Encode and decode ACK frames with larges | ✓ Verified |
+| 05-009 | 05-mini-quic | `test_crypto_frame_handling` | 2 | Handle CRYPTO frames containing TLS hand | ✓ Verified |
+| 05-010 | 05-mini-quic | `test_control_frames_codec` | 2 | Encode and decode PING, PADDING, and CON | ✓ Verified |
+| 05-011 | 05-mini-quic | `test_max_data_and_max_stream_data_frames` | 2 | Encode and decode MAX_DATA and MAX_STREA | ✓ Verified |
+| 05-012 | 05-mini-quic | `test_max_streams_frames` | 2 | Encode and decode MAX_STREAMS frames for | ✓ Verified |
+| 05-013 | 05-mini-quic | `test_connection_state_machine_transitions` | 3 | Initial to Handshake to 1-RTT to Closed  | ✓ Verified |
+| 05-014 | 05-mini-quic | `test_client_server_handshake_flow` | 4 | Client-Server handshake exchange negotia | ✓ Verified |
+| 05-018 | 05-mini-quic | `test_packet_number_spaces_isolation` | 3 | Initial, Handshake, and 1-RTT packet num | ✓ Verified |
+| 05-019 | 05-mini-quic | `test_handshake_timeout_handling` | 3 | Enforce handshake timeout when peer does | ✓ Verified |
+| 05-020 | 05-mini-quic | `test_connection_close_draining_states` | 1 | Transition to closed state and handle co | ✓ Verified |
+| 05-021 | 05-mini-quic | `test_transport_parameter_negotiation` | 3 | Validate and negotiate QUIC transport pa | ✓ Verified |
+| 05-022 | 05-mini-quic | `test_version_negotiation` | 2 | Accept QUIC v1 (0x00000001) and reject u | ✓ Verified |
+| 05-024 | 05-mini-quic | `test_handshake_error_taxonomy` | 3 | Handshake error taxonomy covers crypto,  | ✓ Verified |
+| 05-081 | 05-mini-quic | `test_malformed_packet_rejection` | 1 | Malformed packets with invalid wire enco | ✓ Verified |
+| 05-082 | 05-mini-quic | `test_anti_amplification_limit` | 2 | Server anti-amplification limits respons | ✓ Verified |
+| 05-083 | 05-mini-quic | `test_replay_duplicate_protection` | 2 | Reject duplicated and replayed packet nu | ✓ Verified |
+| 05-084 | 05-mini-quic | `test_crypto_nonce_correctness` | 3 | Crypto AEAD nonce derivation computes ex | ✓ Verified |
+| 05-085 | 05-mini-quic | `test_key_material_lifecycle` | 3 | Enforce key material rotation and drop r | ✓ Verified |
+| 05-086 | 05-mini-quic | `test_secret_zeroization` | 2 | Key material zeroization clears secret m | ✓ Verified |
+| 05-087 | 05-mini-quic | `test_resource_exhaustion_defenses` | 2 | Reject unbounded connection attempts and | ✓ Verified |
+| 05-088 | 05-mini-quic | `test_connection_stream_quotas` | 2 | Enforce max streams and max data limits  | ✓ Verified |
+| 05-089 | 05-mini-quic | `test_timeout_abuse_defenses` | 1 | Enforce handshake and idle timeout bound | ✓ Verified |
+| 05-090 | 05-mini-quic | `test_error_containment` | 2 | Malformed packet in one connection does  | ✓ Verified |
+| 05-137 | 05-mini-quic | `test_integration_client_server_udp_loopback` | 2 | Two mini-quic endpoints over real UDP lo | ✓ Verified |
+| 05-139 | 05-mini-quic | `test_interoperability_test_corpus` | 1 | Automated matrix test validating client  | ✓ Verified |
+| 05-001 | 05-mini-quic | `test_quic_packet_header_codec` | 6 | Encode and decode QUIC packet headers ac | ✓ Verified |
+| 05-002 | 05-mini-quic | `test_long_header_packet_support` | 7 | Long-header packet support for Initial,  | ✓ Verified |
+| 05-003 | 05-mini-quic | `test_short_header_packet_support` | 7 | Short-header 1-RTT packet support with s | ✓ Verified |
+| 05-004 | 05-mini-quic | `test_connection_id_management` | 3 | Connection ID generation, routing, and z | ✓ Verified |
+| 05-005 | 05-mini-quic | `test_packet_number_encoding_decoding` | 1 | Encode and decode truncated 1, 2, and 4- | ✓ Verified |
+| 05-042 | 05-mini-quic | `test_ecn_ready_congestion_signals_rfc9000` | 7 | ECN-ready congestion controller validate | ✓ Verified |
+| 05-136 | 05-mini-quic | `prop_varint_roundtrip` | 2 | Proptest property-based tests verify var | ✓ Verified |
+| 05-140 | 05-mini-quic | `test_deterministic_replay_packet_trace_hash` | 4 | Seeded network simulation event log prod | ✓ Verified |
+| 05-143 | 05-mini-quic | `test_rust_formatting_and_linting_gates` | 11 | make lint runs cargo fmt --check and cli | ✓ Verified |
+| 05-025 | 05-mini-quic | `test_ack_range_tracking` | 2 | Track contiguous and non-contiguous ACK  | ✓ Verified |
+| 05-026 | 05-mini-quic | `test_duplicate_ack_handling` | 2 | Ignore redundant or duplicate ACKs witho | ✓ Verified |
+| 05-027 | 05-mini-quic | `test_packet_loss_detection` | 2 | Detect unacknowledged in-flight packets  | ✓ Verified |
+| 05-028 | 05-mini-quic | `test_packet_threshold_loss_detection` | 1 | Packet threshold loss detection declares | ✓ Verified |
+| 05-029 | 05-mini-quic | `test_time_threshold_loss_detection` | 1 | Time-threshold loss detection declares p | ✓ Verified |
+| 05-030 | 05-mini-quic | `test_pto_calculation` | 1 | Calculate Probe Timeout (PTO) duration u | ✓ Verified |
+| 05-031 | 05-mini-quic | `test_pto_probe_transmission` | 2 | Transmit PTO probe packet to elicit peer | ✓ Verified |
+| 05-032 | 05-mini-quic | `test_retransmission_bookkeeping` | 2 | Retransmission bookkeeping marks lost fr | ✓ Verified |
+| 05-033 | 05-mini-quic | `test_rtt_sampling` | 2 | Sample round trip time from packet trans | ✓ Verified |
+| 05-034 | 05-mini-quic | `test_smoothed_rtt_estimation` | 2 | Calculate exponentially weighted smoothe | ✓ Verified |
+| 05-035 | 05-mini-quic | `test_rtt_variance_estimation` | 1 | Calculate RTT variance estimation (RTTVA | ✓ Verified |
+| 05-036 | 05-mini-quic | `test_newreno_congestion_control` | 2 | NewReno congestion control throttles win | ✓ Verified |
+| 05-038 | 05-mini-quic | `test_congestion_window_tracking` | 3 | Track bytes in flight and compare agains | ✓ Verified |
+| 05-039 | 05-mini-quic | `test_slow_start_growth` | 1 | Slow start doubles congestion window per | ✓ Verified |
+| 05-040 | 05-mini-quic | `test_congestion_avoidance_linear_growth` | 1 | Congestion avoidance linearly increments | ✓ Verified |
+| 05-037 | 05-mini-quic | `test_cubic_congestion_control_curve` | 2 | CUBIC congestion control calculates cubi | ✓ Verified |
+| 05-041 | 05-mini-quic | `test_fast_recovery_window_reduction` | 2 | Fast recovery halves congestion window a | ✓ Verified |
+| 05-043 | 05-mini-quic | `test_packet_pacing_interval` | 1 | Packet pacing schedules transmission int | ✓ Verified |
+| 05-044 | 05-mini-quic | `test_pacing_timer_scheduling` | 1 | Pacing timer schedules transmit deadline | ✓ Verified |
+| 05-045 | 05-mini-quic | `test_bandwidth_delay_product_estimation` | 1 | Estimate BDP = delivery_rate * min_rtt t | ✓ Verified |
+| 05-046 | 05-mini-quic | `test_congestion_controller_interface` | 1 | Trait abstraction provides modular plugg | ✓ Verified |
+| 05-138 | 05-mini-quic | `test_simulated_network_transfer_at_loss_rates` | 2 | Simulated network transfer of 100 KB pay | ✓ Verified |
+| 05-047 | 05-mini-quic | `test_bidirectional_stream_management` | 3 | Manage bidirectional stream creation, re | ✓ Verified |
+| 05-048 | 05-mini-quic | `test_unidirectional_stream_management` | 3 | Manage unidirectional stream creation an | ✓ Verified |
+| 05-049 | 05-mini-quic | `test_stream_id_allocation` | 8 | Enforce RFC 9000 stream ID allocation bi | ✓ Verified |
+| 05-050 | 05-mini-quic | `test_stream_receive_reassembly` | 4 | Reassemble contiguous stream data fragme | ✓ Verified |
+| 05-051 | 05-mini-quic | `test_stream_send_buffering` | 3 | Buffer outgoing stream bytes and track m | ✓ Verified |
+| 05-052 | 05-mini-quic | `test_stream_level_flow_control` | 2 | Block stream writes exceeding stream-lev | ✓ Verified |
+| 05-053 | 05-mini-quic | `test_connection_level_flow_control` | 3 | Track aggregate stream bytes and block w | ✓ Verified |
+| 05-054 | 05-mini-quic | `test_max_data_enforcement` | 3 | Update connection flow control window up | ✓ Verified |
+| 05-055 | 05-mini-quic | `test_max_stream_data_enforcement` | 3 | Update individual stream flow control cr | ✓ Verified |
+| 05-056 | 05-mini-quic | `test_max_streams_enforcement` | 4 | Limit concurrent stream creation based o | ✓ Verified |
+| 05-057 | 05-mini-quic | `test_stream_reset_handling` | 3 | Handle RESET_STREAM frame, clear send bu | ✓ Verified |
+| 06-053 | 06-lsm-kv-engine | `test_leveled_compaction_state_preservation` | 5 | Leveled compaction preserves logical sta | ✓ Verified |
+| 06-055 | 06-lsm-kv-engine | `test_compaction_picker_overlapping_key_ranges` | 5 | Compaction picker detects L0 threshold t | ✓ Verified |
+| 06-056 | 06-lsm-kv-engine | `test_compaction_scheduling_threshold_guards` | 19 | Compaction scheduling triggers only when | ✓ Verified |
+| 06-059 | 06-lsm-kv-engine | `test_compaction_output_generation_and_cleanup` | 6 | Compaction output generation writes new  | ✓ Verified |
+| 06-060 | 06-lsm-kv-engine | `test_write_amplification_accounting_metrics` | 4 | Write amplification tracks ratio of tota | ✓ Verified |
+| 06-054 | 06-lsm-kv-engine | `test_size_tiered_compaction_strategy_oracle` | 6 | Size-tiered compaction strategy groups f | ✓ Verified |
+| 06-057 | 06-lsm-kv-engine | `test_compaction_concurrency_non_overlapping` | 5 | Concurrent compaction manager allows >=2 | ✓ Verified |
+| 06-058 | 06-lsm-kv-engine | `test_compaction_input_selection_min_overlap` | 3 | Min-overlap heuristic picks L0 file that | ✓ Verified |
+| 06-062 | 06-lsm-kv-engine | `test_compaction_debt_tracking_and_drain` | 3 | Compaction debt tracker calculates pendi | ✓ Verified |
+| 06-063 | 06-lsm-kv-engine | `test_compaction_throttling_mock_clock` | 4 | Compaction rate limiter throttles writes | ✓ Verified |
+| 06-064 | 06-lsm-kv-engine | `test_compaction_cancellation_and_recovery` | 5 | Compaction cancellation mid-run deletes  | ✓ Verified |
+| 06-065 | 06-lsm-kv-engine | `test_compaction_benchmark_suite_json` | 6 | Compaction benchmark suite generates val | ✓ Verified |
+| 06-001 | 06-lsm-kv-engine | `test_kv_put_api` | 2 | Put key-value pair inserts entry into WA | ✓ Verified |
+| 06-002 | 06-lsm-kv-engine | `test_kv_get_api` | 2 | Get point lookup searches active memtabl | ✓ Verified |
+| 06-003 | 06-lsm-kv-engine | `test_kv_delete_api` | 2 | Delete writes tombstone marker to mask e | ✓ Verified |
+| 06-004 | 06-lsm-kv-engine | `test_batch_write_api` | 3 | Atomic batch write applies sequence of p | ✓ Verified |
+| 06-005 | 06-lsm-kv-engine | `test_batch_read_api` | 3 | Batch read retrieves multiple keys concu | ✓ Verified |
+| 06-006 | 06-lsm-kv-engine | `test_prefix_scan_api` | 3 | Prefix scan returns all key-value entrie | ✓ Verified |
+| 06-007 | 06-lsm-kv-engine | `test_range_scan_api` | 3 | Range scan iterates over [start_key, end | ✓ Verified |
+| 06-008 | 06-lsm-kv-engine | `test_iterator_api` | 1 | Forward iterator traverses entries acros | ✓ Verified |
+| 06-009 | 06-lsm-kv-engine | `test_snapshot_api` | 2 | Point-in-time snapshot provides immutabl | ✓ Verified |
+| 06-031 | 06-lsm-kv-engine | `test_immutable_memtable_transition` | 1 | Active memtable freezes into immutable m | ✓ Verified |
+| 06-032 | 06-lsm-kv-engine | `test_memtable_flush_scheduling` | 1 | Background flush schedules memtable conv | ✓ Verified |
+| 06-050 | 06-lsm-kv-engine | `test_sstable_reader_lookup` | 1 | SSTable reader opens immutable disk file | ✓ Verified |
+| 06-051 | 06-lsm-kv-engine | `test_sstable_writer_format` | 1 | SSTable writer formats sequential data b | ✓ Verified |
+| 06-066 | 06-lsm-kv-engine | `test_point_lookup_path_traversal` | 1 | Point lookup traverses active memtable,  | ✓ Verified |
+| 06-067 | 06-lsm-kv-engine | `test_multilevel_read_path` | 1 | Multi-level read path checks newest to o | ✓ Verified |
+| 06-068 | 06-lsm-kv-engine | `test_bloom_filter_short_circuit` | 1 | Bloom filter short-circuits disk I/O whe | ✓ Verified |
+| 06-071 | 06-lsm-kv-engine | `test_iterator_merge_streams` | 3 | Priority-queue merge iterator combines m | ✓ Verified |
+| 06-072 | 06-lsm-kv-engine | `test_forward_iterator_traversal` | 4 | Forward iterator steps sequentially over | ✓ Verified |
+| 06-079 | 06-lsm-kv-engine | `test_sequence_number_allocation` | 2 | Sequence numbers are monotonically incre | ✓ Verified |
+| 06-081 | 06-lsm-kv-engine | `test_snapshot_creation` | 1 | Snapshot captures current sequence numbe | ✓ Verified |
+| 06-082 | 06-lsm-kv-engine | `test_snapshot_visibility` | 2 | Snapshot visibility masks writes with se | ✓ Verified |
+| 06-085 | 06-lsm-kv-engine | `test_tombstone_semantics_masking` | 1 | Tombstone markers hide older versions ac | ✓ Verified |
+| 06-086 | 06-lsm-kv-engine | `test_delete_markers_insertion` | 1 | Delete operation appends tombstone marke | ✓ Verified |
+| 06-122 | 06-lsm-kv-engine | `test_crash_consistency_recovery` | 3 | Database recovers to valid prefix of com | ✓ Verified |
+| 06-124 | 06-lsm-kv-engine | `test_fault_injection_handling` | 3 | Simulated disk write errors trigger safe | ✓ Verified |
+| 06-080 | 06-lsm-kv-engine | `test_versioned_records_key_ordering` | 3 | Internal versioned keys format combines  | ✓ Verified |
+| 06-084 | 06-lsm-kv-engine | `test_mvcc_read_resolution_across_levels` | 3 | MVCC read resolution returns newest visi | ✓ Verified |
+| 06-083 | 06-lsm-kv-engine | `test_snapshot_expiration_lifecycle` | 3 | Releasing snapshot handle allows obsolet | ✓ Verified |
+| 06-091 | 06-lsm-kv-engine | `test_mvcc_correctness_model_oracle` | 2 | Model-based test verifies MVCC isolation | ✓ Verified |
+| 06-069 | 06-lsm-kv-engine | `test_index_assisted_lookup_binary_search` | 3 | SSTable block index enables binary searc | ✓ Verified |
+| 06-070 | 06-lsm-kv-engine | `test_block_cache_lookup_hits_and_misses` | 3 | LRU block cache caches decompressed SSTa | ✓ Verified |
+| 06-073 | 06-lsm-kv-engine | `test_reverse_iterator_descending_traversal` | 4 | Reverse iterator steps backwards over ke | ✓ Verified |
+| 06-074 | 06-lsm-kv-engine | `test_prefix_iterator_bounds_enforcement` | 3 | Prefix iterator bounds scan strictly to  | ✓ Verified |
+| 06-075 | 06-lsm-kv-engine | `test_range_iterator_bounded_scan` | 3 | Range iterator traverses [start_key, end | ✓ Verified |
+| 06-076 | 06-lsm-kv-engine | `test_read_batching_multi_get` | 4 | Multi-key read batching retrieves multip | ✓ Verified |
+| 06-061 | 06-lsm-kv-engine | `test_read_amplification_accounting_counters` | 3 | Engine accounts for total disk blocks ac | ✓ Verified |
+| 06-077 | 06-lsm-kv-engine | `test_read_amplification_telemetry_reporting` | 2 | Telemetry exports live p50/p95/p99 read  | ✓ Verified |
+| 06-078 | 06-lsm-kv-engine | `test_read_path_profiling_breakdown` | 4 | Per-stage latency timers track time spen | ✓ Verified |
+| 06-010 | 06-lsm-kv-engine | `test_transaction_api_lifecycle_and_rollback` | 7 | Transaction API supports begin, get, put | ✓ Verified |
+| 06-088 | 06-lsm-kv-engine | `test_optimistic_transaction_api_buffering` | 4 | Optimistic transactions buffer private w | ✓ Verified |
+| 06-089 | 06-lsm-kv-engine | `test_conflict_detection_concurrent_interleavings` | 3 | Conflict detector aborts commit when con | ✓ Verified |
+| 06-090 | 06-lsm-kv-engine | `test_transaction_recovery_atomic_replay` | 3 | Replaying WAL after simulated crash reco | ✓ Verified |
+| 06-011 | 06-lsm-kv-engine | `test_ttl_expiration_api_query_resolution` | 3 | TTL expiration API drops expired keys du | ✓ Verified |
+| 06-012 | 06-lsm-kv-engine | `test_admin_health_api_reporting` | 3 | Health check API inspects levels, memtab | ✓ Verified |
+| 06-013 | 06-lsm-kv-engine | `test_client_metrics_api_counters` | 5 | Client metrics API records operation cou | ✓ Verified |
+| 06-118 | 06-lsm-kv-engine | `test_input_validation_empty_and_corrupt_keys` | 4 | Input validator enforces non-empty key p | ✓ Verified |
+| 06-119 | 06-lsm-kv-engine | `test_key_value_size_limits_enforcement` | 3 | Engine validates configured max key and  | ✓ Verified |
+| 06-105 | 06-lsm-kv-engine | `test_manifest_format_and_checksum_integrity` | 3 | Binary length-prefixed and CRC32 checksu | ✓ Verified |
+| 06-106 | 06-lsm-kv-engine | `test_version_edit_records_application` | 4 | VersionEdit delta records additions, del | ✓ Verified |
+| 06-107 | 06-lsm-kv-engine | `test_current_manifest_pointer` | 3 | CURRENT file points to the active MANIFE | ✓ Verified |
+| 06-108 | 06-lsm-kv-engine | `test_atomic_metadata_updates` | 3 | Atomic rename of temporary CURRENT point | ✓ Verified |
+| 06-109 | 06-lsm-kv-engine | `test_startup_recovery_from_manifest_log` | 4 | Startup recovery reconstructs active LSM | ✓ Verified |
+| 06-110 | 06-lsm-kv-engine | `test_sstable_inventory_tracking` | 4 | Manifest tracks live SSTable files per l | ✓ Verified |
+| 06-111 | 06-lsm-kv-engine | `test_orphan_file_detection_and_reporting` | 3 | Orphan SSTables not referenced by curren | ✓ Verified |
+| 06-112 | 06-lsm-kv-engine | `test_manifest_corruption_handling_policies` | 2 | Torn tail records in manifest log are tr | ✓ Verified |
+| 06-113 | 06-lsm-kv-engine | `test_metadata_checksums_validation` | 3 | Manifest records include CRC32 checksums | ✓ Verified |
+| 06-114 | 06-lsm-kv-engine | `test_version_retention_reference_pinning` | 3 | Active versions remain pinned in memory  | ✓ Verified |
+| 06-115 | 06-lsm-kv-engine | `test_crash_safe_install_atomic_rename` | 3 | Manifest edits use tmp write, fsync, ato | ✓ Verified |
+| 06-116 | 06-lsm-kv-engine | `test_recovery_diagnostics_summary` | 3 | Structured recovery report summarizes ed | ✓ Verified |
+| 06-117 | 06-lsm-kv-engine | `test_recovery_benchmark_suite_execution` | 3 | Benchmark suite measures recovery time a | ✓ Verified |
+| 06-027 | 06-lsm-kv-engine | `test_memtable_insertion_and_ordering` | 4 | Concurrent Skiplist MemTable supports no | ✓ Verified |
+| 06-028 | 06-lsm-kv-engine | `test_memtable_point_lookup` | 3 | Fast point lookup retrieves newest value | ✓ Verified |
+| 06-029 | 06-lsm-kv-engine | `test_memtable_ordered_iterator` | 4 | Forward iterator traverses entries acros | ✓ Verified |
+| 06-030 | 06-lsm-kv-engine | `test_memtable_size_tracking` | 3 | MemTable tracks approximate byte size an | ✓ Verified |
+| 06-033 | 06-lsm-kv-engine | `test_concurrent_writers_multithreaded` | 2 | 8 concurrent threads insert keys concurr | ✓ Verified |
+| 06-034 | 06-lsm-kv-engine | `test_write_batching_pipeline` | 3 | Atomic write batch commits multiple key- | ✓ Verified |
+| 06-087 | 06-lsm-kv-engine | `test_atomic_batch_semantics_all_or_nothing` | 4 | Batch operations are applied atomically; | ✓ Verified |
+| 06-035 | 06-lsm-kv-engine | `test_write_backpressure_and_stall_accounting` | 4 | Engine throttles write rate when immutab | ✓ Verified |
+| 06-036 | 06-lsm-kv-engine | `test_write_buffer_memory_accounting_drops_after_flush` | 3 | MemTable tracks active memory allocation | ✓ Verified |
+| 06-037 | 06-lsm-kv-engine | `test_memtable_recovery_from_wal_replay` | 3 | MemTable state is fully reconstructed fr | ✓ Verified |
+| 06-038 | 06-lsm-kv-engine | `test_alternative_memtable_trait_conformance` | 3 | Trait MemTable abstraction conforms to i | ✓ Verified |
+| 06-039 | 06-lsm-kv-engine | `test_write_path_benchmark_metrics_generation` | 3 | Write path benchmark produces structured | ✓ Verified |
+| 06-024 | 06-lsm-kv-engine | `test_wal_encryption_aead_record_protection` | 5 | WAL records are encrypted using ChaCha20 | ✓ Verified |
+| 06-127 | 06-lsm-kv-engine | `test_at_rest_encryption_sstable_block_protection` | 3 | SSTable blocks encrypted at rest authent | ✓ Verified |
+| 06-126 | 06-lsm-kv-engine | `test_secrets_zeroization_and_redaction` | 4 | Sensitive key material is zeroized upon  | ✓ Verified |
+| 06-128 | 06-lsm-kv-engine | `test_access_control_hooks_rbac_enforcement` | 6 | RBAC access controller authorizes read o | ✓ Verified |
+| 06-129 | 06-lsm-kv-engine | `test_audit_logging_append_only_records` | 4 | Audit logger maintains append-only struc | ✓ Verified |
+| 06-130 | 06-lsm-kv-engine | `test_security_regression_suite_comprehensive` | 4 | Security regression suite executes end-t | ✓ Verified |
+| 06-123 | 06-lsm-kv-engine | `test_power_loss_simulation_fault_fs` | 3 | Power-loss simulation ensures un-fsynced | ✓ Verified |
+| 06-040 | 06-lsm-kv-engine | `test_sstable_file_format_serialization` | 3 | SSTable serializes sorted key-value bloc | ✓ Verified |
+| 06-041 | 06-lsm-kv-engine | `test_sstable_data_block_encoding_and_boundaries` | 3 | Block index records first/last keys and  | ✓ Verified |
+| 06-042 | 06-lsm-kv-engine | `test_sstable_block_checksums_corruption_detected` | 3 | Verifies CRC32 checksum over SSTable dat | ✓ Verified |
+| 06-043 | 06-lsm-kv-engine | `test_sstable_sparse_index_binary_search` | 3 | Block index allows binary search lookups | ✓ Verified |
+| 06-044 | 06-lsm-kv-engine | `test_sstable_bloom_filter_rejection` | 3 | Embedded Bloom filter skips SSTable disk | ✓ Verified |
+| 06-045 | 06-lsm-kv-engine | `test_sstable_prefix_compression_restart_points` | 3 | Key prefix sharing across sequential ent | ✓ Verified |
+| 06-046 | 06-lsm-kv-engine | `test_sstable_block_trailer_format_and_crc` | 3 | Block trailer records compression type b | ✓ Verified |
+| 06-047 | 06-lsm-kv-engine | `test_sstable_file_metadata_tracking` | 4 | File metadata tracks smallest/largest ke | ✓ Verified |
+| 06-048 | 06-lsm-kv-engine | `test_sstable_versioning_and_future_rejection` | 2 | Reader validates version header and reje | ✓ Verified |
+| 06-049 | 06-lsm-kv-engine | `test_sstable_validation_scanner` | 3 | Full scan validates key order monotonici | ✓ Verified |
+| 06-052 | 06-lsm-kv-engine | `test_sstable_corruption_fault_matrix` | 3 | Truncation, mid-block bit flips, and mis | ✓ Verified |
+| 06-120 | 06-lsm-kv-engine | `test_sstable_malformed_file_rejection` | 3 | Engine safely rejects non-SSTable files, | ✓ Verified |
+| 06-121 | 06-lsm-kv-engine | `test_sstable_checksum_verification_strict` | 3 | Checksum verification verifies data inte | ✓ Verified |
+| 06-014 | 06-lsm-kv-engine | `test_wal_record_format_encoding` | 1 | Structured binary WAL record encoding wi | ✓ Verified |
+| 06-015 | 06-lsm-kv-engine | `test_wal_append_path_sequential` | 2 | Append-only write operations write seque | ✓ Verified |
+| 06-017 | 06-lsm-kv-engine | `test_wal_checksums_validation` | 2 | CRC32 checksums written with every recor | ✓ Verified |
+| 06-018 | 06-lsm-kv-engine | `test_wal_fsync_policy_modes_durability` | 3 | fsync durability modes guarantee acknowl | ✓ Verified |
+| 06-020 | 06-lsm-kv-engine | `test_wal_recovery_replay_startup` | 3 | Startup recovery reconstructs memtable s | ✓ Verified |
+| 06-021 | 06-lsm-kv-engine | `test_wal_corruption_detection_crc` | 1 | Per-record CRC32 checksum detection dete | ✓ Verified |
+| 06-022 | 06-lsm-kv-engine | `test_wal_truncation_policy_recovery` | 3 | Incomplete tail writes truncated during  | ✓ Verified |
+| 06-016 | 06-lsm-kv-engine | `test_wal_segment_rotation_threshold` | 2 | Active WAL segment rotates to new file w | ✓ Verified |
+| 06-019 | 06-lsm-kv-engine | `test_wal_group_commit_batching` | 1 | Concurrent write operations batch into s | ✓ Verified |
+| 06-026 | 06-lsm-kv-engine | `test_durability_fault_injection_recovery` | 3 | Simulated disk sync failure is handled s | ✓ Verified |
+| 06-023 | 06-lsm-kv-engine | `test_wal_archival_and_archive_replay` | 5 | Rotated WAL segments are safely archived | ✓ Verified |
+| 06-025 | 06-lsm-kv-engine | `test_wal_metrics_telemetry` | 3 | WAL tracks total bytes written, record c | ✓ Verified |
+
+✓ Generated 230 verified evidence rows in /private/tmp/pf-ci/evidence/feature_evidence.csv
+=== Generating Excel Status Workbooks with Live Verification Ticks ===
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx
+✓ Generated status workbook: /private/tmp/pf-ci/evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx
+=== Programmatically Regenerating PORTFOLIO_STATE.md ===
+✓ Generated /private/tmp/pf-ci/PORTFOLIO_STATE.md
+Count consistency check: PASS (All project counts match across Table, _STATUS.xlsx, and PORTFOLIO_STATE.md)
 
 --- LOG: 03_clean_clone_interop ---
+=== Running QUIC Interoperability Test Suite ===
+EXIT=0 TIMEOUT=no ELAPSED=1.34 LOG=/private/tmp/pf-ci/evidence/ci_steps/interop.log
 
 --- LOG: 04_report_generator_check ---
+Count consistency check: PASS (All project counts match across Table, _STATUS.xlsx, and PORTFOLIO_STATE.md)

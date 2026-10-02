@@ -39,9 +39,25 @@ fn test_vectorized_sum_filter_aggregation() {
 
     let result = PhysicalEngine::execute(&plan, &table).expect("Execution failed");
     if let QueryResult::Grouped(groups) = result {
-        assert_eq!(groups.len(), 2);
-        assert!(matches!(groups.get("Electronics"), Some(AggValue::Int(_))));
-        assert!(matches!(groups.get("Books"), Some(AggValue::Int(_))));
+        assert_eq!(groups.len(), 2, "Should return exactly 2 distinct groups");
+        assert!(matches!(groups.get("Electronics"), Some(AggValue::Int(_))), "Electronics group present");
+        assert!(matches!(groups.get("Books"), Some(AggValue::Int(_))), "Books group present");
+        assert_eq!(groups.get("Clothing"), None, "Non-existent category should return None");
+    } else {
+        panic!("Expected Grouped QueryResult");
+    }
+
+    // Edge case: Empty vector / impossible filter
+    let empty_plan = QueryPlan {
+        table_name: "sales".into(),
+        projections: vec!["category".into(), "amount".into()],
+        predicates: vec![Predicate::Gt("amount".into(), 1_000_000)],
+        aggregate: Some(AggOp::Sum("amount".into())),
+        group_by_col: Some("category".into()),
+    };
+    let empty_res = PhysicalEngine::execute(&empty_plan, &table).expect("Execution on empty filter failed");
+    if let QueryResult::Grouped(groups) = empty_res {
+        assert_eq!(groups.len(), 0, "No groups should match impossible predicate");
     } else {
         panic!("Expected Grouped QueryResult");
     }

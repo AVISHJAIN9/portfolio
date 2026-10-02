@@ -181,3 +181,58 @@ fn test_max_streams_frames() {
         }
     );
 }
+
+#[test]
+fn test_all_extended_frame_codecs() {
+    let frames = vec![
+        Frame::ResetStream {
+            stream_id: 10,
+            error_code: 0x01,
+            final_size: 1024,
+        },
+        Frame::StopSending {
+            stream_id: 20,
+            error_code: 0x02,
+        },
+        Frame::NewToken {
+            token: Bytes::from_static(b"NEW_TOKEN_BYTES"),
+        },
+        Frame::DataBlocked {
+            data_limit: 1048576,
+        },
+        Frame::StreamDataBlocked {
+            stream_id: 30,
+            stream_data_limit: 524288,
+        },
+        Frame::StreamsBlocked {
+            is_bidi: true,
+            stream_limit: 100,
+        },
+        Frame::StreamsBlocked {
+            is_bidi: false,
+            stream_limit: 50,
+        },
+        Frame::NewConnectionId {
+            seq_num: 1,
+            retire_prior_to: 0,
+            connection_id: vec![1, 2, 3, 4, 5, 6, 7, 8],
+            stateless_reset_token: [0x55; 16],
+        },
+        Frame::RetireConnectionId { seq_num: 1 },
+        Frame::ConnectionClose {
+            error_code: 0x0a,
+            frame_type: Some(0x06),
+            reason_phrase: "Application error".to_string(),
+        },
+        Frame::HandshakeDone,
+    ];
+
+    for frame in frames {
+        let mut buf = BytesMut::new();
+        frame.encode(&mut buf);
+        let mut read_buf = buf.freeze();
+        let decoded = Frame::decode(&mut read_buf).expect("Decode successful").expect("Frame present");
+        assert_eq!(frame, decoded);
+    }
+}
+

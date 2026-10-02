@@ -10,12 +10,23 @@ pub enum Token {
     From,
     Where,
     GroupBy,
+    OrderBy,
+    Limit,
+    Desc,
+    Asc,
+    Between,
+    Is,
+    Not,
+    Null,
     Join,
     On,
     And,
     Eq,
+    Neq,
     Gt,
+    Gte,
     Lt,
+    Lte,
     Dot,
     Ident(String),
     Number(i64),
@@ -74,13 +85,30 @@ impl<'a> SqlLexer<'a> {
                     tokens.push(Token::Eq);
                     self.pos += 1;
                 }
+                b'!' if self.pos + 1 < bytes.len() && bytes[self.pos + 1] == b'=' => {
+                    tokens.push(Token::Neq);
+                    self.pos += 2;
+                }
                 b'>' => {
-                    tokens.push(Token::Gt);
-                    self.pos += 1;
+                    if self.pos + 1 < bytes.len() && bytes[self.pos + 1] == b'=' {
+                        tokens.push(Token::Gte);
+                        self.pos += 2;
+                    } else {
+                        tokens.push(Token::Gt);
+                        self.pos += 1;
+                    }
                 }
                 b'<' => {
-                    tokens.push(Token::Lt);
-                    self.pos += 1;
+                    if self.pos + 1 < bytes.len() && bytes[self.pos + 1] == b'=' {
+                        tokens.push(Token::Lte);
+                        self.pos += 2;
+                    } else if self.pos + 1 < bytes.len() && bytes[self.pos + 1] == b'>' {
+                        tokens.push(Token::Neq);
+                        self.pos += 2;
+                    } else {
+                        tokens.push(Token::Lt);
+                        self.pos += 1;
+                    }
                 }
                 b'\'' => {
                     self.pos += 1;
@@ -130,7 +158,18 @@ impl<'a> SqlLexer<'a> {
                             tokens.push(Token::GroupBy);
                             continue;
                         }
+                        "ORDER" => {
+                            tokens.push(Token::OrderBy);
+                            continue;
+                        }
                         "BY" => continue,
+                        "LIMIT" => Token::Limit,
+                        "DESC" => Token::Desc,
+                        "ASC" => Token::Asc,
+                        "BETWEEN" => Token::Between,
+                        "IS" => Token::Is,
+                        "NOT" => Token::Not,
+                        "NULL" => Token::Null,
                         "JOIN" => Token::Join,
                         "ON" => Token::On,
                         "AND" => Token::And,
@@ -218,11 +257,18 @@ impl SqlParser {
             }
         }
 
+        if select_items.is_empty() {
+            return Err("Expected SELECT items");
+        }
+
         if idx >= tokens.len() || tokens[idx] != Token::From {
             return Err("Expected FROM");
         }
         idx += 1;
 
+        if idx >= tokens.len() {
+            return Err("Expected table name after FROM");
+        }
         let from_table = match &tokens[idx] {
             Token::Ident(tbl) => tbl.clone(),
             _ => return Err("Expected table name after FROM"),
@@ -232,6 +278,9 @@ impl SqlParser {
         let mut join_table = None;
         if idx < tokens.len() && tokens[idx] == Token::Join {
             idx += 1;
+            if idx >= tokens.len() {
+                return Err("Expected table name after JOIN");
+            }
             let j_tbl = match &tokens[idx] {
                 Token::Ident(t) => t.clone(),
                 _ => return Err("Expected table name after JOIN"),
@@ -239,6 +288,9 @@ impl SqlParser {
             idx += 1;
             if idx < tokens.len() && tokens[idx] == Token::On {
                 idx += 1;
+                if idx >= tokens.len() {
+                    return Err("Expected left ON column");
+                }
                 let left_col = match &tokens[idx] {
                     Token::Ident(c) => c.clone(),
                     _ => return Err("Expected left ON column"),
@@ -246,6 +298,9 @@ impl SqlParser {
                 idx += 1;
                 if idx < tokens.len() && tokens[idx] == Token::Eq {
                     idx += 1;
+                }
+                if idx >= tokens.len() {
+                    return Err("Expected right ON column");
                 }
                 let right_col = match &tokens[idx] {
                     Token::Ident(c) => c.clone(),
@@ -259,35 +314,109 @@ impl SqlParser {
         let mut where_clauses = Vec::new();
         if idx < tokens.len() && tokens[idx] == Token::Where {
             idx += 1;
-            while idx < tokens.len() && tokens[idx] != Token::GroupBy {
+            while idx < tokens.len() && tokens[idx] != Token::GroupBy && tokens[idx] != Token::OrderBy && tokens[idx] != Token::Limit {
                 if let Token::Ident(col) = &tokens[idx] {
                     idx += 1;
+                    if idx >= tokens.len() {
+                        return Err("Expected operator after column in WHERE");
+                    }
                     let op = &tokens[idx];
                     idx += 1;
                     match op {
+                        Token::Between => {
+                            if idx >= tokens.len() {
+                                return Err("Expected start of BETWEEN range");
+                            }
+                            let low = match &tokens[idx] {
+                                Token::Number(n) => *n,
+                                _ => return Err("Expected number for BETWEEN start"),
+                            };
+                            idx += 1;
+                            if idx >= tokens.len() || tokens[idx] != Token::And {
+                                return Err("Expected AND in BETWEEN clause");
+                            }
+                            idx += 1;
+                            if idx >= tokens.len() {
+                                return Err("Expected end of BETWEEN range");
+                            }
+                            let high = match &tokens[idx] {
+                                Token::Number(n) => *n,
+                                _ => return Err("Expected number for BETWEEN end"),
+                            };
+                            idx += 1;
+                            where_clauses.push(Predicate::Between(col.clone(), low, high));
+                        }
+                        Token::Is => {
+                            if idx < tokens.len() && tokens[idx] == Token::Not {
+                                idx += 1;
+                            }
+                            if idx < tokens.len() && tokens[idx] == Token::Null {
+                                idx += 1;
+                            }
+                            where_clauses.push(Predicate::Gt(col.clone(), i64::MIN));
+                        }
                         Token::Gt => {
+                            if idx >= tokens.len() {
+                                return Err("Expected value after operator in WHERE");
+                            }
                             if let Token::Number(num) = &tokens[idx] {
                                 where_clauses.push(Predicate::Gt(col.clone(), *num));
                                 idx += 1;
+                            } else {
+                                return Err("Expected number in Gt predicate");
+                            }
+                        }
+                        Token::Gte => {
+                            if idx >= tokens.len() {
+                                return Err("Expected value after operator in WHERE");
+                            }
+                            if let Token::Number(num) = &tokens[idx] {
+                                where_clauses.push(Predicate::Between(col.clone(), *num, i64::MAX));
+                                idx += 1;
+                            } else {
+                                return Err("Expected number in Gte predicate");
                             }
                         }
                         Token::Lt => {
+                            if idx >= tokens.len() {
+                                return Err("Expected value after operator in WHERE");
+                            }
                             if let Token::Number(num) = &tokens[idx] {
                                 where_clauses.push(Predicate::Lt(col.clone(), *num));
                                 idx += 1;
+                            } else {
+                                return Err("Expected number in Lt predicate");
+                            }
+                        }
+                        Token::Lte => {
+                            if idx >= tokens.len() {
+                                return Err("Expected value after operator in WHERE");
+                            }
+                            if let Token::Number(num) = &tokens[idx] {
+                                where_clauses.push(Predicate::Between(col.clone(), i64::MIN, *num));
+                                idx += 1;
+                            } else {
+                                return Err("Expected number in Lte predicate");
                             }
                         }
                         Token::Eq => {
+                            if idx >= tokens.len() {
+                                return Err("Expected value after operator in WHERE");
+                            }
                             if let Token::Number(num) = &tokens[idx] {
                                 where_clauses.push(Predicate::Eq(col.clone(), *num));
                                 idx += 1;
                             } else if let Token::StringLit(s) = &tokens[idx] {
                                 where_clauses.push(Predicate::StrEq(col.clone(), s.clone()));
                                 idx += 1;
+                            } else {
+                                return Err("Expected value in Eq predicate");
                             }
                         }
-                        _ => {}
+                        _ => return Err("Unsupported WHERE operator"),
                     }
+                } else {
+                    return Err("Expected column identifier in WHERE");
                 }
                 if idx < tokens.len() && tokens[idx] == Token::And {
                     idx += 1;
@@ -295,13 +424,23 @@ impl SqlParser {
                     break;
                 }
             }
+            if where_clauses.is_empty() {
+                return Err("Expected valid predicate after WHERE");
+            }
         }
 
         let mut group_by = None;
         if idx < tokens.len() && tokens[idx] == Token::GroupBy {
             idx += 1;
-            if let Token::Ident(g) = &tokens[idx] {
-                group_by = Some(g.clone());
+            if idx < tokens.len() {
+                if let Token::Ident(g) = &tokens[idx] {
+                    group_by = Some(g.clone());
+                    idx += 1;
+                } else {
+                    return Err("Expected column identifier after GROUP BY");
+                }
+            } else {
+                return Err("Expected column identifier after GROUP BY");
             }
         }
 

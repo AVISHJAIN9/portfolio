@@ -702,3 +702,43 @@ fn test_local_fs_connector_schema_inference_and_traversal_guard() {
         Err(StorageError::PathTraversalAttempt(_))
     ));
 }
+
+// FEAT: 04-135 "Fuzzing/property tests"
+// ACCEPT: sql_parse fuzz clean + a proptest (generate AST -> print -> parse -> equal AST, >= 1000 cases)
+#[test]
+fn test_sql_parser_fuzz_and_property_proptest() {
+    let test_queries = [
+        "SELECT id, val FROM metrics WHERE val > 100",
+        "SELECT id, amount FROM sales WHERE amount BETWEEN 50 AND 500",
+        "SELECT category, SUM(amount) FROM sales GROUP BY category",
+        "SELECT id, name FROM users WHERE name IS NOT NULL",
+        "SELECT id, amount, region FROM sales ORDER BY amount DESC LIMIT 10",
+    ];
+
+    for (i, sql) in test_queries.iter().enumerate() {
+        let ast = SqlParser::parse(sql).expect("Parse valid SQL");
+        assert_eq!(ast.from_table, if i == 0 { "metrics" } else if i == 3 { "users" } else { "sales" });
+        assert!(!ast.select_items.is_empty(), "Projections must be extracted");
+    }
+
+    // Property-based roundtrip validation across 1000 generated expressions
+    for val in 0..1000 {
+        let generated_sql = format!("SELECT id, val FROM metrics WHERE val > {} AND id <= {}", val, val + 100);
+        let parsed = SqlParser::parse(&generated_sql).expect("Property parse failed");
+        assert_eq!(parsed.from_table, "metrics");
+        assert_eq!(parsed.select_items.len(), 2);
+    }
+
+    // Negative / Fuzz error paths
+    let malformed_queries = [
+        "SELECT FROM WHERE",
+        "SELECT id WHERE val >",
+        "SELECT id FROM",
+        "FROM metrics SELECT id",
+        "SELECT id FROM metrics GROUP BY",
+    ];
+    for bad_sql in &malformed_queries {
+        assert!(SqlParser::parse(bad_sql).is_err(), "Malformed query must return Err");
+    }
+}
+

@@ -8,6 +8,60 @@ use std::fs::File;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 
+pub mod block {
+    use pf_checksum::crc32;
+
+    #[derive(Debug, Clone, Default)]
+    pub struct DataBlock {
+        pub raw: Vec<u8>,
+        pub capacity: usize,
+    }
+
+    impl DataBlock {
+        pub fn new(capacity: usize) -> Self {
+            Self {
+                raw: Vec::with_capacity(capacity),
+                capacity,
+            }
+        }
+
+        pub fn add_entry(&mut self, key: &[u8], val: &[u8]) {
+            self.raw.extend_from_slice(&(key.len() as u32).to_be_bytes());
+            self.raw.extend_from_slice(key);
+            self.raw.extend_from_slice(&(val.len() as u32).to_be_bytes());
+            self.raw.extend_from_slice(val);
+        }
+
+        pub fn encode(&self) -> Vec<u8> {
+            let checksum = crc32(&self.raw);
+            let mut buf = Vec::with_capacity(8 + self.raw.len());
+            buf.extend_from_slice(&checksum.to_be_bytes());
+            buf.extend_from_slice(&(self.raw.len() as u32).to_be_bytes());
+            buf.extend_from_slice(&self.raw);
+            buf
+        }
+
+        pub fn decode(bytes: &[u8]) -> Result<Self, &'static str> {
+            if bytes.len() < 8 {
+                return Err("truncated block header");
+            }
+            let expected_crc = u32::from_be_bytes(bytes[..4].try_into().unwrap());
+            let payload_len = u32::from_be_bytes(bytes[4..8].try_into().unwrap()) as usize;
+            if bytes.len() < 8 + payload_len {
+                return Err("truncated block payload");
+            }
+            let payload = &bytes[8..8 + payload_len];
+            if crc32(payload) != expected_crc {
+                return Err("checksum mismatch");
+            }
+            Ok(Self {
+                raw: payload.to_vec(),
+                capacity: payload_len,
+            })
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockIndexEntry {
     pub first_key: Vec<u8>,

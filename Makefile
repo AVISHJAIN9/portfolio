@@ -5,7 +5,12 @@ PYTHON ?= $(shell if [ -f /Users/avishjain/venv/bin/python3 ]; then echo /Users/
 PYTEST ?= $(shell if [ -f /Users/avishjain/venv/bin/pytest ]; then echo /Users/avishjain/venv/bin/pytest; else echo pytest; fi)
 CARGO := cargo
 
-.PHONY: all help ci lint demo bench loom frames train export state dedupe clean
+.PHONY: all help ci lint demo bench loom frames train export state dedupe clean repro
+
+repro:
+	@echo "=== Running Reproducible Builds Verification (05-145) ==="
+	@$(PYTHON) tools/run_reproducible.py
+
 
 lint:
 	@echo "=== Running Workspace-Wide Rust Formatting & Linting Gates (05-143) ==="

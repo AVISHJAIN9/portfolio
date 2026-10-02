@@ -184,3 +184,122 @@ impl RowGroup {
         self.int_columns.insert(name.to_string(), data);
     }
 }
+
+/// 04-051: Delta Encoding for sorted / monotone integers
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DeltaEncodedColumn {
+    pub first_value: i64,
+    pub deltas: Vec<i64>,
+}
+
+impl DeltaEncodedColumn {
+    pub fn encode(data: &[i64]) -> Self {
+        if data.is_empty() {
+            return Self {
+                first_value: 0,
+                deltas: Vec::new(),
+            };
+        }
+        let first_value = data[0];
+        let mut deltas = Vec::with_capacity(data.len().saturating_sub(1));
+        for i in 1..data.len() {
+            deltas.push(data[i].wrapping_sub(data[i - 1]));
+        }
+        Self {
+            first_value,
+            deltas,
+        }
+    }
+
+    pub fn decode(&self) -> Vec<i64> {
+        if self.deltas.is_empty() && self.first_value == 0 {
+            return Vec::new();
+        }
+        let mut result = Vec::with_capacity(self.deltas.len() + 1);
+        result.push(self.first_value);
+        let mut current = self.first_value;
+        for &d in &self.deltas {
+            current = current.wrapping_add(d);
+            result.push(current);
+        }
+        result
+    }
+}
+
+/// 04-052: Bit Packing for dense unsigned integers with bit width 0..=64
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BitPackedColumn {
+    pub bit_width: u8,
+    pub data: Vec<u64>,
+    pub num_elements: usize,
+}
+
+impl BitPackedColumn {
+    pub fn encode(values: &[u64], bit_width: u8) -> Self {
+        assert!(bit_width <= 64);
+        if bit_width == 0 || values.is_empty() {
+            return Self {
+                bit_width,
+                data: Vec::new(),
+                num_elements: values.len(),
+            };
+        }
+        if bit_width == 64 {
+            return Self {
+                bit_width: 64,
+                data: values.to_vec(),
+                num_elements: values.len(),
+            };
+        }
+
+        let total_bits = values.len() * bit_width as usize;
+        let num_u64s = total_bits.div_ceil(64);
+        let mut data = vec![0u64; num_u64s];
+
+        for (i, &val) in values.iter().enumerate() {
+            let mask = if bit_width == 64 { u64::MAX } else { (1u64 << bit_width) - 1 };
+            let val = val & mask;
+            let bit_offset = i * bit_width as usize;
+            let word_idx = bit_offset / 64;
+            let bit_in_word = bit_offset % 64;
+
+            data[word_idx] |= val << bit_in_word;
+            if bit_in_word + (bit_width as usize) > 64 && word_idx + 1 < data.len() {
+                data[word_idx + 1] |= val >> (64 - bit_in_word);
+            }
+        }
+
+        Self {
+            bit_width,
+            data,
+            num_elements: values.len(),
+        }
+    }
+
+    pub fn decode(&self) -> Vec<u64> {
+        if self.bit_width == 0 {
+            return vec![0u64; self.num_elements];
+        }
+        if self.bit_width == 64 {
+            return self.data.clone();
+        }
+
+        let mut result = Vec::with_capacity(self.num_elements);
+        let mask = (1u64 << self.bit_width) - 1;
+
+        for i in 0..self.num_elements {
+            let bit_offset = i * self.bit_width as usize;
+            let word_idx = bit_offset / 64;
+            let bit_in_word = bit_offset % 64;
+
+            let mut val = (self.data[word_idx] >> bit_in_word) & mask;
+            if bit_in_word + (self.bit_width as usize) > 64 && word_idx + 1 < self.data.len() {
+                let overflow_bits = (bit_in_word + self.bit_width as usize) - 64;
+                let overflow_mask = (1u64 << overflow_bits) - 1;
+                val |= (self.data[word_idx + 1] & overflow_mask) << (64 - bit_in_word);
+            }
+            result.push(val);
+        }
+        result
+    }
+}

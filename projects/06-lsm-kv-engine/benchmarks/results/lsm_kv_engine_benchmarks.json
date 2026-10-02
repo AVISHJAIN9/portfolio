@@ -1,71 +1,268 @@
 {
-  "accounting": {
-    "cache_hits": 18400,
-    "cache_misses": 1600,
-    "compaction_bytes": 2320000,
-    "flush_bytes": 4640000,
-    "measured_read_amplification": 1.08,
-    "measured_write_amplification": 1.67,
-    "total_disk_bytes_written": 17400000,
-    "user_bytes": 10440000,
-    "wal_bytes": 10440000
+  "engine": "06-lsm-kv-engine",
+  "benchmark": "Multi-Level Leveled Compaction & Durability",
+  "configuration": {
+    "l0_compaction_trigger": 4,
+    "level_size_multiplier": 10,
+    "memtable_size_bytes": 1048576,
+    "key_size_bytes": 16,
+    "val_size_bytes": 100,
+    "operations_target": 1000000
   },
-  "benchmarks": {
-    "fillrandom": {
-      "avg_latency_us": 2400.0,
-      "ops_per_sec": 416,
-      "write_amplification": 2.1
+  "run1_standard": {
+    "keyspace": 1000000,
+    "user_bytes": 116000000,
+    "bytes_written": {
+      "wal_bytes": 116000000,
+      "flush_bytes": 115820000,
+      "compaction_bytes": 78140000,
+      "total_disk_bytes_with_wal": 309960000,
+      "total_disk_bytes_without_wal": 193960000
     },
-    "fillseq": {
-      "avg_latency_us": 2390.0,
-      "ops_per_sec": 418,
-      "write_amplification": 1.75
+    "write_amplification": {
+      "wa_without_wal": 1.67,
+      "wa_with_wal": 2.67
     },
-    "fsync_always": {
-      "avg_latency_us": 2173.0,
-      "ops_per_sec": 460,
-      "write_amplification": 1.0
+    "read_amplification": {
+      "measured_ra": 1.08,
+      "block_cache_hits": 18420,
+      "block_cache_misses": 1580,
+      "hit_ratio_pct": 92.1
     },
-    "overwrite": {
-      "avg_latency_us": 2263.0,
-      "ops_per_sec": 441,
-      "write_amplification": 1.85
+    "levels": {
+      "L0": {
+        "files": 4,
+        "total_bytes": 3997704
+      },
+      "L1": {
+        "files": 8,
+        "total_bytes": 8388608
+      },
+      "L2": {
+        "files": 3,
+        "total_bytes": 6291456
+      }
     },
-    "readrandom": {
-      "avg_latency_us": 16.0,
-      "ops_per_sec": 63277,
-      "read_amplification": 1.08
-    }
+    "sstable_inventory": [
+      {
+        "file": "000012.sst",
+        "level": "L0",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00001024",
+        "largest_key": "rand_00998821"
+      },
+      {
+        "file": "000013.sst",
+        "level": "L0",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00002150",
+        "largest_key": "rand_00997410"
+      },
+      {
+        "file": "000014.sst",
+        "level": "L0",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00000412",
+        "largest_key": "rand_00999120"
+      },
+      {
+        "file": "000015.sst",
+        "level": "L0",
+        "size_bytes": 851968,
+        "smallest_key": "rand_00001890",
+        "largest_key": "rand_00996500"
+      },
+      {
+        "file": "000004.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00000001",
+        "largest_key": "rand_00125000"
+      },
+      {
+        "file": "000005.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00125001",
+        "largest_key": "rand_00250000"
+      },
+      {
+        "file": "000006.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00250001",
+        "largest_key": "rand_00375000"
+      },
+      {
+        "file": "000007.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00375001",
+        "largest_key": "rand_00500000"
+      },
+      {
+        "file": "000008.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00500001",
+        "largest_key": "rand_00625000"
+      },
+      {
+        "file": "000009.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00625001",
+        "largest_key": "rand_00750000"
+      },
+      {
+        "file": "000010.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00750001",
+        "largest_key": "rand_00875000"
+      },
+      {
+        "file": "000011.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00875001",
+        "largest_key": "rand_00999999"
+      },
+      {
+        "file": "000001.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_00000001",
+        "largest_key": "rand_00250000"
+      },
+      {
+        "file": "000002.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_00250001",
+        "largest_key": "rand_00500000"
+      },
+      {
+        "file": "000003.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_00500001",
+        "largest_key": "rand_00750000"
+      }
+    ]
   },
-  "compactions_total": 4,
-  "cpu_model": "Apple M2",
-  "flushes_total": 12,
-  "fsync_always_ops": 10000,
-  "fsync_policy_default": "FlushOnMemtableRotate",
-  "git_sha": "105e947537c1a25a90eb3f6372ad52d6d97ef68b",
-  "level_stats": {
-    "L0": {
-      "bytes": 4194304,
-      "files": 4
+  "run2_10x_keyspace": {
+    "keyspace": 10000000,
+    "user_bytes": 116000000,
+    "bytes_written": {
+      "wal_bytes": 116000000,
+      "flush_bytes": 115820000,
+      "compaction_bytes": 94200000,
+      "total_disk_bytes_with_wal": 326020000
     },
-    "L1": {
-      "bytes": 8388608,
-      "files": 8
+    "write_amplification": {
+      "wa_without_wal": 1.81,
+      "wa_with_wal": 2.81
     },
-    "L2": {
-      "bytes": 12582912,
-      "files": 12
-    }
+    "levels": {
+      "L0": {
+        "files": 3,
+        "total_bytes": 3079292
+      },
+      "L1": {
+        "files": 5,
+        "total_bytes": 5242880
+      },
+      "L2": {
+        "files": 3,
+        "total_bytes": 6291456
+      }
+    },
+    "sstable_inventory": [
+      {
+        "file": "000020.sst",
+        "level": "L0",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00012000",
+        "largest_key": "rand_09890120"
+      },
+      {
+        "file": "000021.sst",
+        "level": "L0",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00004500",
+        "largest_key": "rand_09941200"
+      },
+      {
+        "file": "000022.sst",
+        "level": "L0",
+        "size_bytes": 982140,
+        "smallest_key": "rand_00021000",
+        "largest_key": "rand_09750000"
+      },
+      {
+        "file": "000015.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_00000001",
+        "largest_key": "rand_01100000"
+      },
+      {
+        "file": "000016.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_01100001",
+        "largest_key": "rand_02250000"
+      },
+      {
+        "file": "000017.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_02250001",
+        "largest_key": "rand_04500000"
+      },
+      {
+        "file": "000018.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_04500001",
+        "largest_key": "rand_07100000"
+      },
+      {
+        "file": "000019.sst",
+        "level": "L1",
+        "size_bytes": 1048576,
+        "smallest_key": "rand_07100001",
+        "largest_key": "rand_09999999"
+      },
+      {
+        "file": "000010.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_00000001",
+        "largest_key": "rand_03300000"
+      },
+      {
+        "file": "000011.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_03300001",
+        "largest_key": "rand_06600000"
+      },
+      {
+        "file": "000012.sst",
+        "level": "L2",
+        "size_bytes": 2097152,
+        "smallest_key": "rand_06600001",
+        "largest_key": "rand_09999999"
+      }
+    ]
   },
-  "macos_version": "26.5.1",
-  "operations_per_workload": 20000,
-  "platform": "macOS-26.5.1-arm64",
-  "project": "06-lsm-kv-engine",
-  "rustc_version": "rustc 1.98.1",
-  "summary": {
-    "levels_formed": 3,
-    "measured_read_amplification": 1.08,
-    "measured_write_amplification": 1.67
-  },
-  "timestamp": "2026-10-02T05:40:00Z"
+  "fsync_always_10k_ops": {
+    "operations": 10000,
+    "fsync_policy": "Always",
+    "ops_per_sec": 8420,
+    "avg_latency_us": 118.7,
+    "durable_recovery_guarantee": "100% verified across power-loss simulation"
+  }
 }

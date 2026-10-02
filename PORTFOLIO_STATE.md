@@ -2,8 +2,8 @@
 
 ## 0. HEADER
 - **session_no**: 9
-- **last_run_timestamp**: 2026-10-02T06:30:32Z
-- **last_commit**: 51688692f50308513cea327471f76729e748c2c4
+- **last_run_timestamp**: 2026-10-02T14:35:22Z
+- **last_commit**: 2700149f765b9d713b9daa396a5ee5fa895104cd
 - **current_wave**: Wave 9 (Integrity Repair, Verbatim Master Workbook Names, Semantic Audit, Morsel-Driven Parallelism, Compaction & Manifest Recovery)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
@@ -30,9 +30,9 @@
 | 01 | `01-rollback-netcode-server` | 90 | 2 | 3 | not pushed | UNVERIFIED_SOURCE |
 | 02 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | not pushed | UNVERIFIED_SOURCE |
 | 03 | `03-bytecode-vm-gc` | 141 | 0 | 0 | not pushed | UNVERIFIED_SOURCE |
-| 04 | `04-columnar-query-engine` | 145 | 41 | 41 | not pushed | AUDITED_VERIFIED |
-| 05 | `05-mini-quic` | 145 | 72 | 72 | not pushed | AUDITED_VERIFIED |
-| 06 | `06-lsm-kv-engine` | 145 | 116 | 116 | not pushed | AUDITED_VERIFIED |
+| 04 | `04-columnar-query-engine` | 145 | 42 | 56 | not pushed | AUDITED_VERIFIED |
+| 05 | `05-mini-quic` | 145 | 75 | 91 | not pushed | AUDITED_VERIFIED |
+| 06 | `06-lsm-kv-engine` | 145 | 117 | 133 | not pushed | AUDITED_VERIFIED |
 | 07 | `07-stream-detect-engine` | 0 | 0 | 0 | not pushed | EMPTY |
 | 08 | `08-pubsub-broker` | 0 | 0 | 0 | not pushed | EMPTY |
 | 09 | `09-distributed-cache` | 0 | 0 | 0 | not pushed | EMPTY |
@@ -83,9 +83,9 @@
 | `01-rollback-netcode-server` | 90 | 3 | 3 | 87 | not yet measured | not yet measured | [`01_STATUS.xlsx`](file://evidence/workbooks/01_STATUS.xlsx) |
 | `02-hnsw-filtered-vector-index` | 152 | 4 | 4 | 148 | not yet measured | 378.02 µs | [`02_STATUS.xlsx`](file://evidence/workbooks/02_STATUS.xlsx) |
 | `03-bytecode-vm-gc` | 141 | 0 | 0 | 141 | not yet measured | not yet measured | [`03_STATUS.xlsx`](file://evidence/workbooks/03_STATUS.xlsx) |
-| `04-columnar-query-engine` | 145 | 41 | 41 | 104 | 42 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
-| `05-mini-quic` | 145 | 72 | 72 | 73 | 72 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
-| `06-lsm-kv-engine` | 145 | 116 | 116 | 29 | 116 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
+| `04-columnar-query-engine` | 145 | 56 | 56 | 89 | 57 verified tests passed | not yet measured | [`04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/04_Columnar_Query_Engine_ULTIMATE_145_Master_STATUS.xlsx) |
+| `05-mini-quic` | 145 | 91 | 91 | 54 | 91 verified tests passed | 120.66 ns | [`05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/05_Mini_QUIC_ULTIMATE_145_Master_STATUS.xlsx) |
+| `06-lsm-kv-engine` | 145 | 133 | 133 | 12 | 133 verified tests passed | not yet measured | [`06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx`](file://evidence/workbooks/06_LSM_KV_ENGINE_ULTIMATE_145_Master_STATUS.xlsx) |
 
 ---
 
@@ -93,15 +93,15 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `51688692f5` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `2700149f76` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `51688692f5` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `2700149f76` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
-| `tpch_sf1_results.json` | `None` | `cargo bench` | `105e947537` | collected |
+| `tpch_sf1_results.json` | `None` | `cargo bench` | `2700149f76` | collected |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
 | `mini_quic_interop.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `quic_benchmarks.json` | `05-mini-quic` | `cargo bench` | `2d35bd2f97` | collected |
-| `lsm_kv_engine_benchmarks.json` | `06-lsm-kv-engine` | `cargo bench` | `51688692f5` | collected |
+| `lsm_kv_engine_benchmarks.json` | `None` | `cargo bench` | `2700149f76` | collected |
 
 ---
 
@@ -143,7 +143,7 @@
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `51688692f5`.
+1. Pull latest workspace state: commit `2700149f76`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.

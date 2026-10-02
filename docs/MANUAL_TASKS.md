@@ -46,7 +46,7 @@ This document tracks items that require external user interaction, manual termin
 
 ---
 
-### 6. GitHub Repository Setup & Push
+### 6. GitHub Repository Setup, Actions Execution & Run URL
 - Authenticate GitHub CLI:
   ```bash
   gh auth login
@@ -57,29 +57,23 @@ This document tracks items that require external user interaction, manual termin
   git branch -M main
   git push -u origin main
   ```
-- **Pre-Publish Checklist**:
-  - Add a top-level `LICENSE` file.
-  - Review git commit diffs to ensure no absolute local path leaks or personal credentials.
+- Enable GitHub Actions on the repository:
+  1. Navigate to `https://github.com/<username>/portfolio/actions`.
+  2. Trigger workflow runs for `.github/workflows/ci.yml` and `.github/workflows/bench.yml`.
+  3. Once green, paste the successful run URL below:
+     - **CI Run URL**: `[PASTE_GREEN_CI_RUN_URL_HERE]`
+     - **Benchmark Run URL**: `[PASTE_GREEN_BENCH_RUN_URL_HERE]`
 
 ---
 
-### 7. Slot 07 Onboarding (Stream Detect Engine)
-- When starting Session 9, copy the master workbook into `inputs/specs/`:
-  - Expected file: `inputs/specs/07_Stream_Detect_Engine_ULTIMATE_145_Master.xlsx`
-  - Expected SHA256 prefix: `ff3e546c4b5c`
-- Clone the SigmaHQ rules corpus (free dataset):
-  ```bash
-  git clone --depth 1 https://github.com/SigmaHQ/sigma inputs/datasets/sigma-rules
-  ```
-- If running Docker/Redpanda integration tests:
-  ```bash
-  docker pull redpandadata/redpanda
-  ```
-
----
-
-### 8. Slot 04 CI/CD Pipeline Configuration (04-133)
+### 7. Slot 04 CI/CD Pipeline Configuration (04-133)
 - **Feature**: `04-133` "CI/CD pipeline"
-- **Status**: MANUAL
-- **Action**: Configure GitHub Actions repository secrets, workflow triggers, and runner environments for `.github/workflows/ci.yml` once remote GitHub repository is linked. Automated CI verification is performed locally via `make ci`.
+- **Status**: Specified (Manual verification required on GitHub Actions)
+- **Action**: Workflow file `.github/workflows/ci.yml` is committed. User must push the repository and verify the live run on GitHub Actions runner.
 
+---
+
+### 8. Slot 05 Benchmark CI Jobs (05-142)
+- **Feature**: `05-142` "Benchmark CI jobs"
+- **Status**: Specified (Manual verification required on GitHub Actions)
+- **Action**: Matrix workflow file `.github/workflows/bench.yml` is committed. User must push the repository and verify the benchmark matrix run on GitHub Actions runner.

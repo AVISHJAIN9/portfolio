@@ -186,6 +186,43 @@ impl Frame {
                 let _ = QuicVarInt::encode(frame_type, dst);
                 let _ = QuicVarInt::encode(*max_streams, dst);
             }
+            Frame::DataBlocked { data_limit } => {
+                let _ = QuicVarInt::encode(0x14, dst);
+                let _ = QuicVarInt::encode(*data_limit, dst);
+            }
+            Frame::StreamDataBlocked {
+                stream_id,
+                stream_data_limit,
+            } => {
+                let _ = QuicVarInt::encode(0x15, dst);
+                let _ = QuicVarInt::encode(*stream_id, dst);
+                let _ = QuicVarInt::encode(*stream_data_limit, dst);
+            }
+            Frame::StreamsBlocked {
+                is_bidi,
+                stream_limit,
+            } => {
+                let frame_type = if *is_bidi { 0x16 } else { 0x17 };
+                let _ = QuicVarInt::encode(frame_type, dst);
+                let _ = QuicVarInt::encode(*stream_limit, dst);
+            }
+            Frame::NewConnectionId {
+                seq_num,
+                retire_prior_to,
+                connection_id,
+                stateless_reset_token,
+            } => {
+                let _ = QuicVarInt::encode(0x18, dst);
+                let _ = QuicVarInt::encode(*seq_num, dst);
+                let _ = QuicVarInt::encode(*retire_prior_to, dst);
+                dst.put_u8(connection_id.len() as u8);
+                dst.extend_from_slice(connection_id);
+                dst.extend_from_slice(stateless_reset_token);
+            }
+            Frame::RetireConnectionId { seq_num } => {
+                let _ = QuicVarInt::encode(0x19, dst);
+                let _ = QuicVarInt::encode(*seq_num, dst);
+            }
             Frame::ConnectionClose {
                 error_code,
                 frame_type,
@@ -203,11 +240,13 @@ impl Frame {
                 let _ = QuicVarInt::encode(bytes.len() as u64, dst);
                 dst.extend_from_slice(bytes);
             }
+            Frame::NewToken { token } => {
+                let _ = QuicVarInt::encode(0x07, dst);
+                let _ = QuicVarInt::encode(token.len() as u64, dst);
+                dst.extend_from_slice(token);
+            }
             Frame::HandshakeDone => {
                 let _ = QuicVarInt::encode(0x1e, dst);
-            }
-            _ => {
-                let _ = QuicVarInt::encode(0x01, dst); // Ping fallback
             }
         }
     }
@@ -291,6 +330,14 @@ impl Frame {
                 let data = src.split_to(len);
                 Ok(Some(Frame::Crypto(CryptoFrame { offset, data })))
             }
+            0x07 => {
+                let len = QuicVarInt::decode(src).map_err(|_| "new token len")? as usize;
+                if src.remaining() < len {
+                    return Err("truncated token payload");
+                }
+                let token = src.split_to(len);
+                Ok(Some(Frame::NewToken { token }))
+            }
             0x08..=0x0f => {
                 let stream_id = QuicVarInt::decode(src).map_err(|_| "stream id")?;
                 let offset = if (frame_type & 0x04) != 0 {
@@ -333,6 +380,51 @@ impl Frame {
                     is_bidi: frame_type == 0x12,
                     max_streams,
                 }))
+            }
+            0x14 => {
+                let data_limit = QuicVarInt::decode(src).map_err(|_| "data limit")?;
+                Ok(Some(Frame::DataBlocked { data_limit }))
+            }
+            0x15 => {
+                let stream_id = QuicVarInt::decode(src).map_err(|_| "stream data blocked id")?;
+                let stream_data_limit =
+                    QuicVarInt::decode(src).map_err(|_| "stream data blocked limit")?;
+                Ok(Some(Frame::StreamDataBlocked {
+                    stream_id,
+                    stream_data_limit,
+                }))
+            }
+            0x16 | 0x17 => {
+                let stream_limit = QuicVarInt::decode(src).map_err(|_| "streams blocked limit")?;
+                Ok(Some(Frame::StreamsBlocked {
+                    is_bidi: frame_type == 0x16,
+                    stream_limit,
+                }))
+            }
+            0x18 => {
+                let seq_num = QuicVarInt::decode(src).map_err(|_| "new conn id seq")?;
+                let retire_prior_to =
+                    QuicVarInt::decode(src).map_err(|_| "new conn id retire")?;
+                if !src.has_remaining() {
+                    return Err("truncated new conn id len");
+                }
+                let cid_len = src.get_u8() as usize;
+                if cid_len < 1 || cid_len > 20 || src.remaining() < cid_len + 16 {
+                    return Err("invalid new conn id length or truncated");
+                }
+                let connection_id = src.split_to(cid_len).to_vec();
+                let mut stateless_reset_token = [0u8; 16];
+                src.copy_to_slice(&mut stateless_reset_token);
+                Ok(Some(Frame::NewConnectionId {
+                    seq_num,
+                    retire_prior_to,
+                    connection_id,
+                    stateless_reset_token,
+                }))
+            }
+            0x19 => {
+                let seq_num = QuicVarInt::decode(src).map_err(|_| "retire conn id seq")?;
+                Ok(Some(Frame::RetireConnectionId { seq_num }))
             }
             0x1c | 0x1d => {
                 let error_code = QuicVarInt::decode(src).map_err(|_| "close err code")?;

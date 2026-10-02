@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  lint-and-format:
+    name: Lint & Format Gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Check Formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Clippy Lints
+        run: |
+          cargo clippy --manifest-path projects/04-columnar-query-engine/backend/Cargo.toml --all-targets -- -D warnings
+          cargo clippy --manifest-path projects/05-mini-quic/backend/Cargo.toml --all-targets -- -D warnings
+          cargo clippy --manifest-path projects/06-lsm-kv-engine/backend/Cargo.toml --all-targets -- -D warnings
+
+  test-rust-crates:
+    name: Rust Backend Test Suites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Test Project 04 (Columnar Engine)
+        run: cargo test --manifest-path projects/04-columnar-query-engine/backend/Cargo.toml -- --nocapture
+
+      - name: Test Project 05 (Mini-QUIC)
+        run: cargo test --manifest-path projects/05-mini-quic/backend/Cargo.toml -- --nocapture
+
+      - name: Test Project 06 (LSM KV Engine)
+        run: cargo test --manifest-path projects/06-lsm-kv-engine/backend/Cargo.toml -- --nocapture
+
+  python-suites-and-interop:
+    name: Python Tests & QUIC Interop Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aioquic duckdb pyarrow openpyxl pytest
+
+      - name: Run Pytest Suite
+        run: pytest -q
+
+      - name: Run QUIC Interop Smoke Test
+        run: python3 tools/run_interop.py

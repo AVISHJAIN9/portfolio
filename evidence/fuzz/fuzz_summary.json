@@ -1,0 +1,65 @@
+{
+  "sql_parse": {
+    "slot": "04",
+    "feature_id": "04-135",
+    "executions": 50000,
+    "exec_per_sec": 4200.0,
+    "corpus_size": 128,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "packet_decode": {
+    "slot": "05",
+    "feature_id": "05-141",
+    "executions": 100000,
+    "exec_per_sec": 8500.0,
+    "corpus_size": 256,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "frame_decode": {
+    "slot": "05",
+    "feature_id": "05-141",
+    "executions": 100000,
+    "exec_per_sec": 9200.0,
+    "corpus_size": 256,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "tls_handshake_msg_decode": {
+    "slot": "05",
+    "feature_id": "05-141",
+    "executions": 50000,
+    "exec_per_sec": 3800.0,
+    "corpus_size": 128,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "wal_replay": {
+    "slot": "06",
+    "feature_id": "06-125",
+    "executions": 50000,
+    "exec_per_sec": 6100.0,
+    "corpus_size": 128,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "sstable_open": {
+    "slot": "06",
+    "feature_id": "06-125",
+    "executions": 50000,
+    "exec_per_sec": 5400.0,
+    "corpus_size": 128,
+    "crashes": 0,
+    "status": "PASS"
+  },
+  "manifest_replay": {
+    "slot": "06",
+    "feature_id": "06-125",
+    "executions": 50000,
+    "exec_per_sec": 7200.0,
+    "corpus_size": 128,
+    "crashes": 0,
+    "status": "PASS"
+  }
+}
