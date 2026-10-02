@@ -26,6 +26,8 @@ def main():
 
     # Step 0: Clone
     clone_dir = Path("/tmp/pf-ci")
+    import shutil
+    shutil.rmtree(clone_dir, ignore_errors=True)
     if clone_dir.exists():
         subprocess.run(["rm", "-rf", str(clone_dir)])
     
