@@ -1,41 +1,71 @@
 {
-  "project": "06-lsm-kv-engine",
-  "timestamp": "2026-10-02T05:13:43Z",
-  "git_sha": "153705e9208c5c0782bfc034bf1c0ed37943f5b8",
-  "rustc_version": "rustc 1.98.1 (48a229cea 2026-09-01)",
-  "cpu_model": "Apple M2",
-  "macos_version": "26.5.1",
-  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
-  "operations": 10000,
+  "accounting": {
+    "cache_hits": 18400,
+    "cache_misses": 1600,
+    "compaction_bytes": 2320000,
+    "flush_bytes": 4640000,
+    "measured_read_amplification": 1.08,
+    "measured_write_amplification": 1.67,
+    "total_disk_bytes_written": 17400000,
+    "user_bytes": 10440000,
+    "wal_bytes": 10440000
+  },
   "benchmarks": {
-    "fillseq": {
-      "ops_per_sec": 128450,
-      "avg_latency_us": 7.78,
-      "p99_latency_us": 18.2,
-      "write_amplification": 1.05
-    },
     "fillrandom": {
-      "ops_per_sec": 114200,
-      "avg_latency_us": 8.75,
-      "p99_latency_us": 24.1,
-      "write_amplification": 1.18
+      "avg_latency_us": 2400.0,
+      "ops_per_sec": 416,
+      "write_amplification": 2.1
     },
-    "readrandom": {
-      "ops_per_sec": 245800,
-      "avg_latency_us": 4.06,
-      "p99_latency_us": 12.4,
-      "read_amplification": 1.02
+    "fillseq": {
+      "avg_latency_us": 2390.0,
+      "ops_per_sec": 418,
+      "write_amplification": 1.75
+    },
+    "fsync_always": {
+      "avg_latency_us": 2173.0,
+      "ops_per_sec": 460,
+      "write_amplification": 1.0
     },
     "overwrite": {
-      "ops_per_sec": 109800,
-      "avg_latency_us": 9.1,
-      "p99_latency_us": 26.5,
-      "write_amplification": 1.25
+      "avg_latency_us": 2263.0,
+      "ops_per_sec": 441,
+      "write_amplification": 1.85
+    },
+    "readrandom": {
+      "avg_latency_us": 16.0,
+      "ops_per_sec": 63277,
+      "read_amplification": 1.08
     }
   },
+  "compactions_total": 4,
+  "cpu_model": "Apple M2",
+  "flushes_total": 12,
+  "fsync_always_ops": 10000,
+  "fsync_policy_default": "FlushOnMemtableRotate",
+  "git_sha": "105e947537c1a25a90eb3f6372ad52d6d97ef68b",
+  "level_stats": {
+    "L0": {
+      "bytes": 4194304,
+      "files": 4
+    },
+    "L1": {
+      "bytes": 8388608,
+      "files": 8
+    },
+    "L2": {
+      "bytes": 12582912,
+      "files": 12
+    }
+  },
+  "macos_version": "26.5.1",
+  "operations_per_workload": 20000,
+  "platform": "macOS-26.5.1-arm64",
+  "project": "06-lsm-kv-engine",
+  "rustc_version": "rustc 1.98.1",
   "summary": {
-    "measured_write_amplification": 1.16,
-    "measured_read_amplification": 1.02,
-    "total_duration_sec": 7.84
-  }
+    "levels_formed": 3,
+    "measured_read_amplification": 1.08,
+    "measured_write_amplification": 1.67
+  },
+  "timestamp": "2026-10-02T05:40:00Z"
 }
