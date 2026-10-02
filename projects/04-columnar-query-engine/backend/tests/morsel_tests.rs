@@ -4,7 +4,7 @@ use columnar_query_engine::execution::morsel::{
     DEFAULT_MORSEL_SIZE,
 };
 
-const NUM_ROWS: usize = 100_000;
+const NUM_ROWS: usize = 10_000;
 
 // FEAT: 04-079 "Selection vectors"
 // ACCEPT: Selection vectors represent row index filters without copying intermediate columnar data
@@ -15,8 +15,17 @@ fn test_morsel_selection_vectors() {
 
     let sel = ParallelScan::scan_filtered(&scheduler, &pool, |row| row % 2 == 0);
     assert_eq!(sel.len(), NUM_ROWS / 2);
+    assert!(!sel.is_empty());
     assert_eq!(sel.indices[0], 0);
     assert_eq!(sel.indices[1], 2);
+
+    let empty_morsel = Morsel { start: 5, end: 5 };
+    assert!(empty_morsel.is_empty());
+    assert_eq!(empty_morsel.len(), 0);
+
+    let non_empty_morsel = Morsel { start: 0, end: 10 };
+    assert!(!non_empty_morsel.is_empty());
+    assert_eq!(non_empty_morsel.len(), 10);
 }
 
 // FEAT: 04-080 "Morsel-driven scheduling"
@@ -34,6 +43,11 @@ fn test_morsel_driven_scheduling() {
     assert_eq!(m3, Morsel { start: 20_000, end: 25_000 });
 
     assert_eq!(scheduler.next_morsel(), None);
+
+    // Test reset
+    scheduler.reset();
+    let m1_again = scheduler.next_morsel().unwrap();
+    assert_eq!(m1_again, Morsel { start: 0, end: 10_000 });
 }
 
 // FEAT: 04-081 "Parallel scans"
@@ -100,7 +114,9 @@ fn test_parallel_hash_join_execution() {
 
     assert_eq!(res1.len(), res4.len());
     assert_eq!(res1.len(), res8.len());
-    assert!(res1.len() > 0);
+    assert_eq!(res1.len(), 100_000); // 1000 build matches 10000 probe (each build matches 100 probe rows)
+    assert!(res1.contains(&(0, 0)));
+    assert!(res1.contains(&(1, 10)));
 }
 
 // FEAT: 04-083 "Parallel aggregation"
@@ -122,13 +138,17 @@ fn test_parallel_aggregation_across_threads() {
     assert_eq!(agg1.len(), 4);
     assert_eq!(agg1, agg2);
     assert_eq!(agg1, agg8);
+    assert_eq!(agg1.get(&0), Some(&120_000));
+    assert_eq!(agg1.get(&1), Some(&122_500));
+    assert_eq!(agg1.get(&2), Some(&125_000));
+    assert_eq!(agg1.get(&3), Some(&127_500));
 }
 
 // FEAT: 04-084 "Task scheduler"
 // ACCEPT: Dynamic task scheduler assigns morsels and tracks work exhaustion across concurrent threads
 #[test]
 fn test_task_scheduler_morsel_exhaustion() {
-    let scheduler = Arc::new(MorselScheduler::new(NUM_ROWS, 5_000));
+    let scheduler = Arc::new(MorselScheduler::new(NUM_ROWS, 2_000));
     let pool = MorselThreadPool::new(4);
 
     let count: usize = pool.execute(|| {

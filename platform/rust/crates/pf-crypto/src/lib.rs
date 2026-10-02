@@ -213,6 +213,29 @@ pub fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
     diff == 0
 }
 
+/// Ed25519 signature generation (RFC 8032 / TLS 1.3 0x0807)
+pub fn ed25519_sign(secret_key_bytes: &[u8; 32], message: &[u8]) -> [u8; 64] {
+    use ed25519_dalek::{Signer, SigningKey};
+    let signing_key = SigningKey::from_bytes(secret_key_bytes);
+    signing_key.sign(message).to_bytes()
+}
+
+/// Ed25519 signature verification (RFC 8032 / TLS 1.3 0x0807)
+pub fn ed25519_verify(public_key_bytes: &[u8; 32], message: &[u8], signature_bytes: &[u8; 64]) -> bool {
+    use ed25519_dalek::{Signature, Verifier, VerifyingKey};
+    let Ok(verifying_key) = VerifyingKey::from_bytes(public_key_bytes) else {
+        return false;
+    };
+    let sig = Signature::from_bytes(signature_bytes);
+    verifying_key.verify(message, &sig).is_ok()
+}
+
+pub fn ed25519_public_key(secret_key_bytes: &[u8; 32]) -> [u8; 32] {
+    use ed25519_dalek::SigningKey;
+    let signing_key = SigningKey::from_bytes(secret_key_bytes);
+    signing_key.verifying_key().to_bytes()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -75,3 +75,11 @@ This document tracks items that require external user interaction, manual termin
   ```bash
   docker pull redpandadata/redpanda
   ```
+
+---
+
+### 8. Slot 04 CI/CD Pipeline Configuration (04-133)
+- **Feature**: `04-133` "CI/CD pipeline"
+- **Status**: MANUAL
+- **Action**: Configure GitHub Actions repository secrets, workflow triggers, and runner environments for `.github/workflows/ci.yml` once remote GitHub repository is linked. Automated CI verification is performed locally via `make ci`.
+
