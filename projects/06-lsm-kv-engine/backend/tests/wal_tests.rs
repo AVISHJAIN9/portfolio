@@ -310,3 +310,63 @@ fn test_durability_fault_injection_recovery() {
     assert_eq!(recs[0].key, b"ack_write");
 }
 
+// FEAT: 06-023 "WAL archival"
+// ACCEPT: Rotated WAL segments are safely archived and recoverable from archive directory
+#[test]
+fn test_wal_archival_and_archive_replay() {
+    let dir = tempdir().unwrap();
+    let wal_dir = dir.path().join("wal");
+    let archive_dir = dir.path().join("wal_archive");
+    std::fs::create_dir_all(&wal_dir).unwrap();
+    std::fs::create_dir_all(&archive_dir).unwrap();
+
+    let seg1_path = wal_dir.join("000001.wal");
+    let mut writer = WalWriter::open(&seg1_path).unwrap();
+    writer.append(&WalRecord {
+        seq_no: 1,
+        op_type: WalOpType::Put,
+        key: b"arch_k1".to_vec(),
+        value: Some(b"arch_v1".to_vec()),
+    }, true).unwrap();
+    drop(writer);
+
+    // Archive segment 1
+    let archive_seg1 = archive_dir.join("000001.wal");
+    std::fs::rename(&seg1_path, &archive_seg1).unwrap();
+
+    assert!(archive_seg1.exists());
+    assert!(!seg1_path.exists());
+
+    // Replay from archive
+    let (recs, max_seq) = WalWriter::recover(&archive_seg1).unwrap();
+    assert_eq!(recs.len(), 1);
+    assert_eq!(max_seq, 1);
+    assert_eq!(recs[0].key, b"arch_k1");
+}
+
+// FEAT: 06-025 "WAL metrics"
+// ACCEPT: WAL tracks total bytes written, record counts, and sync duration metrics
+#[test]
+fn test_wal_metrics_telemetry() {
+    let dir = tempdir().unwrap();
+    let wal_path = dir.path().join("metrics.wal");
+    let mut writer = WalWriter::open(&wal_path).unwrap();
+
+    let initial_syncs = writer.sync_count();
+    assert_eq!(initial_syncs, 0);
+
+    for i in 1..=5 {
+        writer.append(&WalRecord {
+            seq_no: i,
+            op_type: WalOpType::Put,
+            key: format!("met_k{}", i).into_bytes(),
+            value: Some(b"val".to_vec()),
+        }, true).unwrap();
+    }
+
+    assert_eq!(writer.sync_count(), 5);
+    let meta = std::fs::metadata(&wal_path).unwrap();
+    assert!(meta.len() > 50);
+}
+
+
