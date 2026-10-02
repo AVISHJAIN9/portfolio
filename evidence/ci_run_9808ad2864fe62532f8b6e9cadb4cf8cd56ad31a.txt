@@ -1,0 +1,11 @@
+=== CLEAN CLONE CI RUN SUMMARY (SHA: 9808ad2864fe62532f8b6e9cadb4cf8cd56ad31a) ===
+
+| Step | Exit Code | Timed Out | Elapsed (s) | Log File |
+|:---|:---:|:---:|:---:|:---|
+| `01_clone` | **128** | no | 0.02s | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+
+Overall Result: ✗ FAIL
+
+
+--- LOG: 01_clone ---
+fatal: destination path '/tmp/pf-ci' already exists and is not an empty directory.

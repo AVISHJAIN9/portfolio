@@ -2,8 +2,8 @@
 
 ## 0. HEADER
 - **session_no**: 9
-- **last_run_timestamp**: 2026-10-02T06:17:47Z
-- **last_commit**: 14aeca47bac67d71ce9e2b47a0f9118498c8d30a
+- **last_run_timestamp**: 2026-10-02T06:30:32Z
+- **last_commit**: 51688692f50308513cea327471f76729e748c2c4
 - **current_wave**: Wave 9 (Integrity Repair, Verbatim Master Workbook Names, Semantic Audit, Morsel-Driven Parallelism, Compaction & Manifest Recovery)
 - **monorepo_root**: /Users/avishjain/avishjain9-repos/portfolio
 - **global_status**: AUDITED_VERIFIED_HONEST_PROGRESS
@@ -93,15 +93,15 @@
 
 | Benchmark Result File | Project | Command | Git Commit | Measurements Summary |
 |:---|:---|:---|:---|:---|
-| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `14aeca47ba` | collected |
+| `hnsw_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench` | `51688692f5` | collected |
 | `hnsw_filtered_vector_index_benchmarks.json` | `02-hnsw-filtered-vector-index` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/02-hnsw-filtered-vector-index/backend/Cargo.toml --bench hnsw_bench -- --baseline new` | `49adde6b5f` | benchmark: 378.02 µs |
-| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `14aeca47ba` | collected |
+| `columnar_benchmarks.json` | `04-columnar-query-engine` | `cargo bench` | `51688692f5` | collected |
 | `columnar_query_engine_benchmarks.json` | `04-columnar-query-engine` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/04-columnar-query-engine/backend/Cargo.toml --bench columnar_bench -- --baseline new` | `49adde6b5f` | collected |
 | `tpch_sf1_results.json` | `None` | `cargo bench` | `105e947537` | collected |
 | `mini_quic_benchmarks.json` | `05-mini-quic` | `cargo bench --manifest-path /Users/avishjain/avishjain9-repos/portfolio/projects/05-mini-quic/backend/Cargo.toml --bench quic_bench -- --baseline new` | `49adde6b5f` | benchmark: 120.66 ns |
 | `mini_quic_interop.json` | `None` | `cargo bench` | `49adde6b5f` | collected |
 | `quic_benchmarks.json` | `05-mini-quic` | `cargo bench` | `2d35bd2f97` | collected |
-| `lsm_kv_engine_benchmarks.json` | `06-lsm-kv-engine` | `cargo bench` | `14aeca47ba` | collected |
+| `lsm_kv_engine_benchmarks.json` | `06-lsm-kv-engine` | `cargo bench` | `51688692f5` | collected |
 
 ---
 
@@ -143,7 +143,7 @@
 ---
 
 ## 11. RESUME INSTRUCTIONS
-1. Pull latest workspace state: commit `14aeca47ba`.
+1. Pull latest workspace state: commit `51688692f5`.
 2. Run `python3 tools/evidence_gen.py` to regenerate verified evidence rows.
 3. Run `python3 tools/workbook_status.py` to refresh all `_STATUS.xlsx` workbooks.
 4. Run `python3 tools/bench_collector.py` to refresh Criterion benchmarks.

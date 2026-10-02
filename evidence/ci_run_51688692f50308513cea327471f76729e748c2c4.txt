@@ -1,0 +1,18 @@
+=== CLEAN CLONE CI RUN SUMMARY (SHA: 51688692f50308513cea327471f76729e748c2c4) ===
+
+| Step | Exit Code | Timed Out | Elapsed (s) | Log File |
+|:---|:---:|:---:|:---:|:---|
+| `01_clone` | **0** | no | 1.56s | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+| `02_clean_clone_ci` | **2** | no | 33.09s | [`02_clean_clone_ci.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_clean_clone_ci.log) |
+
+Overall Result: ✗ FAIL
+
+
+--- LOG: 01_clone ---
+Cloning into '/tmp/pf-ci'...
+done.
+
+--- LOG: 02_clean_clone_ci ---
+=== Running Workspace-Wide CI ===
+EXIT=2 TIMEOUT=no ELAPSED=33.02 LOG=/private/tmp/pf-ci/evidence/ci_steps/lint.log
+make: *** [ci] Error 2

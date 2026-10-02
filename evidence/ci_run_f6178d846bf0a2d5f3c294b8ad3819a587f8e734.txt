@@ -1,0 +1,40 @@
+=== CLEAN CLONE CI RUN SUMMARY (SHA: f6178d846bf0a2d5f3c294b8ad3819a587f8e734) ===
+
+| Step | Exit Code | Timed Out | Elapsed (s) | Log File |
+|:---|:---:|:---:|:---:|:---|
+| `01_clone` | **0** | no | 1.56s | [`01_clone.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/01_clone.log) |
+| `02_lint` | **2** | no | 0.79s | [`02_lint.log`](file:////Users/avishjain/avishjain9-repos/portfolio/evidence/ci_steps/02_lint.log) |
+
+Overall Result: ✗ FAIL
+
+
+--- LOG: 01_clone ---
+Cloning into '/tmp/pf-ci'...
+done.
+
+--- LOG: 02_lint ---
+=== Running Workspace-Wide Rust Formatting & Linting Gates (05-143) ===
+Diff in /private/tmp/pf-ci/projects/05-mini-quic/backend/tests/protocol_p0_tests.rs:178:
+ #[test]
+ fn test_rust_formatting_and_linting_gates() {
+     let unformatted_code = "fn   bad_formatting (  x:i32,y:i32  )->i32{x+y}";
+-    assert!(unformatted_code.contains("   "), "Unformatted scratch snippet contains improper spacing");
++    assert!(
++        unformatted_code.contains("   "),
++        "Unformatted scratch snippet contains improper spacing"
++    );
+     assert!(!unformatted_code.contains("fn bad_formatting(x: i32, y: i32) -> i32 {"));
+ 
+     // Proper formatting
+Diff in /private/tmp/pf-ci/projects/05-mini-quic/backend/tests/protocol_p0_tests.rs:206:
+     assert!(cargo_toml.contains("mini-quic"));
+     assert!(cargo_toml.contains("edition = \"2021\""));
+ 
+-    let rustflags = "--remap-path-prefix=/tmp/build_a=/build --remap-path-prefix=/tmp/build_b=/build";
++    let rustflags =
++        "--remap-path-prefix=/tmp/build_a=/build --remap-path-prefix=/tmp/build_b=/build";
+     assert!(rustflags.contains("--remap-path-prefix"));
+ }
+-
+ 
+make: *** [lint] Error 1
