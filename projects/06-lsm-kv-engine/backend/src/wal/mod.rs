@@ -13,6 +13,13 @@ pub enum WalOpType {
     Delete = 2,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FsyncPolicy {
+    Always,
+    Interval(usize),
+    Never,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct WalRecord {
     pub seq_no: u64,
@@ -25,6 +32,9 @@ pub struct WalWriter {
     file: File,
     path: PathBuf,
     current_seq_no: u64,
+    fsync_policy: FsyncPolicy,
+    sync_count: usize,
+    unflushed_appends: usize,
 }
 
 impl WalWriter {
@@ -40,7 +50,18 @@ impl WalWriter {
             file,
             path,
             current_seq_no: 0,
+            fsync_policy: FsyncPolicy::Always,
+            sync_count: 0,
+            unflushed_appends: 0,
         })
+    }
+
+    pub fn set_fsync_policy(&mut self, policy: FsyncPolicy) {
+        self.fsync_policy = policy;
+    }
+
+    pub fn sync_count(&self) -> usize {
+        self.sync_count
     }
 
     pub fn append(&mut self, record: &WalRecord, sync: bool) -> std::io::Result<u64> {
@@ -66,7 +87,17 @@ impl WalWriter {
         frame.put_slice(&payload);
 
         self.file.write_all(&frame)?;
-        if sync {
+        self.unflushed_appends += 1;
+
+        let should_sync = sync || match self.fsync_policy {
+            FsyncPolicy::Always => true,
+            FsyncPolicy::Interval(n) if n > 0 => self.unflushed_appends >= n,
+            _ => false,
+        };
+
+        if should_sync {
+            self.sync_count += 1;
+            self.unflushed_appends = 0;
             #[cfg(target_os = "macos")]
             {
                 use std::os::unix::io::AsRawFd;
@@ -130,12 +161,13 @@ impl WalWriter {
             buf.advance(k_len);
 
             let v_len = buf.get_u32() as usize;
-            let value = if op_type == WalOpType::Put && v_len > 0 {
-                let val = buf[..v_len].to_vec();
-                buf.advance(v_len);
-                Some(val)
-            } else {
-                None
+            let value = match op_type {
+                WalOpType::Put => {
+                    let val = buf[..v_len].to_vec();
+                    buf.advance(v_len);
+                    Some(val)
+                }
+                WalOpType::Delete => None,
             };
 
             max_seq = std::cmp::max(max_seq, seq_no);

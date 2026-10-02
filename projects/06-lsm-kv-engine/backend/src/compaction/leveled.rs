@@ -59,6 +59,40 @@ impl LeveledCompactionController {
         }
     }
 
+    /// Computes compaction priority score for a given level
+    pub fn compute_compaction_score(&self, level: usize, files: &[FileMetadata]) -> f64 {
+        if level == 0 {
+            files.len() as f64 / self.l0_compaction_threshold.max(1) as f64
+        } else {
+            let total_bytes: u64 = files.iter().map(|f| f.size_bytes).sum();
+            let target_bytes = self.max_bytes_for_level_base * (self.level_size_multiplier.pow(level as u32 - 1) as u64);
+            total_bytes as f64 / target_bytes as f64
+        }
+    }
+
+    /// Selects the highest scoring eligible level for compaction, guarding against concurrent busy levels
+    pub fn pick_best_level_to_compact(
+        &self,
+        levels: &[Vec<FileMetadata>],
+        busy_levels: &HashSet<usize>,
+    ) -> Option<usize> {
+        let mut best_level = None;
+        let mut max_score = 0.999; // Only schedule if score >= 1.0
+
+        for (lvl, files) in levels.iter().enumerate() {
+            if busy_levels.contains(&lvl) {
+                continue;
+            }
+            let score = self.compute_compaction_score(lvl, files);
+            if score > max_score {
+                max_score = score;
+                best_level = Some(lvl);
+            }
+        }
+
+        best_level
+    }
+
     /// Compaction picker: analyzes level files and picks compaction candidate inputs.
     pub fn pick_compaction(
         &self,

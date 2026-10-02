@@ -67,5 +67,30 @@ fn bench_readrandom(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, bench_fillseq, bench_fillrandom, bench_readrandom);
+fn bench_overwrite(c: &mut Criterion) {
+    let mut group = c.benchmark_group("lsm_overwrite");
+    group.sample_size(10);
+
+    let dir = tempdir().unwrap();
+    let engine = LsmEngine::open(dir.path()).unwrap();
+    for i in 0..10_000 {
+        let key = format!("key_{:08}", i).into_bytes();
+        let val = format!("val_{:08}", i).into_bytes();
+        engine.put(&key, &val).unwrap();
+    }
+
+    group.bench_function("overwrite_10k_entries", |b| {
+        b.iter(|| {
+            for i in 0..10_000 {
+                let key = format!("key_{:08}", i).into_bytes();
+                let val = format!("updated_val_{:08}", i).into_bytes();
+                engine.put(black_box(&key), black_box(&val)).unwrap();
+            }
+        });
+    });
+    group.finish();
+}
+
+criterion_group!(benches, bench_fillseq, bench_fillrandom, bench_readrandom, bench_overwrite);
 criterion_main!(benches);
+
