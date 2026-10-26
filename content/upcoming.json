@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "title": "NASA Space Apps Challenge",
+    "status": "Registered",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 2,
+    "title": "Tech Fest",
+    "status": "Registered",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 3,
+    "title": "Open Source: Mattermost contribution",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 4,
+    "title": "Google Summer of Code: organization selection",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 5,
+    "title": "Google Summer of Code: next round",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 6,
+    "title": "SIH Finals",
+    "status": "Awaiting results",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 7,
+    "title": "Bangalore Tech Summit",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 8,
+    "title": "Google DevFest",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 9,
+    "title": "Open Source Column (title to be confirmed)",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 10,
+    "title": "ATH India",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 11,
+    "title": "Shaastra: online rounds",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 12,
+    "title": "Kshitij: online rounds",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 13,
+    "title": "Microsoft (event to be confirmed)",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 14,
+    "title": "NITK",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 15,
+    "title": "Pragyan",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 16,
+    "title": "Technozion",
+    "status": "Planned",
+    "date": "Date: TBA",
+    "verify": true
+  },
+  {
+    "id": 17,
+    "title": "NIT/IIT research programs: applications opening",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 18,
+    "title": "Amazon ML Summer School",
+    "status": "Planned",
+    "date": "Date: TBA"
+  },
+  {
+    "id": 19,
+    "title": "Flipkart GRiD",
+    "status": "Planned",
+    "date": "Date: TBA"
+  }
+]

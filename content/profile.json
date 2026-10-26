@@ -1,0 +1,32 @@
+{
+  "name": "Avish Jain",
+  "tagline": "Building backend systems that hold up when the weather turns.",
+  "subline": "2nd-year Engineering student, BMS College of Engineering \u00b7 Founder, All Tech",
+  "parents": "son of Ritu & Ankush Jain",
+  "college": "2nd year, BMS College of Engineering, Bengaluru",
+  "bio": "Focused on backend and distributed systems; currently building 20 systems-level projects from first principles. Two-time Smart India Hackathon Round 2 qualifier across consecutive years. Active volunteer and leader at IEEE, ACM, OSCode, and other college clubs; founder of All Tech.",
+  "photo": null,
+  "stats": [
+    {
+      "value": 20,
+      "label": "projects in the works",
+      "suffix": ""
+    },
+    {
+      "value": 2,
+      "label": "SIH Round 2",
+      "suffix": " \u00d7"
+    },
+    {
+      "value": 0,
+      "label": "certificates earned",
+      "suffix": "",
+      "dynamic": "certificates"
+    }
+  ],
+  "contact": {
+    "email": "avishjain412@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/avish-jain-956962362",
+    "github": "https://github.com/AVISHJAIN9"
+  }
+}

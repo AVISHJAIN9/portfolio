@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Winter's Journey | Interactive Cinematic Portfolio</title>
+  <meta name="description" content="A scroll-based cinematic portfolio: a camera through a snowy winter forest, a raccoon dog, a reindeer, an ice cave, a mountain eagle, and a craftsman's cabin — all as one continuous interactive story.">
+  <meta name="theme-color" content="#070b12">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="loading-state">
+
+  <!-- Glass Portfolio Content Panels (injected dynamically by glassPortfolio.js) -->
+  <div id="glass-stage-container" aria-live="polite"></div>
+
+  <!-- Ambient snow particles (canvas drawn) -->
+  <canvas id="snow-canvas" aria-hidden="true"></canvas>
+
+  <!-- ===================================================================
+       CINEMA STAGE — Letterboxed / object-fit: cover viewport
+       =================================================================== -->
+  <main id="cinema-stage" aria-label="Cinematic interactive story">
+
+    <!-- Dual-buffer video player: buffer-a is active, buffer-b pre-buffers next -->
+    <div id="video-wrapper" aria-hidden="true">
+      <video id="video-buffer-a" class="stage-video active" playsinline muted preload="auto" tabindex="-1"></video>
+      <video id="video-buffer-b" class="stage-video"        playsinline muted preload="auto" tabindex="-1"></video>
+      <!-- Decoded Scene 8 END frame -->
+      <img id="s8-end-frame-img" class="stage-video" src="highquality/scene 8/frame_172.png" style="display:none; z-index:2; pointer-events:none;" alt="Scene 8 End Frame">
+      <!-- Decoded Scene 12 END frame (blueprint workbench hold) -->
+      <img id="s12-end-frame-img" class="stage-video" src="highquality/scene12/frame_172.png" style="display:none; z-index:10; pointer-events:none;" alt="Scene 12 End Frame — Blueprint Workbench">
+      <!-- Flow Sequence Canvas for 11.x continuous playback and Scene 10 seamless loop -->
+      <canvas id="flow-canvas" class="stage-video active" width="1280" height="720" style="display:none; z-index:2; pointer-events:none; opacity:1;"></canvas>
+      <!-- House exterior still frame holder (Ken Burns subtle hold) -->
+      <div id="house-still-holder" class="house-still" style="display:none;" aria-hidden="true">
+        <img id="house-still-img" src="assets/house_exterior.png" alt="Cabin exterior in blizzard">
+      </div>
+    </div>
+
+    <!-- Tree overlay layer (time-synced loops; positioned with exact video cover math) -->
+    <div id="overlay-container" aria-live="polite" aria-atomic="false">
+      <div id="overlay-tree-1-1" class="media-overlay tree-overlay" style="--ov-x:5%;--ov-y:2%;--ov-w:28%;--ov-h:82%">
+        <video id="video-tree-1-1" class="overlay-video" playsinline muted preload="none" tabindex="-1"></video>
+      </div>
+      <div id="overlay-tree-1-2" class="media-overlay tree-overlay" style="--ov-x:36%;--ov-y:2%;--ov-w:32%;--ov-h:86%">
+        <video id="video-tree-1-2" class="overlay-video" playsinline muted preload="none" tabindex="-1"></video>
+      </div>
+      <div id="overlay-tree-1-3" class="media-overlay tree-overlay" style="--ov-x:66%;--ov-y:2%;--ov-w:32%;--ov-h:84%">
+        <video id="video-tree-1-3" class="overlay-video" playsinline muted preload="none" tabindex="-1"></video>
+      </div>
+    </div>
+
+    <!-- Debug Mask Overlay Layer (for ?debug=1 "Show masks" toggle) -->
+    <div id="mask-overlay-layer" class="mask-layer" aria-hidden="true" style="display:none;">
+      <img id="active-mask-img" src="" alt="Subject silhouette mask overlay">
+    </div>
+
+    <!-- White flash dip element for CAVE_EXIT missing connector -->
+    <div id="white-flash-dip" class="white-flash" aria-hidden="true"></div>
+
+    <!-- ===================================================================
+         SVG HOTSPOT LAYER: 1280x720 coordinates matching video source exactly
+         =================================================================== -->
+    <svg id="hotspot-svg" class="hotspot-layer" viewBox="0 0 1280 720" preserveAspectRatio="none"
+         role="group" aria-label="Interactive story hotspots">
+
+      <!-- S3_STUMP: Traced Raccoon Dog silhouette -->
+      <g id="hs-group-S3_STUMP" class="hs-group" data-state="S3_STUMP" style="display:none;">
+        <path id="hs-raccoon-dog" class="hs-zone hs-traced"
+              d="M 540 421 L 538 446 L 544 472 L 553 486 L 569 502 L 594 514 L 615 517 L 636 514 L 655 506 L 664 499 L 676 501 L 695 499 L 736 485 L 752 490 L 764 489 L 774 484 L 783 472 L 783 450 L 774 434 L 759 425 L 740 422 L 735 417 L 721 411 L 706 399 L 697 399 L 683 395 L 671 383 L 671 372 L 668 367 L 666 354 L 659 349 L 648 348 L 643 342 L 637 339 L 621 338 L 612 341 L 607 348 L 607 363 L 585 369 L 569 378 L 553 394 Z"
+              tabindex="0" role="button" aria-label="Raccoon Dog — click to awaken the journey"
+              data-hotspot-id="raccoon-dog" data-action="advance-to-chase"/>
+      </g>
+
+      <!-- S7_REINDEER: Traced Reindeer body and antlers silhouette -->
+      <g id="hs-group-S7_REINDEER" class="hs-group" data-state="S7_REINDEER" style="display:none;">
+        <path id="hs-reindeer" class="hs-zone hs-traced"
+              d="M 882 137 L 669 137 L 655 151 L 653 170 L 676 235 L 664 223 L 648 226 L 634 202 L 612 181 L 575 167 L 539 171 L 521 180 L 498 205 L 486 238 L 488 281 L 499 308 L 525 337 L 514 365 L 506 412 L 512 487 L 542 556 L 591 604 L 618 617 L 652 624 L 687 621 L 720 609 L 748 590 L 773 563 L 795 525 L 808 483 L 824 476 L 855 487 L 866 529 L 877 533 L 892 524 L 893 148 Z"
+              tabindex="0" role="button" aria-label="Spirit Reindeer — click to venture into ice cave"
+              data-hotspot-id="reindeer" data-action="advance-to-ice-cave"/>
+      </g>
+
+      <!-- S9_ICE_CAVE: 4 Traced Icicles + Full Backdrop Advance -->
+      <g id="hs-group-S9_ICE_CAVE" class="hs-group" data-state="S9_ICE_CAVE" style="display:none;">
+        <!-- Backdrop: anywhere else advances to mountain ascent -->
+        <rect id="hs-cave-backdrop" class="hs-zone hs-backdrop" x="0" y="0" width="1280" height="720"
+              tabindex="0" role="button" aria-label="Ice cave — click anywhere to proceed outside"
+              data-action="advance-from-cave"/>
+        <!-- 4 Traced Icicle spears -->
+        <path id="hs-icicle-1" class="hs-zone hs-traced hs-icicle"
+              d="M 238 120 L 174 129 L 161 136 L 140 235 L 154 359 L 179 510 L 184 518 L 208 529 L 217 526 L 221 521 L 270 384 L 290 216 L 254 135 L 246 123 Z"
+              tabindex="0" role="button" aria-label="Crystal Shard Alpha — click for details"
+              data-hotspot-id="icicle-1" data-action="open-icicle-panel" data-icicle-id="icicle-1"/>
+        <path id="hs-icicle-2" class="hs-zone hs-traced hs-icicle"
+              d="M 438 70 L 365 79 L 351 86 L 330 204 L 349 369 L 379 550 L 384 558 L 416 569 L 426 566 L 431 560 L 470 395 L 490 206 L 451 79 Z"
+              tabindex="0" role="button" aria-label="Glacial Spear Beta — click for details"
+              data-hotspot-id="icicle-2" data-action="open-icicle-panel" data-icicle-id="icicle-2"/>
+        <path id="hs-icicle-3" class="hs-zone hs-traced hs-icicle"
+              d="M 668 50 L 585 59 L 571 66 L 555 193 L 575 396 L 604 570 L 609 578 L 637 589 L 651 580 L 690 424 L 710 237 L 681 60 Z"
+              tabindex="0" role="button" aria-label="Prismatic Chime Gamma — click for details"
+              data-hotspot-id="icicle-3" data-action="open-icicle-panel" data-icicle-id="icicle-3"/>
+        <path id="hs-icicle-4" class="hs-zone hs-traced hs-icicle"
+              d="M 958 80 L 834 103 L 829 113 L 820 212 L 879 530 L 884 538 L 916 549 L 930 543 L 990 414 L 1030 245 L 1030 236 L 972 91 L 966 83 Z"
+              tabindex="0" role="button" aria-label="Frost Pillar Delta — click for details"
+              data-hotspot-id="icicle-4" data-action="open-icicle-panel" data-icicle-id="icicle-4"/>
+      </g>
+
+      <!-- S8_HOLD: Bird, 9 Mountain Peaks (P1..P9), and Go to House Button -->
+      <g id="hs-group-S8_HOLD" class="hs-group" data-state="S8_HOLD" style="display:none;">
+        <!-- Bird Hotspot directly on the perched golden eagle -->
+        <rect id="hs-bird" class="hs-zone hs-traced hs-bird"
+              x="265" y="185" width="100" height="180" rx="16"
+              tabindex="0" role="button" aria-label="Golden Eagle — click to take flight"
+              data-hotspot-id="bird" data-action="flow-bird-click"/>
+
+        <!-- 9 Mountain Peaks (P1..P9 left-to-right) -->
+        <rect id="hs-peak-1" class="hs-zone hs-traced hs-peak"
+              x="48" y="398" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 1 — aerial flight"
+              data-hotspot-id="peak-1" data-peak-id="1" data-action="flow-peak-click"/>
+        <rect id="hs-peak-2" class="hs-zone hs-traced hs-peak"
+              x="128" y="403" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 2 — aerial flight"
+              data-hotspot-id="peak-2" data-peak-id="2" data-action="flow-peak-click"/>
+        <rect id="hs-peak-3" class="hs-zone hs-traced hs-peak"
+              x="183" y="408" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 3 — aerial flight"
+              data-hotspot-id="peak-3" data-peak-id="3" data-action="flow-peak-click"/>
+        <rect id="hs-peak-4" class="hs-zone hs-traced hs-peak"
+              x="273" y="403" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 4 — aerial flight"
+              data-hotspot-id="peak-4" data-peak-id="4" data-action="flow-peak-click"/>
+        <rect id="hs-peak-5" class="hs-zone hs-traced hs-peak"
+              x="453" y="273" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 5 — aerial flight"
+              data-hotspot-id="peak-5" data-peak-id="5" data-action="flow-peak-click"/>
+        <rect id="hs-peak-6" class="hs-zone hs-traced hs-peak"
+              x="563" y="413" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 6 — aerial flight"
+              data-hotspot-id="peak-6" data-peak-id="6" data-action="flow-peak-click"/>
+        <rect id="hs-peak-7" class="hs-zone hs-traced hs-peak"
+              x="613" y="413" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 7 — aerial flight"
+              data-hotspot-id="peak-7" data-peak-id="7" data-action="flow-peak-click"/>
+        <rect id="hs-peak-8" class="hs-zone hs-traced hs-peak"
+              x="723" y="468" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 8 — aerial flight"
+              data-hotspot-id="peak-8" data-peak-id="8" data-action="flow-peak-click"/>
+        <rect id="hs-peak-9" class="hs-zone hs-traced hs-peak"
+              x="928" y="368" width="44" height="44" rx="8"
+              tabindex="0" role="button" aria-label="Mountain Peak 9 — aerial flight"
+              data-hotspot-id="peak-9" data-peak-id="9" data-action="flow-peak-click"/>
+
+        <!-- Go to House Button on the Right Side -->
+        <g id="hs-btn-goto-house" class="hs-zone hs-house-pill"
+           tabindex="0" role="button" aria-label="Go to House"
+           data-hotspot-id="goto-house" data-action="flow-house-click"
+           transform="translate(1060, 580)">
+          <rect x="0" y="0" width="180" height="52" rx="26" class="hs-pill-bg"/>
+          <text x="90" y="32" text-anchor="middle" class="hs-pill-text">Go to House →</text>
+        </g>
+
+        <!-- Debug Labels (?debug=hotspots) -->
+        <g id="hs-debug-labels" class="debug-hotspot-labels" aria-hidden="true">
+          <text class="debug-hs-label" x="315" y="280" text-anchor="middle">BIRD</text>
+          <text class="debug-hs-label" x="70" y="425" text-anchor="middle">P1</text>
+          <text class="debug-hs-label" x="150" y="430" text-anchor="middle">P2</text>
+          <text class="debug-hs-label" x="205" y="435" text-anchor="middle">P3</text>
+          <text class="debug-hs-label" x="295" y="430" text-anchor="middle">P4</text>
+          <text class="debug-hs-label" x="475" y="300" text-anchor="middle">P5</text>
+          <text class="debug-hs-label" x="585" y="440" text-anchor="middle">P6</text>
+          <text class="debug-hs-label" x="635" y="440" text-anchor="middle">P7</text>
+          <text class="debug-hs-label" x="745" y="495" text-anchor="middle">P8</text>
+          <text class="debug-hs-label" x="950" y="395" text-anchor="middle">P9</text>
+        </g>
+      </g>
+
+      <!-- S_HOUSE: Traced Cabin Door -->
+      <g id="hs-group-S_HOUSE" class="hs-group" data-state="S_HOUSE" style="display:none;">
+        <path id="hs-door" class="hs-zone hs-traced hs-door"
+              d="M 623 381 L 618 388 L 613 468 L 617 573 L 620 586 L 632 592 L 738 592 L 747 589 L 752 582 L 743 396 L 740 384 L 728 378 L 632 378 Z"
+              tabindex="0" role="button" aria-label="Cabin Door — click to enter"
+              data-hotspot-id="door" data-action="enter-house"/>
+      </g>
+
+      <!-- S12_INTERIOR: Traced Frosted Window & Drafting Table (Frame 172 Workbench) -->
+      <g id="hs-group-S12_INTERIOR" class="hs-group" data-state="S12_INTERIOR" style="display:none;">
+        <rect id="hs-s12-backdrop" class="hs-zone hs-backdrop" x="0" y="0" width="1280" height="720"
+              tabindex="0" role="button" aria-label="Workbench — click to gaze into the cosmos"
+              data-action="advance-to-finale" style="opacity: 0; cursor: pointer;"/>
+        <path id="hs-window" class="hs-zone hs-traced hs-window"
+              d="M 230 0 L 760 0 L 760 180 L 230 180 Z"
+              tabindex="0" role="button" aria-label="Frosted Window — click to gaze outside"
+              data-hotspot-id="window" data-action="advance-to-finale"/>
+        <path id="hs-table" class="hs-zone hs-traced hs-table"
+              d="M 0 180 L 1280 180 L 1280 720 L 0 720 Z"
+              tabindex="0" role="button" aria-label="Architectural Drafting Table — click blueprint"
+              data-hotspot-id="table" data-action="advance-to-finale"/>
+      </g>
+
+      <!-- Debug polygon editor points (populated dynamically in debug mode) -->
+      <g id="debug-points-group" aria-hidden="true"></g>
+
+    </svg><!-- /#hotspot-svg -->
+
+    <!-- Cinematic vignette overlay -->
+    <div class="cinema-vignette" aria-hidden="true"></div>
+
+    <!-- On-stage HTML Buttons for Chapter 6 -->
+    <div id="stage-ch6-buttons" class="stage-ch6-btn-group" style="display:none;">
+      <button id="btn-stage-travel-mountains" class="chapter6-btn" aria-label="Travel to Mountains — Play 11.1 then Scene 10">
+        <span>🏔️ TRAVEL TO MOUNTAINS →</span>
+      </button>
+      <button id="btn-stage-travel-home" class="chapter6-btn" aria-label="Travel to Home — Play 11.1 to 11.3">
+        <span>🏠 TRAVEL TO HOME →</span>
+      </button>
+    </div>
+
+    <!-- On-stage HTML Button for Scene 13 Finale -->
+    <div id="stage-s13-actions" class="stage-s13-btn-group" style="display:none;">
+      <button id="btn-stage-clubs" class="stage-clubs-btn highlight-btn" aria-label="Clubs">
+        <span class="clubs-sparkle">✦</span>
+        <span>Clubs</span>
+        <span class="clubs-arrow">→</span>
+      </button>
+    </div>
+
+  </main><!-- /#cinema-stage -->
+
+  <!-- ===================================================================
+       SCENE 14: ONE HORIZONTAL ROW OF FOUR VIDEOS (SIDE BY SIDE)
+       No cropping: object-fit: contain. Full frame visible.
+       Top bar: 68px reserved. Bottom bar: slim info bar.
+       =================================================================== -->
+  <section id="scene-14-stage" class="scene-14-container" style="display:none;" aria-label="Scene 14: The Clubs Showcase">
+    <!-- Reserved space for top bar (height ~68px) so no UI overlaps videos -->
+    <div class="scene-14-top-spacer" aria-hidden="true"></div>
+
+    <!-- Main video row: 4 equal columns in a single row -->
+    <div class="scene-14-row" id="scene-14-row">
+      <div class="scene-14-col" id="col-club-1">
+        <div class="scene-14-video-box">
+          <video id="video-club-1" class="scene-14-video" autoplay loop muted playsinline preload="auto" src="videos/club1.mp4"></video>
+        </div>
+        <div class="club-col-label">CLUB 1</div>
+      </div>
+      <div class="scene-14-col" id="col-club-2">
+        <div class="scene-14-video-box">
+          <video id="video-club-2" class="scene-14-video" autoplay loop muted playsinline preload="auto" src="videos/club2.mp4"></video>
+        </div>
+        <div class="club-col-label">CLUB 2</div>
+      </div>
+      <div class="scene-14-col" id="col-club-3">
+        <div class="scene-14-video-box">
+          <video id="video-club-3" class="scene-14-video" autoplay loop muted playsinline preload="auto" src="videos/club3.mp4"></video>
+        </div>
+        <div class="club-col-label">CLUB 3</div>
+      </div>
+      <div class="scene-14-col" id="col-club-4">
+        <div class="scene-14-video-box">
+          <video id="video-club-4" class="scene-14-video" autoplay loop muted playsinline preload="auto" src="videos/club4.mp4"></video>
+        </div>
+        <div class="club-col-label">CLUB 4</div>
+      </div>
+    </div>
+
+    <!-- Slim bottom bar below the videos: keeps info card off the videos -->
+    <div class="scene-14-bottom-bar" id="scene-14-bottom-bar">
+      <div class="scene-14-info">
+        <span class="scene-14-badge">SCENE 14</span>
+        <span class="scene-14-title">The Clubs Showcase</span>
+        <span class="scene-14-desc">— Four creative domains in synchronized viewport harmony</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       ICICLE DETAIL PANEL (Section D.3)
+       =================================================================== -->
+  <aside id="icicle-panel" class="glass-panel" aria-hidden="true" role="dialog"
+         aria-labelledby="icicle-panel-title" aria-modal="true">
+    <div class="panel-inner">
+      <header class="panel-header">
+        <span id="icicle-panel-year" class="panel-year-badge">2026</span>
+        <button id="icicle-panel-close" class="icon-btn" aria-label="Close icicle detail">✕</button>
+      </header>
+      <div class="panel-body">
+        <p id="icicle-panel-subtitle" class="panel-subtitle"></p>
+        <h2 id="icicle-panel-title" class="panel-title"></h2>
+        <p id="icicle-panel-body" class="panel-text"></p>
+        <div id="icicle-panel-tags" class="panel-tags" aria-label="Tags"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================================================================
+       HUD: TOP BAR
+       =================================================================== -->
+  <header id="hud-top" role="banner">
+    <div class="hud-brand">
+      <span class="symbol-mark" aria-hidden="true">❄</span>
+      <div class="brand-text">
+        <h1 class="brand-title">A WINTER'S JOURNEY</h1>
+        <p class="brand-sub">AN INTERACTIVE CINEMATIC PORTFOLIO</p>
+      </div>
+    </div>
+
+    <nav class="hud-timeline" aria-label="Story chapters">
+      <div class="timeline-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Story progress">
+        <div id="timeline-fill" class="timeline-fill"></div>
+      </div>
+      <div id="timeline-dots" class="timeline-markers" aria-hidden="true"></div>
+    </nav>
+
+    <div class="hud-actions">
+      <button id="btn-hud-travel-mountains" class="hud-btn glass-pill highlight-btn" style="display:none;" aria-label="Travel to Mountains">
+        🏔️ Mountains
+      </button>
+      <button id="btn-hud-travel-home" class="hud-btn glass-pill highlight-btn" style="display:none;" aria-label="Travel to Home">
+        🏠 Home
+      </button>
+      <button id="btn-scene10-back" class="hud-btn glass-pill scene10-back-btn" style="display:none;" aria-label="Back to Scene 8 Peak">
+        ← Back to Peak
+      </button>
+      <button id="btn-clubs" class="hud-btn glass-pill highlight-btn clubs-btn" style="display:none;" aria-label="Clubs">
+        Clubs
+      </button>
+      <button id="btn-scene14-back" class="hud-btn glass-pill scene14-back-btn" style="display:none;" aria-label="Back to Scene 13 Finale">
+        ← Back to Finale
+      </button>
+      <button id="btn-replay" class="hud-btn glass-pill replay-btn" style="display:none;" aria-label="Replay story from beginning">
+        ↺ Replay
+      </button>
+      <button id="btn-quality" class="hud-btn glass-pill" aria-label="Toggle video quality" title="Switch quality tier">
+        <span class="indicator-dot hq-dot" aria-hidden="true"></span>
+        <span id="quality-label">HQ</span>
+      </button>
+      <button id="btn-audio" class="hud-btn glass-pill" aria-label="Toggle ambient sound">
+        <span id="audio-icon" aria-hidden="true">🔇</span>
+        <span id="audio-label">Sound</span>
+      </button>
+      <button id="btn-future-projects" class="hud-btn glass-pill highlight-btn" aria-label="Future Projects / Coming Soon">
+        🚧 Future Projects
+      </button>
+      <button id="btn-chapters" class="hud-btn glass-pill" aria-label="Open chapters menu" aria-expanded="false" aria-controls="chapters-drawer">
+        Chapters
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       HUD: BOTTOM NARRATIVE CARD
+       =================================================================== -->
+  <footer id="hud-bottom">
+    <div id="narrative-card" class="glass-card" aria-live="polite" aria-atomic="true">
+      <div class="card-meta">
+        <span id="scene-badge" class="scene-badge">SCENE 1</span>
+        <span id="scene-type-badge" class="type-badge">SCROLL</span>
+      </div>
+      <h2 id="scene-title" class="scene-heading">The Snowy Taiga</h2>
+      <p id="scene-desc" class="scene-desc">A lone camera glides into the untouched winter forest.</p>
+      <div id="interaction-cue" class="interaction-hint">
+        <span class="hint-icon" aria-hidden="true">✦</span>
+        <span id="hint-text">Scroll to journey through the forest</span>
+      </div>
+      <div id="chapter6-actions" class="chapter6-card-actions" style="display:none; margin-top:0.75rem;">
+        <button id="btn-card-travel-mountains" class="chapter6-card-btn">
+          🏔️ Travel to Mountains
+        </button>
+        <button id="btn-card-travel-home" class="chapter6-card-btn">
+          🏠 Travel to Home
+        </button>
+      </div>
+      <div id="scene13-actions" class="scene13-card-actions" style="display:none; margin-top:0.75rem;">
+        <button id="btn-card-clubs" class="chapter6-card-btn highlight-btn" aria-label="Clubs">
+          Clubs →
+        </button>
+      </div>
+    </div>
+
+    <div id="scroll-prompt" class="scroll-cue" aria-hidden="true">
+      <span class="mouse-icon"><span class="wheel-dot"></span></span>
+      <span class="scroll-text">SCROLL TO TRAVEL</span>
+    </div>
+  </footer>
+
+  <!-- ===================================================================
+       CHAPTERS DRAWER
+       =================================================================== -->
+  <div id="chapters-drawer" class="glass-drawer" aria-hidden="true" role="dialog" aria-label="Story chapters">
+    <div class="drawer-header">
+      <h3 class="drawer-title">CHRONICLE CHAPTERS</h3>
+      <button id="drawer-close" class="icon-btn" aria-label="Close chapters">✕</button>
+    </div>
+    <ul id="chapters-list" class="chapters-list" role="list"></ul>
+  </div>
+
+  <!-- ===================================================================
+       DEBUG MODE PANEL (?debug=1)
+       Task 2.10 & Task 3 debug requirements
+       =================================================================== -->
+  <aside id="debug-panel" class="debug-panel" aria-label="Debug Control Console" style="display:none;">
+    <div class="debug-header">
+      <span class="debug-title">⚙ DEBUG CONSOLE</span>
+      <span id="dbg-input-lock-pill" class="badge-pill unlock">UNLOCKED</span>
+    </div>
+    <div class="debug-metrics">
+      <div><strong>State:</strong> <span id="dbg-state">S1_FOREST</span></div>
+      <div><strong>Clip:</strong> <span id="dbg-clip">scene-1</span> (<span id="dbg-role">forest-establishing</span>)</div>
+      <div><strong>Layout:</strong> <span id="dbg-layout">-</span></div>
+    </div>
+
+    <div class="debug-section">
+      <label for="dbg-jump-select">Jump to State:</label>
+      <select id="dbg-jump-select" class="debug-select"></select>
+    </div>
+
+    <div class="debug-section">
+      <label for="dbg-trans-select">Play Transition:</label>
+      <div class="debug-row">
+        <select id="dbg-trans-select" class="debug-select"></select>
+        <button id="dbg-btn-play-trans" class="debug-btn">Play</button>
+      </div>
+    </div>
+
+    <div class="debug-toggles">
+      <label class="dbg-toggle-label"><input type="checkbox" id="dbg-chk-outlines" checked> Hotspot Outlines</label>
+      <label class="dbg-toggle-label"><input type="checkbox" id="dbg-chk-masks"> Show Masks (40%)</label>
+      <label class="dbg-toggle-label"><input type="checkbox" id="dbg-chk-trees"> Outline Tree Overlays</label>
+      <label class="dbg-toggle-label"><input type="checkbox" id="dbg-chk-edit"> Edit Path Points</label>
+    </div>
+
+    <div class="debug-actions">
+      <button id="dbg-btn-export" class="debug-btn">Export hotspot-data.json</button>
+    </div>
+
+    <div class="debug-log-box">
+      <div class="debug-log-title">Recent Event Log:</div>
+      <ul id="dbg-event-log" class="debug-log-list"></ul>
+    </div>
+  </aside>
+
+  <!-- Scroll-height driver -->
+  <div id="scroll-driver" aria-hidden="true" style="position:absolute;top:0;left:0;width:1px;pointer-events:none;"></div>
+
+  <script src="forestClips.js"></script>
+  <script src="glassPortfolio.js"></script>
+  <script src="app.js"></script>
+  <script src="tests/acceptance.js"></script>
+</body>
+</html>

@@ -35,4 +35,14 @@ mutants.out/
 mutants_*.out/
 **/fuzz/corpus/
 **/fuzz/artifacts/
+*.xlsx
+*.parquet
+debug/
+tools/
+.pytest_cache/
 
+# Secrets protection
+.secrets.local
+.env
+*.local
+.env.*

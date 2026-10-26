@@ -1,0 +1,32 @@
+[
+  {
+    "category": "Core",
+    "skills": [
+      { "name": "System Design", "level": "Fluent" },
+      { "name": "Backend Engineering", "level": "Fluent" },
+      { "name": "Distributed Systems", "level": "Fluent" }
+    ]
+  },
+  {
+    "category": "Main Stack",
+    "skills": [
+      { "name": "Web Development", "level": "Proficient" },
+      { "name": "TypeScript", "level": "Proficient" }
+    ]
+  },
+  {
+    "category": "Languages",
+    "skills": [
+      { "name": "Python", "level": "Proficient" },
+      { "name": "C++", "level": "Proficient" },
+      { "name": "Go", "level": "Learning" },
+      { "name": "Rust", "level": "Learning" }
+    ]
+  },
+  {
+    "category": "Foundations",
+    "skills": [
+      { "name": "Data Structures & Algorithms", "level": "Proficient" }
+    ]
+  }
+]
