@@ -82,7 +82,7 @@ const NARRATIVE_MANIFEST = {
   },
   S8_HOLD: {
     title: 'The Alpine Summit',
-    badge: 'SCENE 8',
+    badge: 'SCENE 6',
     type: 'INTERACTIVE',
     desc: 'Reindeer and golden eagle stand together overlooking the nine snowy peaks.',
     hint: 'Click the eagle, a mountain peak, or journey toward the cabin'
