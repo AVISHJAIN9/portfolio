@@ -1,0 +1,144 @@
+{
+  "states": {
+    "S1_FOREST": {
+      "name": "S1_FOREST",
+      "idleRole": "forest-establishing",
+      "loopType": "scrubbed",
+      "interactionType": "scroll",
+      "scrollRange": [0.0, 0.33],
+      "nextState": "S2_PATH",
+      "overlays": ["tree-overlay-left", "tree-overlay-center", "tree-overlay-right"]
+    },
+    "S2_PATH": {
+      "name": "S2_PATH",
+      "idleRole": "clearing-path",
+      "loopType": "scrubbed",
+      "interactionType": "scroll",
+      "scrollRange": [0.33, 0.66],
+      "nextState": "S3_STUMP",
+      "overlays": []
+    },
+    "S3_STUMP": {
+      "name": "S3_STUMP",
+      "idleRole": "raccoon-dog-idle",
+      "loopType": "pingpong",
+      "interactionType": "click_gated",
+      "hotspots": ["raccoon-dog"],
+      "transitions": {
+        "raccoon-dog": {
+          "steps": ["portal-vortex", "creatures-meeting"],
+          "nextState": "S7_REINDEER"
+        }
+      }
+    },
+    "S7_REINDEER": {
+      "name": "S7_REINDEER",
+      "idleRole": "reindeer-idle",
+      "loopType": "seamless_crossfade",
+      "interactionType": "click_gated",
+      "hotspots": ["reindeer"],
+      "transitions": {
+        "reindeer": {
+          "steps": ["reindeer-run-to-cave"],
+          "nextState": "S9_ICE_CAVE"
+        }
+      }
+    },
+    "S9_ICE_CAVE": {
+      "name": "S9_ICE_CAVE",
+      "idleRole": "ice-cave-idle",
+      "loopType": "seamless_crossfade",
+      "interactionType": "hybrid",
+      "hotspots": ["icicle-1", "icicle-2", "icicle-3", "icicle-4"],
+      "backdropAdvance": {
+        "steps": ["cave-exit-connector", "reindeer-cliff-run"],
+        "nextState": "S8_HOLD"
+      }
+    },
+    "S8_HOLD": {
+      "name": "S8_HOLD",
+      "idleRole": "reindeer-cliff-run-hold",
+      "loopType": "hold_last_frame",
+      "interactionType": "flow_state_machine",
+      "hotspots": ["bird", "peak-1", "peak-2", "peak-3", "peak-4", "peak-5", "peak-6", "peak-7", "peak-8", "peak-9", "goto-house"]
+    },
+    "S_HOUSE": {
+      "name": "S_HOUSE",
+      "idleRole": "house-exterior-hold",
+      "loopType": "hold_last_frame",
+      "interactionType": "click_gated",
+      "hotspots": ["door"],
+      "transitions": {
+        "door": {
+          "steps": ["enter-house-transition"],
+          "nextState": "S12_INTERIOR"
+        }
+      }
+    },
+    "S12_INTERIOR": {
+      "name": "S12_INTERIOR",
+      "idleRole": "cabin-interior-idle",
+      "loopType": "hold_last_frame",
+      "interactionType": "click_gated",
+      "hotspots": ["window", "table"],
+      "transitions": {
+        "window": {
+          "steps": ["blueprint-transition", "celestial-finale"],
+          "nextState": "S13_FINALE"
+        },
+        "table": {
+          "steps": ["blueprint-transition", "celestial-finale"],
+          "nextState": "S13_FINALE"
+        }
+      }
+    },
+    "S13_FINALE": {
+      "name": "S13_FINALE",
+      "idleRole": "celestial-finale",
+      "loopType": "hold_last_frame",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    },
+    "S14_CLUBS": {
+      "name": "S14_CLUBS",
+      "idleRole": "clubs-showcase",
+      "loopType": "custom",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    },
+    "S15_DOCS": {
+      "name": "S15_DOCS",
+      "idleRole": "celestial-finale",
+      "loopType": "hold_last_frame",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    },
+    "S16_BLOG": {
+      "name": "S16_BLOG",
+      "idleRole": "celestial-finale",
+      "loopType": "hold_last_frame",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    },
+    "S17_VIDEOS": {
+      "name": "S17_VIDEOS",
+      "idleRole": "celestial-finale",
+      "loopType": "hold_last_frame",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    },
+    "S18_CONTACT": {
+      "name": "S18_CONTACT",
+      "idleRole": "celestial-finale",
+      "loopType": "hold_last_frame",
+      "interactionType": "terminal",
+      "allowReplay": true,
+      "hotspots": []
+    }
+  }
+}
