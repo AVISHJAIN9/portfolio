@@ -732,19 +732,29 @@ body.debug-hotspots .debug-hs-label {
 }
 
 #narrative-card {
-  pointer-events: all;
-  background: rgba(6, 14, 30, 0.82);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 12px;
+  pointer-events: auto;
+  background: var(--glass-panel-fill, rgba(10, 22, 44, 0.90));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border-radius: 16px;
   padding: 1.25rem 1.75rem;
-  max-width: 460px;
-  box-shadow:
-    0 16px 48px rgba(0,0,0,0.7),
-    0 0 32px rgba(56,189,248,0.06),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+  max-width: 480px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 1px 1px rgba(255,255,255,0.12);
+  color: #F4F8FF;
   transition: opacity 0.4s ease, transform 0.4s var(--ease-cin);
+}
+
+.scene-heading {
+  color: #F4F8FF !important;
+}
+
+.scene-desc {
+  color: #C7D6EE !important;
+}
+
+.interaction-hint {
+  color: #5CC8FF !important;
 }
 
 .card-meta {
@@ -1145,17 +1155,11 @@ body.debug-hotspots .debug-hs-label {
   bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 12;
+  z-index: 45;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: all;
-  animation: s13Float 3s ease-in-out infinite;
-}
-
-@keyframes s13Float {
-  0%, 100% { transform: translate(-50%, 0); }
-  50%      { transform: translate(-50%, -6px); }
+  pointer-events: auto;
 }
 
 .stage-clubs-btn {
@@ -1168,22 +1172,22 @@ body.debug-hotspots .debug-hs-label {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(14, 30, 60, 0.85), rgba(30, 20, 60, 0.85));
+  color: #F4F8FF;
+  background: linear-gradient(135deg, rgba(18, 36, 68, 0.95), rgba(30, 20, 60, 0.95));
   border: 1.5px solid rgba(147, 197, 253, 0.85);
   border-radius: 40px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 35px rgba(56, 189, 248, 0.55);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .stage-clubs-btn:hover {
-  background: linear-gradient(135deg, rgba(20, 45, 90, 0.95), rgba(45, 30, 90, 0.95));
+  background: linear-gradient(135deg, rgba(28, 55, 105, 0.98), rgba(45, 30, 90, 0.98));
   border-color: #fff;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 50px rgba(147, 197, 253, 0.9);
-  transform: scale(1.06);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(147, 197, 253, 0.8);
+  transform: scale(1.04);
 }
 
 .scene13-card-actions {
@@ -1416,42 +1420,52 @@ body.debug-hotspots .debug-hs-label {
    PAGE 0: GLOBAL GLASS DESIGN SYSTEM TOKENS & COMPONENTS
    ========================================================================== */
 :root {
-  /* DARK MODE (Default) */
-  --glass-panel-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
-  --glass-panel-blur: blur(20px) saturate(140%);
+  /* DARK MODE (Default - Bug L Spec) */
+  --glass-panel-fill: rgba(10, 22, 44, 0.90);
+  --glass-panel-blur: blur(18px) saturate(120%);
   --glass-panel-border: 1px solid rgba(255, 255, 255, 0.18);
-  --glass-panel-shadow: 0 10px 40px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  --glass-scrim: rgba(5, 8, 15, 0.22);
-  --glass-text-primary: #EAF4FF;
-  --glass-text-secondary: rgba(234, 244, 255, 0.72);
-  --glass-card-fill: rgba(255, 255, 255, 0.06);
-  --glass-card-border: 1px solid rgba(255, 255, 255, 0.14);
-  --glass-card-gradient: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.10) 0%, transparent 70%);
-  --glass-text-shadow: 0 1px 12px rgba(0, 0, 0, 0.30);
-  --glass-fallback: rgba(10, 18, 32, 0.82);
+  --glass-panel-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.12);
+  --glass-header-fill: rgba(18, 36, 68, 0.95);
+  --glass-scrim: rgba(5, 12, 28, 0.45);
+  --glass-text-primary: #F4F8FF;
+  --glass-text-secondary: #C7D6EE;
+  --glass-accent: #5CC8FF;
+  --glass-card-fill: rgba(255, 255, 255, 0.07);
+  --glass-card-fill-hover: rgba(255, 255, 255, 0.12);
+  --glass-card-border: 1px solid rgba(255, 255, 255, 0.16);
+  --glass-card-gradient: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  --glass-text-shadow: 0 1px 8px rgba(0, 0, 0, 0.50);
+  --glass-fallback: rgba(10, 22, 44, 0.96);
+  --glass-tag-bg: rgba(14, 28, 54, 0.92);
+  --glass-btn-bg: rgba(18, 36, 68, 0.95);
 
   /* Shared */
   --glass-radius-panel: 28px;
   --glass-radius-card: 20px;
   --glass-radius-pill: 999px;
-  --glass-accent: var(--ice-bright);
 }
 
 /* Light Mode Variant */
 body.light-mode {
-  --glass-panel-fill: linear-gradient(135deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.18));
+  --glass-panel-fill: rgba(240, 246, 255, 0.92);
   --glass-panel-border: 1px solid rgba(255, 255, 255, 0.65);
   --glass-panel-shadow: 0 10px 40px rgba(20, 40, 80, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.90);
-  --glass-text-primary: #0B1B2E;
-  --glass-text-secondary: rgba(11, 27, 46, 0.70);
-  --glass-card-fill: rgba(255, 255, 255, 0.28);
-  --glass-card-border: 1px solid rgba(255, 255, 255, 0.45);
+  --glass-header-fill: rgba(225, 235, 250, 0.96);
+  --glass-scrim: rgba(10, 20, 40, 0.40);
+  --glass-text-primary: #0A162C;
+  --glass-text-secondary: #2C3E55;
+  --glass-accent: #0284c7;
+  --glass-card-fill: rgba(255, 255, 255, 0.45);
+  --glass-card-fill-hover: rgba(255, 255, 255, 0.65);
+  --glass-card-border: 1px solid rgba(255, 255, 255, 0.50);
   --glass-text-shadow: none;
-  --glass-fallback: rgba(255, 255, 255, 0.85);
+  --glass-fallback: rgba(240, 246, 255, 0.96);
+  --glass-tag-bg: rgba(220, 232, 248, 0.95);
+  --glass-btn-bg: rgba(210, 226, 245, 0.95);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
-  .glass-panel, .glass-hero-card {
+  .glass-panel, .glass-hero-card, #narrative-card {
     background: var(--glass-fallback) !important;
   }
 }
@@ -1474,6 +1488,10 @@ body.light-mode {
 
 #glass-stage-container > * {
   pointer-events: auto;
+}
+
+#glass-stage-container > .finale-layer {
+  pointer-events: none !important;
 }
 
 /* Global Glass Panel (88vw x 82vh, 24px margins) */
@@ -1560,19 +1578,32 @@ body.light-mode {
   50% { transform: translateY(8px) scale(1.2); opacity: 0.7; }
 }
 
-/* Sticky Header */
+/* Sticky Header (Bug L Spec: slightly lighter navy) */
 .glass-panel-header {
   position: sticky;
   top: 0;
   z-index: 10;
   padding: 1.5rem 2rem 1.25rem;
-  background: rgba(5, 8, 15, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background: var(--glass-header-fill, rgba(18, 36, 68, 0.95));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+/* Scrim: dims snow scene when panel is open */
+body.glass-panel-active #glass-stage-container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--glass-scrim, rgba(5, 12, 28, 0.45));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 25;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
 }
 
 .panel-main-title {
@@ -1837,8 +1868,8 @@ body.light-mode {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.10);
+  color: #F4F8FF;
+  background: var(--glass-btn-bg, rgba(18, 36, 68, 0.95));
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--glass-radius-pill);
   padding: 0.45rem 1rem;
@@ -1849,10 +1880,11 @@ body.light-mode {
 }
 
 .glass-pill-btn:hover:not(.disabled-upcoming) {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(28, 55, 105, 0.98);
   border-color: #fff;
+  color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
 }
 
 .glass-pill-btn:active:not(.disabled-upcoming) {
@@ -2236,13 +2268,14 @@ a:focus-visible {
 
 .tag-chip {
   font-size: 0.72rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: var(--glass-tag-bg, rgba(14, 28, 54, 0.92)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #F4F8FF !important;
 }
 .lang-chip {
-  color: #38bdf8;
+  color: #5CC8FF !important;
   font-family: monospace;
 }
 
