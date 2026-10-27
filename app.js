@@ -1014,14 +1014,11 @@ class StoryController {
       this._setupDebugConsole();
     }
 
-    // 4. Initialize snow-shed clip engine (ForestClips loaded from forestClips.js)
+    // 4. Initialize snow-shed clip engine in background (ForestClips loaded from forestClips.js)
     if (window.ForestClips) {
-      try {
-        await window.ForestClips.init(() => this.player.activeVideo);
-        this._logEvent('[FOREST] Snow-clip engine ready');
-      } catch (err) {
-        console.warn('[FOREST] ForestClips init error:', err);
-      }
+      window.ForestClips.init(() => this.player.activeVideo)
+        .then(() => this._logEvent('[FOREST] Snow-clip engine ready'))
+        .catch(err => console.warn('[FOREST] ForestClips init error:', err));
     }
 
     // 5. Start at S1_FOREST
@@ -1905,6 +1902,9 @@ class StoryController {
         const targetState = item.getAttribute('data-jump-state');
         if (targetState) {
           drawer.classList.remove('open');
+          if (window.GlassPortfolio && typeof window.GlassPortfolio._dismissAllPanels === 'function') {
+            window.GlassPortfolio._dismissAllPanels();
+          }
           this.enterState(targetState);
         }
       });

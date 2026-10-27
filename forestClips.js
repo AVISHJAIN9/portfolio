@@ -688,16 +688,15 @@ class ForestClipEngine {
     var video = this._getMainVideo();
     if (video) this.hotspots.setMainVideo(video);
 
-    // 5. Load alignment data & manifest
+    // 5. Load alignment data & manifest in parallel
     try {
-      var aRes = await fetch('clipAlignment.json');
-      if (aRes.ok) this._alignmentData = await aRes.json();
-    } catch (_) {}
-
-    var manifest = null;
-    try {
-      var mRes = await fetch('clips.manifest.json');
-      if (mRes.ok) manifest = await mRes.json();
+      const [aRes, mRes] = await Promise.all([
+        fetch('clipAlignment.json').catch(() => null),
+        fetch('clips.manifest.json').catch(() => null)
+      ]);
+      if (aRes && aRes.ok) this._alignmentData = await aRes.json();
+      var manifest = null;
+      if (mRes && mRes.ok) manifest = await mRes.json();
     } catch (_) {}
 
     // 6. Setup FrameSequences
