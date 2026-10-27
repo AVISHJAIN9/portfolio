@@ -347,6 +347,12 @@ class DualBufferPlayer {
       console.warn('[PLAYER] Play invocation error:', e);
     }
 
+    // Cancel any pending crossfade timer from previous transitions
+    if (this._crossfadeTimer) {
+      clearTimeout(this._crossfadeTimer);
+      this._crossfadeTimer = null;
+    }
+
     // Swap active/inactive buffer references immediately so controller/scrubber point to nextVideo
     this.activeVideo = nextVideo;
     this.inactiveVideo = currentVideo;
@@ -355,13 +361,22 @@ class DualBufferPlayer {
     nextVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
     currentVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
 
+    let crossfaded = false;
     const finishCrossfade = async () => {
+      if (crossfaded) return;
+      crossfaded = true;
+      if (this._crossfadeTimer) {
+        clearTimeout(this._crossfadeTimer);
+        this._crossfadeTimer = null;
+      }
       nextVideo.style.opacity = '1';
       currentVideo.style.opacity = '0';
       nextVideo.classList.add('active');
       currentVideo.classList.remove('active');
       await new Promise((r) => setTimeout(r, crossfadeMs));
-      currentVideo.pause();
+      if (currentVideo !== this.activeVideo) {
+        try { currentVideo.pause(); } catch (e) {}
+      }
       LayoutEngine.updateLayout();
     };
 
@@ -375,8 +390,8 @@ class DualBufferPlayer {
       };
       nextVideo.addEventListener('loadeddata', onFrame, { once: true });
       nextVideo.addEventListener('timeupdate', onFrame, { once: true });
-      // Safety: finish crossfade anyway after buffer load completes
-      setTimeout(finishCrossfade, 3500);
+      // Safety: finish crossfade if event didn't trigger
+      this._crossfadeTimer = setTimeout(finishCrossfade, 4000);
     }
   }
 
@@ -1982,9 +1997,9 @@ class StoryController {
       try { v.currentTime = 0; } catch (e) {}
     });
 
-    // Wait until all 4 have loaded (canplaythrough or loadeddata)
+    // Wait until all 4 have loaded (canplay, canplaythrough or loadeddata)
     const loadPromises = vids.map(v => {
-      if (v.readyState >= 3) {
+      if (v.readyState >= 2) {
         return Promise.resolve();
       }
       return new Promise(resolve => {
@@ -1992,14 +2007,16 @@ class StoryController {
         const finish = () => {
           if (!done) {
             done = true;
+            v.removeEventListener('canplay', finish);
             v.removeEventListener('canplaythrough', finish);
             v.removeEventListener('loadeddata', finish);
             resolve();
           }
         };
+        v.addEventListener('canplay', finish, { once: true });
         v.addEventListener('canplaythrough', finish, { once: true });
         v.addEventListener('loadeddata', finish, { once: true });
-        setTimeout(finish, 1200); // Failsafe timeout
+        setTimeout(finish, 15000); // Allow sufficient time for CDN delivery
       });
     });
 
@@ -2007,10 +2024,12 @@ class StoryController {
 
     if (State.currentState !== 'S14_CLUBS') return;
 
-    // Call play() on all 4 together at the exact same moment from 0:00
+    // Call play() on all 4 together
     vids.forEach(v => {
       try {
-        v.currentTime = 0;
+        if (v.readyState >= 2) {
+          v.currentTime = 0;
+        }
         v.play().catch(e => console.warn('[CLUBS] Play warning:', e));
       } catch (e) {}
     });
