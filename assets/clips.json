@@ -297,7 +297,7 @@
     },
     "clubs-showcase": {
       "id": "scene-14",
-      "file": "videos/club-1.mp4",
+      "file": "assets/videos/club-1.mp4",
       "fallbackFile": "assets/videos/club-1.mp4",
       "role": "clubs-showcase",
       "loop": true,
