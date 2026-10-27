@@ -330,16 +330,21 @@ class DualBufferPlayer {
     }
 
     try {
-      await nextVideo.play();
+      const playPromise = nextVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((e) => {
+          console.warn('[PLAYER] Autoplay policy prevented playback:', e);
+          const resume = () => {
+            ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.removeEventListener(evt, resume));
+            if (nextVideo.paused && State.currentState !== 'S8_HOLD' && State.currentState !== 'S_HOUSE') {
+              nextVideo.play().catch(() => {});
+            }
+          };
+          ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.addEventListener(evt, resume, { once: true, passive: true }));
+        });
+      }
     } catch (e) {
-      console.warn('[PLAYER] Autoplay policy prevented playback:', e);
-      const resume = () => {
-        ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.removeEventListener(evt, resume));
-        if (nextVideo.paused && State.currentState !== 'S8_HOLD' && State.currentState !== 'S_HOUSE') {
-          nextVideo.play().catch(() => {});
-        }
-      };
-      ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.addEventListener(evt, resume, { once: true, passive: true }));
+      console.warn('[PLAYER] Play invocation error:', e);
     }
 
     // Perform smooth ~250ms crossfade
@@ -351,14 +356,14 @@ class DualBufferPlayer {
     nextVideo.classList.add('active');
     currentVideo.classList.remove('active');
 
-    await new Promise((r) => setTimeout(r, crossfadeMs));
-
-    currentVideo.pause();
-
     // Swap active/inactive buffer references
     this.activeVideo = nextVideo;
     this.inactiveVideo = currentVideo;
     State.activeBuffer = (this.activeVideo === this.bufferA) ? 'a' : 'b';
+
+    await new Promise((r) => setTimeout(r, crossfadeMs));
+
+    currentVideo.pause();
 
     LayoutEngine.updateLayout();
   }
