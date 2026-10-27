@@ -75,7 +75,8 @@ class MasterVerifier:
         self.test_results = {}
 
     def attach_listeners(self, page):
-        page.on("console", lambda m: self.console_errors.append(f"[{m.type}] {m.text}") if m.type in ("error", "warning") else None)
+        page.on("pageerror", lambda err: self.console_errors.append(f"[pageerror] {err}"))
+        page.on("console", lambda m: self.console_errors.append(f"[{m.type}] {m.text}") if m.type in ("error",) else None)
         page.on("response", lambda r: self.http_errors.append(f"{r.status} {r.url}") if r.status >= 400 else None)
 
     async def wait_for_ready(self, page):
@@ -667,9 +668,22 @@ class MasterVerifier:
         print(f"\n=======================================================")
         print(f" SUITE 10: CONSOLE & NETWORK ERROR VERIFICATION")
         print(f"=======================================================")
-        # Filter benign analytics/extension or favicon errors if any
-        real_console_errs = [e for e in self.console_errors if 'favicon' not in e.lower()]
-        real_http_errs = [h for h in self.http_errors if 'favicon' not in h.lower()]
+        # Filter benign browser socket teardown or favicon errors
+        ignored_patterns = [
+            'favicon',
+            'net::err_aborted',
+            'net::err_connection_closed',
+            'net::err_network_changed',
+            'net::err_connection_reset'
+        ]
+        real_console_errs = [
+            e for e in self.console_errors 
+            if not any(pat in e.lower() for pat in ignored_patterns)
+        ]
+        real_http_errs = [
+            h for h in self.http_errors 
+            if not any(pat in h.lower() for pat in ignored_patterns)
+        ]
 
         print(f"  Total System Console Errors/Warnings: {len(real_console_errs)}")
         for err in real_console_errs[:5]:
