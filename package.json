@@ -1,0 +1,9 @@
+{
+  "name": "winter-odyssey-portfolio",
+  "version": "1.0.0",
+  "description": "A Winter's Journey — Cinematic Scroll & Click Portfolio",
+  "scripts": {
+    "test:e2e": "python3 tests/test_master_suite.py",
+    "test:live": "python3 tools/verify_live.py https://avishjain9.github.io/portfolio/"
+  }
+}
