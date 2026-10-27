@@ -198,7 +198,7 @@ class MasterVerifier:
                 if (el) el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
                 else window.PortfolioApp.handleHouseClick();
             }''')
-            for _ in range(35):
+            for _ in range(60):
                 await asyncio.sleep(0.5)
                 st = await page.evaluate("() => window.State.currentState")
                 if st == "S_HOUSE":
