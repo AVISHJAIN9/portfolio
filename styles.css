@@ -487,10 +487,11 @@ body.debug-hotspots .debug-hs-label {
   right: 2.5rem;
   transform: translateY(-50%) translateX(120%);
   width: min(420px, calc(100vw - 3rem));
-  background: rgba(6, 14, 30, 0.88);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: rgba(10, 22, 44, 0.90) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(18px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+  filter: none !important;
   border-radius: 14px;
   padding: 2rem;
   z-index: 30;
@@ -498,7 +499,7 @@ body.debug-hotspots .debug-hs-label {
     0 24px 64px rgba(0,0,0,0.8),
     0 0 48px rgba(56,189,248,0.12),
     inset 0 1px 0 rgba(255,255,255,0.12);
-  transition: transform 0.55s var(--ease-cin), opacity 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   opacity: 0;
   pointer-events: none;
 }
@@ -507,6 +508,12 @@ body.debug-hotspots .debug-hs-label {
   transform: translateY(-50%) translateX(0);
   opacity: 1;
   pointer-events: all;
+}
+
+#icicle-panel * {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .panel-header {
@@ -520,17 +527,17 @@ body.debug-hotspots .debug-hs-label {
   font-family: var(--font-serif);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  color: var(--ice-glow);
-  background: rgba(56,189,248,0.12);
-  border: 1px solid rgba(56,189,248,0.25);
+  color: #5CC8FF !important;
+  background: rgba(14, 28, 54, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   padding: 0.25rem 0.65rem;
   border-radius: 20px;
 }
 
 .icon-btn {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--glass-border);
-  color: var(--txt-secondary);
+  background: rgba(18, 36, 68, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #F4F8FF !important;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
@@ -543,8 +550,9 @@ body.debug-hotspots .debug-hs-label {
 }
 
 .icon-btn:hover {
-  background: rgba(255,255,255,0.16);
-  color: var(--txt-primary);
+  background: rgba(28, 56, 102, 0.98) !important;
+  border-color: #5CC8FF !important;
+  color: #FFFFFF !important;
   transform: scale(1.08);
 }
 
@@ -552,7 +560,7 @@ body.debug-hotspots .debug-hs-label {
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--txt-secondary);
+  color: #C7D6EE !important;
   margin-bottom: 0.4rem;
 }
 
@@ -560,15 +568,14 @@ body.debug-hotspots .debug-hs-label {
   font-family: var(--font-serif);
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--snow-white);
+  color: #F4F8FF !important;
   line-height: 1.2;
   margin-bottom: 0.9rem;
-  text-shadow: 0 0 20px rgba(56,189,248,0.3);
 }
 
 .panel-text {
   font-size: 0.92rem;
-  color: #cbd5e1;
+  color: #C7D6EE !important;
   line-height: 1.65;
   margin-bottom: 1.4rem;
 }
@@ -581,9 +588,9 @@ body.debug-hotspots .debug-hs-label {
 
 .tag-badge {
   font-size: 0.75rem;
-  color: var(--ice-bright);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.09);
+  color: #C7D6EE !important;
+  background: rgba(14, 28, 54, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
 }
@@ -1502,26 +1509,27 @@ body.light-mode {
   max-height: 880px;
   margin: 24px auto;
   border-radius: var(--glass-radius-panel);
-  background: var(--glass-panel-fill);
-  backdrop-filter: var(--glass-panel-blur);
-  -webkit-backdrop-filter: var(--glass-panel-blur);
-  border: var(--glass-panel-border);
-  box-shadow: var(--glass-panel-shadow);
+  background: rgba(10, 22, 44, 0.90) !important;
+  backdrop-filter: blur(18px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(255, 255, 255, 0.14) !important;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  color: var(--glass-text-primary);
+  z-index: 10 !important;
+  color: #F4F8FF !important;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .glass-panel.panel-visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: none !important;
+  will-change: auto !important;
 }
 
 /* Light edge along the top & faint noise */
@@ -1578,32 +1586,50 @@ body.light-mode {
   50% { transform: translateY(8px) scale(1.2); opacity: 0.7; }
 }
 
-/* Sticky Header (Bug L Spec: slightly lighter navy) */
+/* Sticky Header (Strictly NO blur on header to guarantee sharp text) */
 .glass-panel-header {
   position: sticky;
   top: 0;
   z-index: 10;
   padding: 1.5rem 2rem 1.25rem;
-  background: var(--glass-header-fill, rgba(18, 36, 68, 0.95));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--glass-header-fill, rgba(18, 36, 68, 0.95)) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* Scrim: dims snow scene when panel is open */
-body.glass-panel-active #glass-stage-container::before {
-  content: '';
+/* Panel Scrim: dark dim layer positioned strictly BEHIND the panel with NO blur */
+.panel-scrim,
+#glass-stage-container > .panel-scrim {
   position: fixed;
   inset: 0;
-  background: var(--glass-scrim, rgba(5, 12, 28, 0.45));
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 25;
-  pointer-events: none;
+  background: rgba(5, 12, 28, 0.45) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+  opacity: 0;
   transition: opacity 0.35s ease;
+}
+
+body.glass-panel-active .panel-scrim,
+body.glass-panel-active #glass-stage-container > .panel-scrim {
+  opacity: 1;
+  pointer-events: none !important;
+}
+
+/* Eliminate any full-screen pseudo-scrim that could sit above panels or blur text */
+body.glass-panel-active #glass-stage-container::before {
+  display: none !important;
+  content: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
 }
 
 .panel-main-title {
@@ -1735,14 +1761,14 @@ body.glass-panel-active #glass-stage-container::before {
 /* Scroll Reveal (A1) */
 .reveal-card {
   opacity: 0;
-  transform: translateY(24px);
-  filter: blur(6px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  transform: translateY(20px);
+  filter: none !important;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-card.revealed {
   opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
+  transform: none !important;
+  filter: none !important;
 }
 
 /* Status Chips (A6) */
@@ -2822,11 +2848,156 @@ body.glass-panel-active #btn-stage-travel-home {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Cards are always 100% visible */
-.reveal-card, .cert-card, .highlight-card, .project-card, .skill-card, .upcoming-card, .blog-card {
-  opacity: 1 !important;
+/* Cards, headers, tags, buttons and content are always 100% visible and razor sharp */
+.glass-panel *,
+.reveal-card,
+.cert-card,
+.highlight-card,
+.project-card,
+.skill-card,
+.upcoming-card,
+.blog-card,
+.about-main-card,
+.future-card,
+.tag-chip,
+.glass-chip,
+.status-chip {
   filter: none !important;
-  transform: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Inner card styles: semi-transparent fill and subtle border, never a blur */
+.glass-panel .glass-card,
+.glass-panel .project-card,
+.glass-panel .skill-card,
+.glass-panel .cert-card,
+.glass-panel .about-main-card,
+.glass-panel .future-card,
+.glass-panel .upcoming-card,
+.glass-panel .blog-card {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  will-change: auto !important;
+}
+
+.glass-panel .glass-card:hover,
+.glass-panel .project-card:hover,
+.glass-panel .skill-card:hover,
+.glass-panel .cert-card:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+/* Text colors */
+.glass-panel h1,
+.glass-panel h2,
+.glass-panel h3,
+.glass-panel .panel-main-title,
+.glass-panel .card-title,
+.glass-panel .panel-title,
+.glass-panel .project-title,
+.glass-panel .cert-title,
+.glass-panel strong {
+  color: #F4F8FF !important;
+}
+
+.glass-panel p,
+.glass-panel .panel-subtitle-text,
+.glass-panel .about-bio,
+.glass-panel .project-desc,
+.glass-panel .card-desc,
+.glass-panel .stat-label,
+.glass-panel .meta-val,
+.glass-panel .cert-detail {
+  color: #C7D6EE !important;
+}
+
+.glass-panel .accent-text,
+.glass-panel .highlight-badge,
+.glass-panel .stat-number,
+.glass-panel .tech-badge,
+.glass-panel .meta-label {
+  color: #5CC8FF !important;
+}
+
+/* Tags and pills: solid darker backgrounds */
+.glass-panel .tag-chip,
+.glass-panel .glass-chip,
+.glass-panel .skill-tag,
+.glass-panel .status-chip,
+.glass-panel .filter-chip,
+.glass-panel .about-meta-pill {
+  background: rgba(14, 28, 54, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #C7D6EE !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.glass-panel .glass-chip.active {
+  background: rgba(28, 56, 102, 0.98) !important;
+  border-color: #5CC8FF !important;
+  color: #F4F8FF !important;
+}
+
+/* Buttons: solid or near-solid backgrounds */
+.glass-panel button,
+.glass-panel .btn-primary,
+.glass-panel .btn-secondary,
+.glass-panel .glass-btn,
+.glass-panel .proj-link-btn,
+.glass-panel .cert-action-btn,
+.glass-panel .contact-btn,
+.glass-panel .panel-close-btn,
+.glass-panel .glass-pill-btn {
+  background: rgba(18, 36, 68, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #F4F8FF !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.glass-panel button:hover,
+.glass-panel .btn-primary:hover,
+.glass-panel .btn-secondary:hover,
+.glass-panel .glass-btn:hover,
+.glass-panel .proj-link-btn:hover,
+.glass-panel .panel-close-btn:hover {
+  background: rgba(28, 56, 102, 0.98) !important;
+  border-color: #5CC8FF !important;
+  color: #FFFFFF !important;
+}
+
+/* Tap to begin overlay (for mobile/unmuted autoplay blocker fallback) */
+.tap-to-begin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 7, 18, 0.75);
+  cursor: pointer;
+}
+.tap-card {
+  padding: 1.25rem 2.5rem;
+  background: rgba(10, 22, 44, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 40px;
+  color: #F4F8FF;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(92, 200, 255, 0.4);
 }
 
 /* --------------------------------------------------------------------------

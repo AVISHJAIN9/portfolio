@@ -48,16 +48,16 @@ const NARRATIVE_MANIFEST = {
   S1_FOREST: {
     title: 'The Snowy Taiga',
     badge: 'SCENE 1',
-    type: 'SCROLL',
+    type: 'CINEMATIC',
     desc: 'A lone camera glides into the untouched winter forest.',
-    hint: 'Scroll down to travel through the ancient pines'
+    hint: 'Journey begins automatically...'
   },
   S2_PATH: {
     title: 'The Woodland Trail',
     badge: 'SCENE 2',
-    type: 'SCROLL',
+    type: 'CINEMATIC',
     desc: 'The forest deepens towards an abandoned logging clearing.',
-    hint: 'Continue scrolling towards the old wood stump'
+    hint: 'Approaching the old wood stump...'
   },
   S3_STUMP: {
     title: 'The Hidden Burrow',
@@ -334,6 +334,16 @@ class DualBufferPlayer {
       if (playPromise !== undefined) {
         playPromise.catch((e) => {
           console.warn('[PLAYER] Autoplay policy prevented playback:', e);
+          const tapOverlay = document.getElementById('tap-to-begin');
+          if (tapOverlay) {
+            tapOverlay.style.display = 'flex';
+            const startOnTap = () => {
+              tapOverlay.style.display = 'none';
+              tapOverlay.removeEventListener('click', startOnTap);
+              nextVideo.play().catch(() => {});
+            };
+            tapOverlay.addEventListener('click', startOnTap);
+          }
           const resume = () => {
             ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.removeEventListener(evt, resume));
             if (nextVideo.paused && State.currentState !== 'S8_HOLD' && State.currentState !== 'S_HOUSE') {
@@ -358,6 +368,8 @@ class DualBufferPlayer {
     this.inactiveVideo = currentVideo;
     State.activeBuffer = (this.activeVideo === this.bufferA) ? 'a' : 'b';
 
+    nextVideo.style.zIndex = '2';
+    currentVideo.style.zIndex = '1';
     nextVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
     currentVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
 
@@ -369,9 +381,31 @@ class DualBufferPlayer {
         clearTimeout(this._crossfadeTimer);
         this._crossfadeTimer = null;
       }
+
+      // Ensure nextVideo has a decoded frame ready before hiding currentVideo
+      await new Promise((resolve) => {
+        if ('requestVideoFrameCallback' in HTMLVideoElement.prototype) {
+          try {
+            nextVideo.requestVideoFrameCallback(() => resolve());
+            setTimeout(resolve, 200);
+          } catch (e) {
+            resolve();
+          }
+        } else if (nextVideo.readyState >= 3) {
+          resolve();
+        } else {
+          const onCanPlay = () => {
+            nextVideo.removeEventListener('canplay', onCanPlay);
+            resolve();
+          };
+          nextVideo.addEventListener('canplay', onCanPlay);
+          setTimeout(resolve, 200);
+        }
+      });
+
       nextVideo.style.opacity = '1';
-      currentVideo.style.opacity = '0';
       nextVideo.classList.add('active');
+      currentVideo.style.opacity = '0';
       currentVideo.classList.remove('active');
       await new Promise((r) => setTimeout(r, crossfadeMs));
       if (currentVideo !== this.activeVideo) {
@@ -1006,6 +1040,66 @@ class StoryController {
     this.flowStateMachine = new FlowStateMachine();
     this.flowContext   = null;
     this.flowRunId     = 0;
+    this._autoAdvanceTimer = null;
+    this._autoAdvanceEndedHandler = null;
+    this._autoAdvanceTimeHandler = null;
+    this._autoAdvanceVideo = null;
+  }
+
+  goToState(stateName, options = {}) {
+    return this.enterState(stateName, options);
+  }
+
+  _cleanupAutoAdvance() {
+    if (this._autoAdvanceTimer) {
+      clearTimeout(this._autoAdvanceTimer);
+      this._autoAdvanceTimer = null;
+    }
+    if (this._autoAdvanceEndedHandler && this._autoAdvanceVideo) {
+      this._autoAdvanceVideo.removeEventListener('ended', this._autoAdvanceEndedHandler);
+      this._autoAdvanceVideo.removeEventListener('timeupdate', this._autoAdvanceTimeHandler);
+      this._autoAdvanceEndedHandler = null;
+      this._autoAdvanceTimeHandler = null;
+      this._autoAdvanceVideo = null;
+    }
+  }
+
+  _setupAutoAdvanceTo(targetState, clipRole) {
+    this._cleanupAutoAdvance();
+    const vid = this.player.activeVideo;
+    if (!vid) return;
+
+    this._autoAdvanceVideo = vid;
+    const currentStateAtStart = State.currentState;
+    let fired = false;
+
+    const fireTransition = () => {
+      if (fired) return;
+      if (State.currentState !== currentStateAtStart) return;
+      fired = true;
+      this._cleanupAutoAdvance();
+      console.log(`[AUTO-ADVANCE] ${currentStateAtStart} completed -> Advancing to ${targetState}`);
+      this.goToState(targetState);
+    };
+
+    this._autoAdvanceEndedHandler = fireTransition;
+    this._autoAdvanceTimeHandler = () => {
+      if (vid.duration && vid.currentTime >= vid.duration - 0.12) {
+        fireTransition();
+      }
+    };
+
+    vid.addEventListener('ended', this._autoAdvanceEndedHandler);
+    vid.addEventListener('timeupdate', this._autoAdvanceTimeHandler);
+
+    // Watchdog timer: clip duration + 1.5s (Rule R3)
+    const clip = State.clipsData?.clips[clipRole];
+    const durationSec = (clip && clip.endTime) ? clip.endTime : 7.0;
+    const watchdogMs = Math.round((durationSec + 1.5) * 1000);
+    this._autoAdvanceTimer = setTimeout(() => {
+      console.warn(`[AUTO-ADVANCE] Watchdog fired for ${currentStateAtStart} after ${watchdogMs}ms`);
+      fireTransition();
+    }, watchdogMs);
   }
 
   async init() {
@@ -1289,13 +1383,34 @@ class StoryController {
 
     // Play state idle clip
     const idleRole = stateConfig.idleRole;
-    const loopType = stateConfig.loopType || 'seamless';
-    const holdLastFrame = (stateConfig.loopType === 'hold_last_frame');
+    let loopType = stateConfig.loopType || 'seamless';
+    let holdLastFrame = (stateConfig.loopType === 'hold_last_frame');
+
+    // Chapters 1 and 2 play through automatically once and hold the last frame
+    if (stateName === 'S1_FOREST' || stateName === 'S2_PATH') {
+      loopType = 'none';
+      holdLastFrame = true;
+    }
 
     await this.player.playRole(idleRole, {
       loopType,
       holdLastFrame
     });
+
+    // Automatic progression: Chapter 1 -> Chapter 2 -> Chapter 3 (then stops)
+    if (stateName === 'S1_FOREST') {
+      this.player.preloadRole('clearing-path');
+      this._setupAutoAdvanceTo('S2_PATH', 'forest-establishing');
+    } else if (stateName === 'S2_PATH') {
+      this.player.preloadRole('raccoon-dog-idle');
+      this._setupAutoAdvanceTo('S3_STUMP', 'clearing-path');
+    } else {
+      this._cleanupAutoAdvance();
+    }
+
+    if (stateName === 'S3_STUMP') {
+      LayoutEngine.updateLayout();
+    }
 
     // After buffer swap keep ForestClips pointed at the new active video
     if (window.ForestClips && stateName === 'S1_FOREST') {
@@ -1747,6 +1862,10 @@ class StoryController {
   /* --------------------------------------------------------------------------
      ICICLE PANEL MODAL
      -------------------------------------------------------------------------- */
+  openIcicleDetail(icicleId) {
+    this._openIciclePanel(icicleId);
+  }
+
   _openIciclePanel(icicleId) {
     const details = State.hotspotData?.icicleDetails[icicleId];
     if (!details || !this.iciclePanel) return;
@@ -1765,6 +1884,7 @@ class StoryController {
       tagsEl.innerHTML = details.tags.map((t) => `<span class="tag-badge">${t}</span>`).join('');
     }
 
+    document.body.classList.add('glass-panel-active');
     this.iciclePanel.classList.add('open');
     this.iciclePanel.setAttribute('aria-hidden', 'false');
     this._logEvent(`[PANEL] Opened icicle detail: ${details.title}`);
@@ -1774,6 +1894,7 @@ class StoryController {
     if (!this.iciclePanel) return;
     this.iciclePanel.classList.remove('open');
     this.iciclePanel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('glass-panel-active');
   }
 
   _setupModals() {
@@ -1789,51 +1910,46 @@ class StoryController {
   }
 
   /* --------------------------------------------------------------------------
-     SCROLL SCRUBBER (Scenes 1-3)
+     INPUT SKIP-AHEAD HANDLER (Chapters 1 & 2)
      -------------------------------------------------------------------------- */
   _setupScrollScrubber() {
-    const scrollDriver = document.getElementById('scroll-driver');
-    if (scrollDriver) {
-      // Set scroll range
-      scrollDriver.style.height = `${window.innerHeight * 4}px`;
-    }
+    let lastSkipTime = 0;
+    const skipAhead = () => {
+      const now = Date.now();
+      if (now - lastSkipTime < 1000) return;
+      if (State.isInputLocked) return;
 
-    window.addEventListener('scroll', () => {
-      // ONLY allow scroll scrubbing during S1_FOREST and S2_PATH — strictly ignore in all other scenes!
-      if (State.currentState !== 'S1_FOREST' && State.currentState !== 'S2_PATH') {
-        return;
+      if (State.currentState === 'S1_FOREST') {
+        lastSkipTime = now;
+        console.log('[SCROLL-SKIP] Skipping Chapter 1 -> Chapter 2');
+        this.goToState('S2_PATH');
+      } else if (State.currentState === 'S2_PATH') {
+        lastSkipTime = now;
+        console.log('[SCROLL-SKIP] Skipping Chapter 2 -> Chapter 3');
+        this.goToState('S3_STUMP');
       }
+    };
 
-      // Ignore scroll scrubbing while snow clip is actively playing or taking over timeline
-      if (window.ForestClips && (window.ForestClips.blockBufferSwap || window.ForestClips.isTakingOverTimeline)) return;
+    window.addEventListener('wheel', (e) => {
+      if (e.deltaY > 60) skipAhead();
+    }, { passive: true });
 
-      // Rule R4: Auto-advance guard: in S8_HOLD and flow states, scroll must NOT advance the scene
-      if (this.flowStateMachine && this.flowStateMachine.isFlowActive()) return;
-
-      const maxScroll = (document.documentElement.scrollHeight - window.innerHeight) || 1;
-      const progress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
-      State.scrollProgress = progress;
-
-      if (progress < 0.45) {
-        if (State.currentState !== 'S1_FOREST') {
-          this.enterState('S1_FOREST');
-        }
-        const clip = State.clipsData?.clips['forest-establishing'];
-        const duration = clip ? clip.endTime : 7.0;
-        this.player.scrub((progress / 0.45) * duration);
-      } else if (progress < 0.90) {
-        if (State.currentState !== 'S2_PATH') {
-          this.enterState('S2_PATH');
-        }
-        const clip = State.clipsData?.clips['clearing-path'];
-        const duration = clip ? clip.endTime : 6.4;
-        this.player.scrub(((progress - 0.45) / 0.45) * duration);
-      } else {
-        // Reached stump clearing -> advance into click-gated S3_STUMP
-        if (State.currentState !== 'S3_STUMP') {
-          this.enterState('S3_STUMP');
-        }
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowDown', 'PageDown', 'Space'].includes(e.code)) {
+        skipAhead();
       }
+    });
+
+    let touchStartY = null;
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchend', (e) => {
+      if (touchStartY !== null && e.changedTouches && e.changedTouches[0]) {
+        const delta = touchStartY - e.changedTouches[0].clientY;
+        if (delta > 60) skipAhead();
+      }
+      touchStartY = null;
     }, { passive: true });
   }
 
@@ -1872,6 +1988,7 @@ class StoryController {
 
     if (chapBtn && drawer) {
       chapBtn.addEventListener('click', () => {
+        this._updateNarrativeCard(State.currentState || 'S1_FOREST');
         drawer.classList.add('open');
         drawer.setAttribute('aria-hidden', 'false');
       });
@@ -2064,6 +2181,16 @@ class StoryController {
     if (this.timelineFill) {
       this.timelineFill.style.width = `${pct}%`;
     }
+
+    // Update Chapter Drawer menu highlight
+    const chapterItems = document.querySelectorAll('.chapter-item[data-jump-state]');
+    chapterItems.forEach(item => {
+      if (item.getAttribute('data-jump-state') === stateName) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
 
     // Hide scroll cue after Scene 2
     if (this.scrollPrompt) {

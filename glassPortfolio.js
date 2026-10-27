@@ -85,6 +85,9 @@
 
     _html() {
       return `
+        <!-- Panel Scrim: dark dim layer behind panels (strictly NO blur) -->
+        <div class="panel-scrim" aria-hidden="true"></div>
+
         <!-- Chapter 4: Hollow Lantern Tree -> About Me + Contact -->
         <section id="panel-intro" class="glass-page-layer glass-panel" style="display:none;" aria-label="About Me and Contact">
           ${this._intro()}

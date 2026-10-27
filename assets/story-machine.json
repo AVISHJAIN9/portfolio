@@ -3,18 +3,16 @@
     "S1_FOREST": {
       "name": "S1_FOREST",
       "idleRole": "forest-establishing",
-      "loopType": "scrubbed",
-      "interactionType": "scroll",
-      "scrollRange": [0.0, 0.33],
+      "loopType": "none",
+      "interactionType": "auto_advance",
       "nextState": "S2_PATH",
       "overlays": ["tree-overlay-left", "tree-overlay-center", "tree-overlay-right"]
     },
     "S2_PATH": {
       "name": "S2_PATH",
       "idleRole": "clearing-path",
-      "loopType": "scrubbed",
-      "interactionType": "scroll",
-      "scrollRange": [0.33, 0.66],
+      "loopType": "none",
+      "interactionType": "auto_advance",
       "nextState": "S3_STUMP",
       "overlays": []
     },

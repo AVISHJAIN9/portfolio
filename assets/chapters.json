@@ -6,11 +6,11 @@
     "idleRole": "forest-establishing",
     "transition": null,
     "textOverlayId": "narrative-card",
-    "interactionType": "scroll",
+    "interactionType": "auto_advance",
     "nextState": "S2_PATH",
     "badge": "SCENE 1",
     "desc": "A lone camera glides into the untouched winter forest.",
-    "hint": "Scroll to journey through the ancient pines"
+    "hint": "Journey begins automatically..."
   },
   {
     "chapter": 2,
@@ -19,11 +19,11 @@
     "idleRole": "clearing-path",
     "transition": null,
     "textOverlayId": "narrative-card",
-    "interactionType": "scroll_auto",
+    "interactionType": "auto_advance",
     "nextState": "S3_STUMP",
     "badge": "SCENE 2",
     "desc": "The forest deepens towards an abandoned logging clearing.",
-    "hint": "Continue scrolling towards the old wood stump"
+    "hint": "Approaching the old wood stump..."
   },
   {
     "chapter": 3,
