@@ -309,7 +309,7 @@ class DualBufferPlayer {
         nextVideo.addEventListener('loadeddata', done);
         nextVideo.addEventListener('canplay', done);
         nextVideo.addEventListener('canplaythrough', done);
-        setTimeout(done, 4000);
+        setTimeout(done, 45000);
       });
     }
 
@@ -347,25 +347,37 @@ class DualBufferPlayer {
       console.warn('[PLAYER] Play invocation error:', e);
     }
 
-    // Perform smooth ~250ms crossfade
-    nextVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
-    currentVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
-
-    nextVideo.style.opacity = '1';
-    currentVideo.style.opacity = '0';
-    nextVideo.classList.add('active');
-    currentVideo.classList.remove('active');
-
-    // Swap active/inactive buffer references
+    // Swap active/inactive buffer references immediately so controller/scrubber point to nextVideo
     this.activeVideo = nextVideo;
     this.inactiveVideo = currentVideo;
     State.activeBuffer = (this.activeVideo === this.bufferA) ? 'a' : 'b';
 
-    await new Promise((r) => setTimeout(r, crossfadeMs));
+    nextVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
+    currentVideo.style.transition = `opacity ${crossfadeMs}ms linear`;
 
-    currentVideo.pause();
+    const finishCrossfade = async () => {
+      nextVideo.style.opacity = '1';
+      currentVideo.style.opacity = '0';
+      nextVideo.classList.add('active');
+      currentVideo.classList.remove('active');
+      await new Promise((r) => setTimeout(r, crossfadeMs));
+      currentVideo.pause();
+      LayoutEngine.updateLayout();
+    };
 
-    LayoutEngine.updateLayout();
+    if (nextVideo.readyState >= 2 || nextVideo.videoWidth > 0) {
+      await finishCrossfade();
+    } else {
+      const onFrame = () => {
+        nextVideo.removeEventListener('loadeddata', onFrame);
+        nextVideo.removeEventListener('timeupdate', onFrame);
+        finishCrossfade();
+      };
+      nextVideo.addEventListener('loadeddata', onFrame, { once: true });
+      nextVideo.addEventListener('timeupdate', onFrame, { once: true });
+      // Safety: finish crossfade anyway after buffer load completes
+      setTimeout(finishCrossfade, 3500);
+    }
   }
 
   /**
