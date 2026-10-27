@@ -6,8 +6,9 @@
     "detail": "International Symposium",
     "category": "Workshops & Learning",
     "date": "2026",
-    "image": "highquality/CERTIFICATE/SIGPOD.jpg",
-    "thumbnail": "highquality/CERTIFICATE/SIGPOD.jpg"
+    "image": "certificates/clean/SIGPOD.jpg",
+    "thumbnail": "certificates/thumbnails/SIGPOD.webp",
+    "pdf": null
   },
   {
     "id": "she-codes",
@@ -16,8 +17,9 @@
     "detail": "Technical Hackathon",
     "category": "Hackathons & Competitions",
     "date": "28 Mar 2026",
-    "image": "highquality/CERTIFICATE/SHE CODES.jpg",
-    "thumbnail": "highquality/CERTIFICATE/SHE CODES.jpg"
+    "image": "certificates/clean/SHE_CODES.jpg",
+    "thumbnail": "certificates/thumbnails/SHE_CODES.webp",
+    "pdf": null
   },
   {
     "id": "open-source-week",
@@ -26,8 +28,9 @@
     "detail": "Community Contribution",
     "category": "Workshops & Learning",
     "date": "21\u201322 Nov 2025",
-    "image": "highquality/CERTIFICATE/OPEN SOURCE WEEK .jpg",
-    "thumbnail": "highquality/CERTIFICATE/OPEN SOURCE WEEK .jpg"
+    "image": "certificates/clean/OPEN_SOURCE_WEEK.jpg",
+    "thumbnail": "certificates/thumbnails/OPEN_SOURCE_WEEK.webp",
+    "pdf": null
   },
   {
     "id": "git-workshop",
@@ -36,8 +39,9 @@
     "detail": "Version Control & GitHub",
     "category": "Workshops & Learning",
     "date": "13 Nov 2025",
-    "image": "highquality/CERTIFICATE/GITHUB.jpg",
-    "thumbnail": "highquality/CERTIFICATE/GITHUB.jpg"
+    "image": "certificates/clean/GITHUB.jpg",
+    "thumbnail": "certificates/thumbnails/GITHUB.webp",
+    "pdf": null
   },
   {
     "id": "iic-orientation",
@@ -46,8 +50,9 @@
     "detail": "Institution's Innovation Council",
     "category": "Workshops & Learning",
     "date": "16 Mar 2026",
-    "image": "highquality/CERTIFICATE/IIC ORIENTATION.jpg",
-    "thumbnail": "highquality/CERTIFICATE/IIC ORIENTATION.jpg"
+    "image": "certificates/clean/IIC_ORIENTATION.jpg",
+    "thumbnail": "certificates/thumbnails/IIC_ORIENTATION.webp",
+    "pdf": null
   },
   {
     "id": "ieee-video-volunteer",
@@ -57,7 +62,8 @@
     "category": "Volunteer & Leadership",
     "date": "27 Apr 2026",
     "image": null,
-    "thumbnail": null
+    "thumbnail": null,
+    "pdf": null
   },
   {
     "id": "contribution-sprint",
@@ -66,8 +72,9 @@
     "detail": "IEEE Open Source Track",
     "category": "Workshops & Learning",
     "date": "19 Nov 2025",
-    "image": "highquality/CERTIFICATE/CON TRIBUTION SPRIT .jpg",
-    "thumbnail": "highquality/CERTIFICATE/CON TRIBUTION SPRIT .jpg"
+    "image": "certificates/clean/CON_TRIBUTION_SPRIT.jpg",
+    "thumbnail": "certificates/thumbnails/CON_TRIBUTION_SPRIT.webp",
+    "pdf": null
   },
   {
     "id": "acm-agm",
@@ -76,8 +83,9 @@
     "detail": "ACM Student Chapter",
     "category": "Volunteer & Leadership",
     "date": "15 May 2025",
-    "image": "highquality/CERTIFICATE/ACM ANUAL GENERAL MEE.jpg",
-    "thumbnail": "highquality/CERTIFICATE/ACM ANUAL GENERAL MEE.jpg"
+    "image": "certificates/clean/ACM_ANUAL_GENERAL_MEE.jpg",
+    "thumbnail": "certificates/thumbnails/ACM_ANUAL_GENERAL_MEE.webp",
+    "pdf": null
   },
   {
     "id": "marketing-utsav",
@@ -86,8 +94,9 @@
     "detail": "Festival Organization & Media",
     "category": "Volunteer & Leadership",
     "date": "15 Apr 2026",
-    "image": "highquality/CERTIFICATE/MARKETING UTSAV .jpg",
-    "thumbnail": "highquality/CERTIFICATE/MARKETING UTSAV .jpg"
+    "image": "certificates/clean/MARKETING_UTSAV.jpg",
+    "thumbnail": "certificates/thumbnails/MARKETING_UTSAV.webp",
+    "pdf": null
   },
   {
     "id": "monopoly-utsav",
@@ -96,8 +105,9 @@
     "detail": "Strategic Competition",
     "category": "Hackathons & Competitions",
     "date": "17\u201319 Apr 2026",
-    "image": "highquality/CERTIFICATE/Avish_Jain_Monopoly.png",
-    "thumbnail": "highquality/CERTIFICATE/Avish_Jain_Monopoly.png"
+    "image": "certificates/clean/Avish_Jain_Monopoly.png",
+    "thumbnail": "certificates/thumbnails/Avish_Jain_Monopoly.webp",
+    "pdf": "highquality/CERTIFICATE/Avish%20Jain_Monopoly.pdf"
   },
   {
     "id": "ethical-hacking-iisc",
@@ -106,8 +116,9 @@
     "detail": "IISc Rhapsody 4.0",
     "category": "Workshops & Learning",
     "date": "27\u201328 Sep 2025",
-    "image": "highquality/CERTIFICATE/IISC ETHICAL HACKING .jpg",
-    "thumbnail": "highquality/CERTIFICATE/IISC ETHICAL HACKING .jpg"
+    "image": "certificates/clean/IISC_ETHICAL_HACKING.jpg",
+    "thumbnail": "certificates/thumbnails/IISC_ETHICAL_HACKING.webp",
+    "pdf": null
   },
   {
     "id": "repogenesis",
@@ -116,8 +127,9 @@
     "detail": "24-hour hackathon",
     "category": "Hackathons & Competitions",
     "date": "2025",
-    "image": "highquality/CERTIFICATE/REPOGENESIS.png",
-    "thumbnail": "highquality/CERTIFICATE/REPOGENESIS.png"
+    "image": "certificates/clean/REPOGENESIS.png",
+    "thumbnail": "certificates/thumbnails/REPOGENESIS.webp",
+    "pdf": "highquality/CERTIFICATE/REPOGENESIS.pdf"
   },
   {
     "id": "hack-a-matrix-poc",
@@ -126,8 +138,9 @@
     "detail": "Sponsorship & Outreach",
     "category": "Volunteer & Leadership",
     "date": "28\u201330 Sep 2026",
-    "image": "highquality/CERTIFICATE/Avish_Jain_PoC_SPONSERSHIP.png",
-    "thumbnail": "highquality/CERTIFICATE/Avish_Jain_PoC_SPONSERSHIP.png"
+    "image": "certificates/clean/Avish_Jain_PoC_SPONSERSHIP.png",
+    "thumbnail": "certificates/thumbnails/Avish_Jain_PoC_SPONSERSHIP.webp",
+    "pdf": "highquality/CERTIFICATE/Avish%20Jain_PoC%20SPONSERSHIP.pdf"
   },
   {
     "id": "pentagram",
@@ -137,7 +150,8 @@
     "category": "Hackathons & Competitions",
     "date": "19 Sep 2025",
     "image": null,
-    "thumbnail": null
+    "thumbnail": null,
+    "pdf": null
   },
   {
     "id": "oscode-volunteer",
@@ -146,8 +160,9 @@
     "detail": "Open Source Hackathon Management",
     "category": "Volunteer & Leadership",
     "date": "28\u201330 Sep 2026",
-    "image": "highquality/CERTIFICATE/OSCODE_VOLLENTERING.png",
-    "thumbnail": "highquality/CERTIFICATE/OSCODE_VOLLENTERING.png"
+    "image": "certificates/clean/OSCODE_VOLLENTERING.png",
+    "thumbnail": "certificates/thumbnails/OSCODE_VOLLENTERING.webp",
+    "pdf": "highquality/CERTIFICATE/OSCODE_VOLLENTERING.pdf"
   },
   {
     "id": "phase-shift-2025",
@@ -157,7 +172,8 @@
     "category": "Hackathons & Competitions",
     "date": "19\u201320 Sep 2025",
     "image": null,
-    "thumbnail": null
+    "thumbnail": null,
+    "pdf": null
   },
   {
     "id": "respawn-point-cs-week",
@@ -166,8 +182,9 @@
     "detail": "Gaming & Systems Sprint",
     "category": "Hackathons & Competitions",
     "date": "30 Mar \u2013 5 Apr 2026",
-    "image": "highquality/CERTIFICATE/CS_WEEK.png",
-    "thumbnail": "highquality/CERTIFICATE/CS_WEEK.png"
+    "image": "certificates/clean/CS_WEEK.png",
+    "thumbnail": "certificates/thumbnails/CS_WEEK.webp",
+    "pdf": "highquality/CERTIFICATE/CS%20WEEK.pdf"
   },
   {
     "id": "respawn-point-appreciation",
@@ -176,8 +193,9 @@
     "detail": "Technical Excellence Award",
     "category": "Hackathons & Competitions",
     "date": "2 Apr 2026",
-    "image": "highquality/CERTIFICATE/Certificate_of_Appreciation__Avish_Jain___Respawn_Point.png",
-    "thumbnail": "highquality/CERTIFICATE/Certificate_of_Appreciation__Avish_Jain___Respawn_Point.png"
+    "image": "certificates/clean/Certificate_of_Appreciation__Avish_Jain___Respawn_Point.png",
+    "thumbnail": "certificates/thumbnails/Certificate_of_Appreciation__Avish_Jain___Respawn_Point.webp",
+    "pdf": "highquality/CERTIFICATE/Certificate%20of%20Appreciation-%20Avish%20Jain%20-%20Respawn%20Point.pdf"
   },
   {
     "id": "synatric-hackathon",
@@ -186,8 +204,9 @@
     "detail": "Protocol Club",
     "category": "Hackathons & Competitions",
     "date": "2025",
-    "image": "highquality/CERTIFICATE/SYNATRIX.png",
-    "thumbnail": "highquality/CERTIFICATE/SYNATRIX.png"
+    "image": "certificates/clean/SYNATRIX.png",
+    "thumbnail": "certificates/thumbnails/SYNATRIX.webp",
+    "pdf": "highquality/CERTIFICATE/SYNATRIX.pdf"
   },
   {
     "id": "gateway-for-gate",
@@ -196,8 +215,9 @@
     "detail": "Protocol Club",
     "category": "Workshops & Learning",
     "date": "21 Jun 2026",
-    "image": "highquality/CERTIFICATE/GATEWAY_FOR_GATE.png",
-    "thumbnail": "highquality/CERTIFICATE/GATEWAY_FOR_GATE.png"
+    "image": "certificates/clean/GATEWAY_FOR_GATE.png",
+    "thumbnail": "certificates/thumbnails/GATEWAY_FOR_GATE.webp",
+    "pdf": "highquality/CERTIFICATE/GATEWAY%20FOR%20GATE%20.pdf"
   },
   {
     "id": "mayday-event",
@@ -206,8 +226,9 @@
     "detail": "Cyber Resilience Competition",
     "category": "Hackathons & Competitions",
     "date": "19\u201320 Sep 2025",
-    "image": "highquality/CERTIFICATE/MAYDAY .jpg",
-    "thumbnail": "highquality/CERTIFICATE/MAYDAY .jpg"
+    "image": "certificates/clean/MAYDAY.jpg",
+    "thumbnail": "certificates/thumbnails/MAYDAY.webp",
+    "pdf": null
   },
   {
     "id": "imapac-ai",
@@ -216,8 +237,9 @@
     "detail": "Machine Learning Exhibition",
     "category": "Workshops & Learning",
     "date": "26\u201327 Mar 2026",
-    "image": "highquality/CERTIFICATE/IMPACT.png",
-    "thumbnail": "highquality/CERTIFICATE/IMPACT.png"
+    "image": "certificates/clean/IMPACT.png",
+    "thumbnail": "certificates/thumbnails/IMPACT.webp",
+    "pdf": "highquality/CERTIFICATE/IMPACT.pdf"
   },
   {
     "id": "ansya",
@@ -227,7 +249,8 @@
     "category": "Volunteer & Leadership",
     "date": "Date: TBA",
     "image": null,
-    "thumbnail": null
+    "thumbnail": null,
+    "pdf": null
   },
   {
     "id": "founders-playbook",
@@ -236,8 +259,9 @@
     "detail": "Venture & Leadership Track",
     "category": "Workshops & Learning",
     "date": "27 Jun 2026",
-    "image": "highquality/CERTIFICATE/Founders_PlayBook_series_9.png",
-    "thumbnail": "highquality/CERTIFICATE/Founders_PlayBook_series_9.png"
+    "image": "certificates/clean/Founders_PlayBook_series_9.png",
+    "thumbnail": "certificates/thumbnails/Founders_PlayBook_series_9.webp",
+    "pdf": "highquality/CERTIFICATE/Founders%20PlayBook%20series-9.pdf"
   },
   {
     "id": "techno-exhibition-10th",
@@ -246,8 +270,9 @@
     "detail": "Dr. B.R. Ambedkar Techno Fest",
     "category": "Hackathons & Competitions",
     "date": "2025",
-    "image": "highquality/CERTIFICATE/10TH NATIONAL .jpg",
-    "thumbnail": "highquality/CERTIFICATE/10TH NATIONAL .jpg"
+    "image": "certificates/clean/10TH_NATIONAL.jpg",
+    "thumbnail": "certificates/thumbnails/10TH_NATIONAL.webp",
+    "pdf": null
   },
   {
     "id": "sih-2025-cert",
@@ -256,8 +281,9 @@
     "detail": "Problem Statement 25008",
     "category": "Hackathons & Competitions",
     "date": "2025",
-    "image": "highquality/CERTIFICATE/SIH LAST YEAR .jpg",
-    "thumbnail": "highquality/CERTIFICATE/SIH LAST YEAR .jpg"
+    "image": "certificates/clean/SIH_LAST_YEAR.jpg",
+    "thumbnail": "certificates/thumbnails/SIH_LAST_YEAR.webp",
+    "pdf": null
   },
   {
     "id": "big-foundation-cert",
@@ -266,8 +292,9 @@
     "detail": "In-silico Drug Discovery Venture",
     "category": "Volunteer & Leadership",
     "date": "2026",
-    "image": "highquality/CERTIFICATE/BIG FOUNDATION.jpg",
-    "thumbnail": "highquality/CERTIFICATE/BIG FOUNDATION.jpg"
+    "image": "certificates/clean/BIG_FOUNDATION.jpg",
+    "thumbnail": "certificates/thumbnails/BIG_FOUNDATION.webp",
+    "pdf": null
   },
   {
     "id": "hack-a-matrix-poc-alt",
@@ -276,7 +303,8 @@
     "detail": "Management & Coordination",
     "category": "Volunteer & Leadership",
     "date": "28\u201330 Sep 2026",
-    "image": "highquality/CERTIFICATE/Avish_Jain_PoC.png",
-    "thumbnail": "highquality/CERTIFICATE/Avish_Jain_PoC.png"
+    "image": "certificates/clean/Avish_Jain_PoC.png",
+    "thumbnail": "certificates/thumbnails/Avish_Jain_PoC.webp",
+    "pdf": "highquality/CERTIFICATE/Avish%20Jain_PoC.pdf"
   }
 ]
