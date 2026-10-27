@@ -292,12 +292,24 @@ class DualBufferPlayer {
       nextVideo.src = file;
       nextVideo.load();
       await new Promise((resolve) => {
-        const handler = () => {
-          nextVideo.removeEventListener('canplaythrough', handler);
+        if (nextVideo.readyState >= 2) {
           resolve();
+          return;
+        }
+        let resolved = false;
+        const done = () => {
+          if (!resolved) {
+            resolved = true;
+            nextVideo.removeEventListener('loadeddata', done);
+            nextVideo.removeEventListener('canplay', done);
+            nextVideo.removeEventListener('canplaythrough', done);
+            resolve();
+          }
         };
-        nextVideo.addEventListener('canplaythrough', handler);
-        setTimeout(resolve, 800);
+        nextVideo.addEventListener('loadeddata', done);
+        nextVideo.addEventListener('canplay', done);
+        nextVideo.addEventListener('canplaythrough', done);
+        setTimeout(done, 4000);
       });
     }
 
@@ -321,6 +333,13 @@ class DualBufferPlayer {
       await nextVideo.play();
     } catch (e) {
       console.warn('[PLAYER] Autoplay policy prevented playback:', e);
+      const resume = () => {
+        ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.removeEventListener(evt, resume));
+        if (nextVideo.paused && State.currentState !== 'S8_HOLD' && State.currentState !== 'S_HOUSE') {
+          nextVideo.play().catch(() => {});
+        }
+      };
+      ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => window.addEventListener(evt, resume, { once: true, passive: true }));
     }
 
     // Perform smooth ~250ms crossfade
@@ -329,6 +348,8 @@ class DualBufferPlayer {
 
     nextVideo.style.opacity = '1';
     currentVideo.style.opacity = '0';
+    nextVideo.classList.add('active');
+    currentVideo.classList.remove('active');
 
     await new Promise((r) => setTimeout(r, crossfadeMs));
 

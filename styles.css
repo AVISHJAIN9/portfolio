@@ -119,7 +119,7 @@ body.loading-state #hud-bottom {
   opacity: 0;
   transition: opacity 0.25s linear;
   will-change: opacity;
-  background: #000;
+  background: transparent;
 }
 
 .stage-video.active,
