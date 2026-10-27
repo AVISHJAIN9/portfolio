@@ -372,7 +372,7 @@ class DualBufferPlayer {
    * Scrub active video for scroll scenes
    */
   scrub(time) {
-    if (this.activeVideo) {
+    if (this.activeVideo && this.activeVideo.readyState >= 1) {
       if (Math.abs(this.activeVideo.currentTime - time) < 0.04) {
         return;
       }
@@ -1964,6 +1964,9 @@ class StoryController {
     vids.forEach(v => {
       v.muted = true;
       v.loop = true;
+      if (v.readyState === 0) {
+        try { v.load(); } catch (e) {}
+      }
       try { v.currentTime = 0; } catch (e) {}
     });
 
